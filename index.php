@@ -55,10 +55,7 @@
 			
 			      <label><b>Repeat Password</b></label>
 			      <input type="password" placeholder="Repeat Password" id="psw-repeat" required>
-			      
-			      <label><b>Token</b></label>
-			      <input type="text" placeholder="Registration Token" id="tkn" required>
-			
+			    			
 					<h3 id="reg_status"></h3>
 			      <div class="clearfix">     
 			        <button id="signup" class="signupbtn">Sign Up</button>
