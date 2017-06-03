@@ -12,10 +12,11 @@
 <body style="background:url('images/bgadmin.png');">
 	<div id="wrapper">	
 			<h1 id="head">Hacking Challenges</h1><br>
-			<button class="dash-heading" class="dropbtn">Beginners</button>
-			<button class="dash-heading" id="left-right-padding">Single Player</button>
-			<button class="dash-heading" id="left-right-padding">Multiplayer</button>
-			<button class="dash-heading" id="left-right-padding">Options</button>			
+			<button class="dropbtn">Beginners</button>
+			<button class="left-right-padding" id="singleplayer">Single Player</button>
+			<button class="left-right-padding" id="multiplayer">Multiplayer</button>
+			<button class="left-right-padding" id="options">Options</button>			
 	</div>
 </body>		
+<script src="js/dashboard.js"></script>
 </html>

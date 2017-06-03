@@ -1,4 +1,4 @@
-body{
+body, h1{
 	font-family: 'Iceland', cursive;
 	color:#ABD17D;
 }
@@ -19,7 +19,22 @@ body{
 	background:#111;
 }
 
-.dash-heading{
+button:hover{
+	background:#ABD17D;
+	color:#000000;
+}
+
+.left-right-padding{
+	margin-left:4%;
+}
+
+button{
+	background:inherit;
+	background:#111;
+	color:#ABD17D;
+	font-family: 'Iceland', cursive;
+	cursor:pointer;
+	
 	margin-top:5%;
 	width:21.8%;
 	height:20%;
@@ -30,56 +45,111 @@ body{
 	float:left;
 	border-radius:1em;
 	font-size:larger;
-	
 }
 
-.dash-heading:hover{
-	background:#ABD17D;
-	color:#000000;
-}
-
-#left-right-padding{
-	margin-left:4%;
-}
-
-button{
-	background:inherit;
-	background:#111;
-	color:#ABD17D;
-	font-family: 'Iceland', cursive;
-	cursor:pointer;
-}
 button:focus {outline:0;}
 
-
-/*--DropDown-Start---*/
-
-.dropdown {
-    display: inline-block;
+/*--Nav Start---*/
+#wrapper > #primary_nav_wrap{
+	margin: 0px auto;
+	width:38%;
 }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+#primary_nav_wrap
+{
+	margin:15px;
 }
 
-.dropdown-content a {
-    color: black;
-    text-decoration: none;
-    display: block;
+#primary_nav_wrap ul
+{
+	list-style:none;
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0;
+	background:#111;
+	border-top:solid 1px #ABD17D;
+	border-bottom:solid 1px #ABD17D;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-content {
-    display: block;
+#primary_nav_wrap ul a
+{
+	display:block;
+	color:#ABD17D;
+	text-decoration:none;
+	font-weight:700;
+	font-size:17px;
+	line-height:42px;
+	padding:0 15px;
+	font-family: 'Iceland', cursive;
 }
 
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
+#primary_nav_wrap ul li
+{
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0;
 }
-/*--DropDown-End---*/
+
+#primary_nav_wrap ul li.current-menu-item
+{
+	background:#111;
+}
+
+#primary_nav_wrap ul li:hover, ul a:hover 
+{
+	background:#ABD17D;
+	color:#111;
+}
+
+#primary_nav_wrap ul li a:hover{
+	color:#111;
+}
+
+#primary_nav_wrap ul ul
+{
+	display:none;
+	position:absolute;
+	top:100%;
+	left:0;
+	background:#111;
+	padding:0;
+}
+
+#primary_nav_wrap ul ul li
+{
+	float:none;
+	width:auto;
+}
+
+#primary_nav_wrap ul ul a
+{
+	line-height:120%;
+	padding:10px 15px;
+}
+
+#primary_nav_wrap ul ul ul
+{
+	top:0;
+	left:100%;
+}
+
+#primary_nav_wrap ul li:hover > ul
+{
+	display:block
+}
+
+/*---content-----*/
+#content{
+	width:38%;
+	margin:3% auto;
+}
+
+#s_selected{
+	color:green;
+}
+
+#s_notselected{
+	color:red;
+}
