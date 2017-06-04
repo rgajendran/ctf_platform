@@ -61,8 +61,15 @@ if(!isset($_GET['scenario']) && !isset($_GET['fp'])){
 			?>
 			</span>
 			</h3>
-			
-			<button id="">Play</button>
+			<div id="loading">
+				<p id="status">status</p>
+			</div>
+			<div id="loading-buttons">
+				<input type="hidden" id="scenario" value="<?php if(isset($_GET['fp'])){echo $_GET['fp'];}?>" />
+				<button id="play">Play</button>
+				<button id="">Open VM</button>
+			</div>
+			<script src="js/dashboard.js"></script>
 		</div>
 	</div>
 </body>

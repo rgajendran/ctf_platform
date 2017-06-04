@@ -9,3 +9,17 @@ $(document).ready(function(){
 		$(location).attr("href", "./singleplayer.php");
 	});			
 });
+
+$(document).ready(function(){
+	$('#play').click(function(){
+		var scenario = $('#scenario').val();
+		$.ajax({
+			method: "POST",
+			url: "template/secgenvagrant.php",
+			data: {scenario: scenario},
+			success: function(status){
+				$('#status').html(status);
+			}	
+		});
+	});
+});
