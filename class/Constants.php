@@ -12,12 +12,11 @@ class Constants{
 	const OVIRT_DEFAULT_CLUSTER = 'ovirtcluster';
 	const OVIRT_DEFAULT_NETWORK = 'ovirtmgmt';
 	
-	/*------- return functions --------*/
-	public static function vmlink(){
-		return self::OVIRT_API_URL."/vms";
-	}
-	
-	
+	/*------ method ---------*/
+	const OVIRT_CURL_POST = 'POST';
+	const OVIRT_CURL_GET = 'GET';
+	const OVIRT_CURL_DELETE = 'DELETE';
+
 }
 
 ?>

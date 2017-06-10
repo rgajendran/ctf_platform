@@ -1,10 +1,3 @@
-<?php
-require 'class/Constants.php';
-if(!isset($_GET['scenario']) && !isset($_GET['fp'])){
-	header('location:'.Constants::SPLAYERDEFAULT);
-}
-
-?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -20,31 +13,15 @@ if(!isset($_GET['scenario']) && !isset($_GET['fp'])){
 	<div id="wrapper">	
 		<h1 id="head">Single Player</h1><br>
 		<nav id="primary_nav_wrap">
-			<?php
-			$dir = $_SERVER['DOCUMENT_ROOT']."/SecGen/scenarios";
-				
-			function listFolderFiles($dir){
-			    $ffs = scandir($dir);
-			
-			    unset($ffs[array_search('.', $ffs, true)]);
-			    unset($ffs[array_search('..', $ffs, true)]);
-				
+			<?php			
 				echo "<ul>";
-			    // prevent empty ordered elements
-			    if (count($ffs) < 1)
-			        return;
-			    foreach($ffs as $ff){
-			    	$path = strstr($dir, "scenarios");
-			        echo "<li><a href='singleplayer.php?scenario=$ff&&fp=$path/$ff'>$ff</a>";
-			        if(is_dir($dir.'/'.$ff)) {
-			        	listFolderFiles($dir.'/'.$ff);
+					include 'plattemplate/connection.php';
+					$result = mysqli_query($connection, "SELECT * FROM smenu");
+					while($row = mysqli_fetch_assoc($result)){
+						$tempname = $row['TEMP_NAME'];
+						echo "<li><a href='singleplayer.php?scenario=$tempname'>$tempname</a>";	
 					}
-			    }
-				echo "</ul>";
-			}
-		
-			listFolderFiles($dir);
-			   
+				echo "</ul>";				   
 			?>
 		</nav><br><br>
 		<div id="content">

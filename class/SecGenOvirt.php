@@ -2,15 +2,15 @@
 class SecGenOvirt{
 	
 	public static function spinup_secgen_ovirt_all($secgen_scenario, $ovirt_username, $ovirt_password, $ovirt_vmname, $ovirt_url, $ovirt_cluster, $ovirt_box_template, $ovirt_ip, $ovirt_network_name, $command){
-		return "ruby ".Constants::SECGEN_URL."secgen.rb 
-		--scenario $secgen_scenario 
-		--ovirtuser $ovirt_username 
-		--ovirtpass $ovirt_password
-		--ovirt-vmname $ovirt_vmname		
-		--ovirt-url $ovirt_url
-		--ovirt-cluster $ovirt_cluster
-		--ovirt-template $ovirt_box_template
-		--ovirt-ip $ovirt_ip
+		return "ruby ".Constants::SECGEN_URL."secgen.rb \
+		--scenario $secgen_scenario \
+		--ovirtuser $ovirt_username \
+		--ovirtpass $ovirt_password \
+		--ovirt-vmname $ovirt_vmname \		
+		--ovirt-url $ovirt_url \
+		--ovirt-cluster $ovirt_cluster \
+		--ovirt-template $ovirt_box_template \
+		--ovirt-ip $ovirt_ip \
 		--ovirt-network $ovirt_network_name $command";
 	}
 	
