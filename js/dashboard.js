@@ -6,19 +6,20 @@ $(document).ready(function(){
 		$(location).attr("href", "./singleplayer.php");
 	});
 	$('#options').click(function(){
-		$(location).attr("href", "./singleplayer.php");
+		$(location).attr("href", "./template/logout.php");
 	});			
 });
 
 $(document).ready(function(){
 	$('#play').click(function(){
 		var scenario = $('#scenario').val();
+		var vmname = $('#vmname').val();
 		$.ajax({
 			method: "POST",
-			url: "template/secgenvagrant.php",
-			data: {scenario: scenario},
+			url: "plattemplate/exesp.php",
+			data: {scenario: scenario, vmn:vmname},
 			success: function(status){
-				$('#status').html(status);
+				$('#status').text(status);
 			}	
 		});
 	});

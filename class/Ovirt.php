@@ -1,8 +1,20 @@
 <?php
 require 'Constants.php';
 require 'OLink.php';
+require 'Curl.php';
 
 class Ovirt{
+	
+	public static function randomToken() {
+	    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+	    $password = array(); 
+	    $letterLength = strlen($letters) - 1; 
+	    for ($i = 0; $i < 10; $i++) {
+	        $n = rand(0, $letterLength);
+	        $password[] = $letters[$n];
+	    }
+	    return implode($password); 
+	}
 	
 	public static function getheader(){
 		$headers = array();
@@ -19,10 +31,10 @@ class Ovirt{
 		return $headers;
 	}
 	
-	public static function ovirt_create_vm_data($vm_name, $desc, $cluster, $template, $memory){
+	public static function ovirt_create_vm($vm_name, $desc, $cluster, $template, $memory){
 
 		$xml = "<vm>
-					<name>$vm_name</name>
+					<name>".$vm_name."</name>
 						<description>$desc</description>
 						<cluster>
 							<name>$cluster</name>
@@ -40,7 +52,7 @@ class Ovirt{
 						</os>
 					</vm>";
 				
-		return Ovirt::curl_postdata_and_getresponse(OLink::vmlink(), $xml);
+		return Curl::curl_postdata_and_getresponse(OLink::get_vmpath_link(), $xml);
 								
 	}
 	
@@ -53,57 +65,22 @@ class Ovirt{
 		return Ovirt::curl_postdata_and_getresponse($link, $xml);
 	}
 	
-	public static function curl_postdata_and_getresponse($link, $xml){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $link);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_USERPWD, Constants::OVIRT_USERNAME . ":" . Constants::OVIRT_PASSWORD);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, Ovirt::postheader());
-		
-		$result = curl_exec($ch);
-		if (curl_errno($ch)) {
-		    return 'Error:' . curl_error($ch);
-		}
-		curl_close ($ch);
-		return $result;
+	public static function ovirt_start_vm($link){
+		$xml = "<action>
+					<vm>
+						<os>
+							<boot>
+								<devices>
+									<device>cdrom</device>
+								</devices>
+							</boot>
+						</os>
+					</vm>
+				</action>";
+		return Ovirt::ovirt_start_vm($link, $xml);		
 	}
 	
-	public static function curl_delete_and_getresponse($link){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $link);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, Constants::OVIRT_CURL_DELETE);
-		curl_setopt($ch, CURLOPT_USERPWD, Constants::OVIRT_USERNAME . ":" . Constants::OVIRT_PASSWORD);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, Ovirt::postheader());
-		
-		$result = curl_exec($ch);
-		if (curl_errno($ch)) {
-		    return 'Error:' . curl_error($ch);
-		}
-		curl_close ($ch);
-		return $result;
-	}
-	
-	public static function curl_get_and_getresponse($link){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $link);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, Constants::OVIRT_CURL_GET);
-		curl_setopt($ch, CURLOPT_USERPWD, Constants::OVIRT_USERNAME . ":" . Constants::OVIRT_PASSWORD);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, Ovirt::getheader());
-		
-		$result = curl_exec($ch);
-		if (curl_errno($ch)) {
-		    return 'Error:' . curl_error($ch);
-		}
-		curl_close ($ch);
-		return $result;
-	}	
+
 		
 }
 
