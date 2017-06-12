@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action>
+    <job href="/ovirt-engine/api/jobs/a83e8f7f-8b25-4334-be98-cb4c54901bf0" id="a83e8f7f-8b25-4334-be98-cb4c54901bf0"/>
+    <status>complete</status>
+    <vm href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7" id="5feeaa45-d02b-47b9-904e-018bf12d65e7">
+        <actions>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/previewsnapshot" rel="previewsnapshot"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/migrate" rel="migrate"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/ticket" rel="ticket"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/detach" rel="detach"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/cancelmigration" rel="cancelmigration"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/commitsnapshot" rel="commitsnapshot"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/clone" rel="clone"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/freezefilesystems" rel="freezefilesystems"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/logon" rel="logon"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/maintenance" rel="maintenance"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/reboot" rel="reboot"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/reordermacaddresses" rel="reordermacaddresses"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/thawfilesystems" rel="thawfilesystems"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/undosnapshot" rel="undosnapshot"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/export" rel="export"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/shutdown" rel="shutdown"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/start" rel="start"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/stop" rel="stop"/>
+            <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/suspend" rel="suspend"/>
+        </actions>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/affinitylabels" rel="affinitylabels"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/katelloerrata" rel="katelloerrata"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/permissions" rel="permissions"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/tags" rel="tags"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/nics" rel="nics"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/numanodes" rel="numanodes"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/watchdogs" rel="watchdogs"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/graphicsconsoles" rel="graphicsconsoles"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/diskattachments" rel="diskattachments"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/cdroms" rel="cdroms"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/snapshots" rel="snapshots"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/applications" rel="applications"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/hostdevices" rel="hostdevices"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/reporteddevices" rel="reporteddevices"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/sessions" rel="sessions"/>
+        <link href="/ovirt-engine/api/vms/5feeaa45-d02b-47b9-904e-018bf12d65e7/statistics" rel="statistics"/>
+    </vm>
+</action>
