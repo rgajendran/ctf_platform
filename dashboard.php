@@ -24,5 +24,5 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TYPE'])){
 			<button class="left-right-padding" id="options">Options</button>			
 	</div>
 </body>		
-<script src="js/dashboard.js"></script>
+<script src="pjs/dashboard.js"></script>
 </html>

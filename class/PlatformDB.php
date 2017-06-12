@@ -28,7 +28,7 @@ class PlatformDB{
 	public static function checkVMNumberCount($username){
 		include '../plattemplate/connection.php';	
 		$result = mysqli_query($connection, "SELECT VMNAME FROM vm WHERE USERNAME='$username'");
-		if(mysqli_num_rows($result) <= 5){
+		if(mysqli_num_rows($result) <= 4){
 			return true;
 		}else{
 			return false;
@@ -38,6 +38,22 @@ class PlatformDB{
 	public static function insertVMDetails($username, $vmname, $vmid){
 		include '../plattemplate/connection.php';
 		$result = mysqli_query($connection, "INSERT INTO vm (USERNAME, VMNAME, VMID) VALUES ('$username', '$vmname', '$vmid')");
+		if($result){
+			return Constants::DB_SUCCESS;
+		}else{
+			return Constants::DB_FAILURE;
+		}
+	}
+	
+	public static function checkIfVMIdExistsForUser($vmid, $user){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT VMID FROM vm WHERE USERNAME='$user' AND VMID='$vmid'");
+		return mysqli_num_rows($result);
+	}
+	
+	public static function deleteVMfromDbWithVmIdandUser($vmid, $user){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "DELETE FROM vm WHERE USERNAME='$user' AND VMID='$vmid'");
 		if($result){
 			return Constants::DB_SUCCESS;
 		}else{

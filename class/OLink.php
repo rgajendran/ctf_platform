@@ -7,7 +7,7 @@ class OLink{
 		return Constants::OVIRT_API_URL."/vms";
 	}
 	
-	public static function delete_vmwithid_link($vmid){ 										# specific vm (can used to delete vm)
+	public static function get_deletevm_link($vmid){ 										# specific vm (can used to delete vm)
 		return Constants::OVIRT_API_URL."/vms/$vmid";
 	}	
 	
@@ -22,5 +22,9 @@ class OLink{
 	public static function get_vmstart_link($vmid){												# start vm with id
 		return Constants::OVIRT_API_URL."/vms/$vmid/start";
 	}
+	
+	public static function get_vmshutdown_link($vmid){												# shutdown vm with id
+		return Constants::OVIRT_API_URL."/vms/$vmid/shutdown";
+	}	
 }
 ?>

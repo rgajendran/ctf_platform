@@ -1,6 +1,4 @@
 <?php
-require 'Constants.php';
-require 'OLink.php';
 require 'Curl.php';
 
 class Ovirt{
@@ -71,16 +69,23 @@ class Ovirt{
 						<os>
 							<boot>
 								<devices>
-									<device>cdrom</device>
+									<device>hd</device>
 								</devices>
 							</boot>
 						</os>
 					</vm>
 				</action>";
-		return Ovirt::ovirt_start_vm($link, $xml);		
+		return Curl::curl_postdata_and_getresponse($link, $xml);	
 	}
 	
-
+	public static function ovirt_shutdown_vm($link){
+		$xml = "<action/>";
+		return Curl::curl_postdata_and_getresponse($link, $xml);
+	}
+	
+	public static function ovirt_delete_vm($link){
+		return Curl::curl_delete_and_getresponse($link);
+	}
 		
 }
 

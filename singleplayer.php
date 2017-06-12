@@ -1,3 +1,13 @@
+<?php 
+session_start();
+if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TYPE'])){
+	header('location:index.php');
+}
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,6 +18,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link href="https://fonts.googleapis.com/css?family=Iceland|Orbitron" rel="stylesheet"> 
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 <body id="main" style="background:url('images/bgadmin.png');">
 	<div id="wrapper">	
@@ -46,7 +57,7 @@
 				<tr class="c-name">
 					<td class="c-head"><h3>Choose VM Name</h3></td>
 					<td class="c-mid">:</td>
-					<td class="c-end"><input type="text" id="vmname" placeholder="Enter your VM name" maxlength="40"/></td>
+					<td class="c-end"><input type="text" id="vmname" placeholder="Enter your VM name" maxlength="30"/></td>
 				</tr>				
 				<tr class="c-name">
 					<td  colspan="3">
@@ -61,32 +72,44 @@
 				<button >Back</button>
 				<button id="play">Create Scenario</button>
 			</div>
-			<script src="js/dashboard.js"></script>
+			<script src="pjs/dashboard.js"></script>
 		</div>	
 		<div id="side_menu">
 			<h4 align="center">Available VM's</h4>
 				<table>
 					<?php
-					include 'plattemplate/connection.php';
-					$result_vm = mysqli_query($connection, "SELECT VMNAME FROM vm WHERE USERNAME=$credit->getUsername()");
-					if(mysqli_num_rows($result_vm) == 0){
-							echo '<tr class="tg">
-							    	<td>No VMs available</td>
-							  	</tr>';
+					require 'class/PlatformValidator.php';
+					require 'class/Validator.php';
+					require 'class/Constants.php';
+					$c = new Creditional();
+					$resultvm = mysqli_query($connection, "SELECT VMNAME,VMID FROM vm WHERE USERNAME='".$c->getUsername()."'");
+					$pv = new PlatformValidator();
+					if($resultvm){
+						if(mysqli_num_rows($resultvm) == 0){
+								echo '<tr class="tg">
+								    	<td>No VM\'s available</td>
+								  	</tr>';
+						}else{
+							while($vmrow = mysqli_fetch_assoc($resultvm)){
+								$vmname = $pv->RemoveVMNameextraInfo($vmrow['VMNAME']);
+								$vmid = $vmrow['VMID'];
+								echo "<tr class=\"tg\">
+									    <td class=\"t-name\">$vmname</td>
+									    <td class=\"t-icon\"><img src=\"images/icon/run.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_RUN."\",\"$vmid\");'/></td>
+									    <td class=\"t-icon\"><img src=\"images/icon/start.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_START."\",\"$vmid\");'/></td>
+									    <td class=\"t-icon\"><img src=\"images/icon/stop.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_STOP."\",\"$vmid\");'/></td>
+									    <td class=\"t-icon\"><img src=\"images/icon/delete.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_DELETE."\",\"$vmid\");'/></td>
+									  </tr>";
+							}	
+						}						
 					}else{
-						while($vmrow = mysqli_fetch_assoc($result_vm)){
-							echo '<tr class="tg">
-								    <td class="t-name">'.$vmrow['VMNAME'].'</td>
-								    <td class="t-icon">d</td>
-								    <td class="t-icon">d</td>
-								    <td class="t-icon">d</td>
-								    <td class="t-icon">d</td>
-								  </tr>';
-						}	
+						echo mysqli_error($connection);
 					}
+
 					?>			  				  				  
 				</table>
 		</div>	
 	</div>
+	<script src="pjs/splayers.js"></script>
 </body>
 </html>

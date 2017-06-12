@@ -210,18 +210,22 @@ input{
 table{
 	width:100%;
 	height:auto;
-	border:solid 1px #ABD17D;
+	border-top:solid 1px #ABD17D;
+	border-collapse: collapse;
 }
 
 .tg > td{
-	padding-top:10px;
-	padding-bottom:10px;
+	padding-top:1%;
+	padding-bottom:1%;
+	float:left;
+	overflow-x: hidden;
 }
 
 .tg > .t-name {
 	width:48%;
 	float:left;
 	height:auto;
+	margin-left:0.8%;
 }
 
 .tg > .t-icon {
@@ -230,5 +234,6 @@ table{
 	height:auto;
 	text-align:center;
 	border-left:solid 1px #ABD17D;
+	cursor:pointer;
 }
 
