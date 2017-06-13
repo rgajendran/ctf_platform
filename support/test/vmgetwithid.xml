@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vm href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9" id="c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9">
+    <actions>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/previewsnapshot" rel="previewsnapshot"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/migrate" rel="migrate"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/ticket" rel="ticket"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/commitsnapshot" rel="commitsnapshot"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/logon" rel="logon"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/clone" rel="clone"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/cancelmigration" rel="cancelmigration"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/freezefilesystems" rel="freezefilesystems"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/maintenance" rel="maintenance"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/reboot" rel="reboot"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/reordermacaddresses" rel="reordermacaddresses"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/thawfilesystems" rel="thawfilesystems"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/undosnapshot" rel="undosnapshot"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/detach" rel="detach"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/export" rel="export"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/shutdown" rel="shutdown"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/start" rel="start"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/stop" rel="stop"/>
+        <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/suspend" rel="suspend"/>
+    </actions>
+    <name>gaju_side_menu_QenlCRXNvj</name>
+    <description>SinglePlayer</description>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/affinitylabels" rel="affinitylabels"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/katelloerrata" rel="katelloerrata"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/permissions" rel="permissions"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/tags" rel="tags"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/nics" rel="nics"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/numanodes" rel="numanodes"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/graphicsconsoles" rel="graphicsconsoles"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/watchdogs" rel="watchdogs"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/diskattachments" rel="diskattachments"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/cdroms" rel="cdroms"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/snapshots" rel="snapshots"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/applications" rel="applications"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/hostdevices" rel="hostdevices"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/reporteddevices" rel="reporteddevices"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/sessions" rel="sessions"/>
+    <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/statistics" rel="statistics"/>
+    <bios>
+        <boot_menu>
+            <enabled>false</enabled>
+        </boot_menu>
+    </bios>
+    <cpu>
+        <architecture>x86_64</architecture>
+        <topology>
+            <cores>1</cores>
+            <sockets>1</sockets>
+            <threads>1</threads>
+        </topology>
+    </cpu>
+    <cpu_shares>0</cpu_shares>
+    <creation_time>2017-06-13T18:49:04.286+01:00</creation_time>
+    <delete_protected>false</delete_protected>
+    <display>
+        <address>10.36.199.74</address>
+        <allow_override>false</allow_override>
+        <certificate>
+            <subject>O=localdomain,CN=10.36.199.74</subject>
+        </certificate>
+        <copy_paste_enabled>true</copy_paste_enabled>
+        <disconnect_action>LOCK_SCREEN</disconnect_action>
+        <file_transfer_enabled>true</file_transfer_enabled>
+        <monitors>1</monitors>
+        <secure_port>5900</secure_port>
+        <single_qxl_pci>false</single_qxl_pci>
+        <smartcard_enabled>false</smartcard_enabled>
+        <type>spice</type>
+    </display>
+    <high_availability>
+        <enabled>false</enabled>
+        <priority>1</priority>
+    </high_availability>
+    <io>
+        <threads>0</threads>
+    </io>
+    <large_icon href="/ovirt-engine/api/icons/c174a40d-e22b-407c-8e89-f61c8a35325b" id="c174a40d-e22b-407c-8e89-f61c8a35325b"/>
+    <memory>1073741824</memory>
+    <memory_policy>
+        <ballooning>true</ballooning>
+        <guaranteed>1073741824</guaranteed>
+        <max>4294967296</max>
+    </memory_policy>
+    <migration>
+        <auto_converge>inherit</auto_converge>
+        <compressed>inherit</compressed>
+    </migration>
+    <migration_downtime>-1</migration_downtime>
+    <origin>ovirt</origin>
+    <os>
+        <boot>
+            <devices>
+                <device>hd</device>
+            </devices>
+        </boot>
+        <type>other</type>
+    </os>
+    <small_icon href="/ovirt-engine/api/icons/36285f49-8110-4e55-99c0-0e4091f2dee5" id="36285f49-8110-4e55-99c0-0e4091f2dee5"/>
+    <sso>
+        <methods>
+            <method id="guest_agent"/>
+        </methods>
+    </sso>
+    <start_paused>false</start_paused>
+    <stateless>false</stateless>
+    <time_zone>
+        <name>Etc/GMT</name>
+    </time_zone>
+    <type>desktop</type>
+    <usb>
+        <enabled>false</enabled>
+    </usb>
+    <cluster href="/ovirt-engine/api/clusters/3c080847-6bf4-43d7-9b8f-d61120e8ff67" id="3c080847-6bf4-43d7-9b8f-d61120e8ff67"/>
+    <cpu_profile href="/ovirt-engine/api/cpuprofiles/d4193587-4f9e-4fe5-809e-18d7491178b0" id="d4193587-4f9e-4fe5-809e-18d7491178b0"/>
+    <quota id="bf95ad14-e395-48a2-9632-eb44b8866ad2"/>
+    <next_run_configuration_exists>false</next_run_configuration_exists>
+    <numa_tune_mode>interleave</numa_tune_mode>
+    <placement_policy>
+        <affinity>pinned</affinity>
+    </placement_policy>
+    <run_once>true</run_once>
+    <start_time>2017-06-13T19:37:56.931+01:00</start_time>
+    <status>powering_up</status>
+    <stop_time>2017-06-13T19:20:17.682+01:00</stop_time>
+    <host href="/ovirt-engine/api/hosts/b98cd15f-157d-40aa-836c-c6eac61abede" id="b98cd15f-157d-40aa-836c-c6eac61abede"/>
+    <original_template href="/ovirt-engine/api/templates/836de8a6-8a64-4de6-8526-124aca610a97" id="836de8a6-8a64-4de6-8526-124aca610a97"/>
+    <template href="/ovirt-engine/api/templates/836de8a6-8a64-4de6-8526-124aca610a97" id="836de8a6-8a64-4de6-8526-124aca610a97"/>
+</vm>

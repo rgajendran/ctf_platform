@@ -1,5 +1,6 @@
 <?php
 require 'Curl.php';
+require 'OLink.php';
 
 class Ovirt{
 	
@@ -12,6 +13,11 @@ class Ovirt{
 	        $password[] = $letters[$n];
 	    }
 	    return implode($password); 
+	}
+	
+	public static function GraphicsAllowedVMOptions(){
+			$new = array(Constants::OVIRT_VM_STATUS_POWERING_UP,Constants::OVIRT_VM_STATUS_UP);
+			return $new;
 	}
 	
 	public static function getheader(){
@@ -60,7 +66,8 @@ class Ovirt{
 						<expiry>120</expiry>
 					</ticket>
 				</action>";
-		return Ovirt::curl_postdata_and_getresponse($link, $xml);
+		$respond = simplexml_load_string(Curl::curl_postdata_and_getresponse($link, $xml));
+		return $respond->remote_viewer_connection_file;
 	}
 	
 	public static function ovirt_start_vm($link){
@@ -85,6 +92,17 @@ class Ovirt{
 	
 	public static function ovirt_delete_vm($link){
 		return Curl::curl_delete_and_getresponse($link);
+	}
+	
+	public static function ovirt_vm_status($link){
+		$xml = simplexml_load_string(Curl::curl_get_and_getresponse($link));
+		return $xml->status;
+	}
+	
+	public static function ovirt_getgraphicsconsoleId_vm($link){
+		$xml = simplexml_load_string(Curl::curl_get_and_getresponse($link));
+		$attr = $xml->graphics_console->attributes();
+		return $attr['id'];
 	}
 		
 }

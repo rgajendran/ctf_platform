@@ -19,33 +19,37 @@
          </form>
          <form method="post" action="test.php">         
             <input type="submit" value="Post" name="vmpost" />
-         </form>         
+         </form>
+         <form action="test.php" method="post">
+			To file: <input type="text" name="tofile" />
+			<input type="submit" />
+		</form>         
          	<?php
-			/*require 'class/Validator.php';
-         	require 'class/Ovirt.php';
-         	
-			Validator::DetectErrors();
-			#7370696365
+         			
+			$xml = simplexml_load_file("graphicsconsoleticket.xml");
+			$attr = $xml->remote_viewer_connection_file;
+			//echo $attr;
+			
+			if(isset($_POST['tofile'])){
+				$filename = 'test-download.html';
+				$htmlcode1 = "<HTML> \n <BODY>";
+				$htmlcode2 = "</BODY> \n <HTML>";
+				$somecontent = $htmlcode1.$_POST["tofile"].$htmlcode2;
+				!$handle = fopen($filename, 'w');
+				fwrite($handle, $somecontent);
+				fclose($handle);
+				
+				
+				header("Cache-Control: public");
+				header("Content-Description: File Transfer");
+				header("Content-Length: ". filesize("$filename")-ob_get_length().";");
+				header("Content-Disposition: attachment; filename=$filename");
+				header("Content-Type: application/octet-stream; "); 
+				header("Content-Transfer-Encoding: binary");
+				
+				readfile($filename);
 
-			if(isset($_POST['vmcreate'])){
-				echo "<pre>".htmlentities(Ovirt::ovirt_create_vm_data("vmname", "desc", "ovirtcluster", "vagrant-debian7", "1073741824"))."</pre>";	
 			}
-			
-			if(isset($_POST['vmdelete'])){
-				echo "<pre>".htmlentities(Ovirt::ovirt_graphicconsole_ticket(OLink::get_vmremote_connectionfile("2b2c1ce4-b2a2-4d9d-bb94-476fe25b98de","7370696365")))."</pre>";
-			}
-
-			if(isset($_POST['vmpost'])){
-				//echo "<pre>".htmlentities(Ovirt::)."</pre>";
-			}		*/
-			
-			
-			$xml = simplexml_load_file("support/test/createvm.xml");
-			$attr = $xml->status;
-			echo $attr;
-			
-			
-
 					
 			?> 
 	</div>

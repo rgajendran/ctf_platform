@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<graphics_consoles>
+    <graphics_console href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/graphicsconsoles/7370696365" id="7370696365">
+        <actions>
+            <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/graphicsconsoles/7370696365/ticket" rel="ticket"/>
+            <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/graphicsconsoles/7370696365/proxyticket" rel="proxyticket"/>
+            <link href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9/graphicsconsoles/7370696365/remoteviewerconnectionfile" rel="remoteviewerconnectionfile"/>
+        </actions>
+        <protocol>spice</protocol>
+        <vm href="/ovirt-engine/api/vms/c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9" id="c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9"/>
+    </graphics_console>
+</graphics_consoles>

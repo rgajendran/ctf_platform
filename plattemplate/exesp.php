@@ -2,6 +2,7 @@
 require '../class/Validator.php';
 require '../class/Ovirt.php';
 require '../class/PlatformDB.php';
+require '../class/Constants.php';
 
 Validator::DetectErrors();
 

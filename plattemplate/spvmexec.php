@@ -1,33 +1,34 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require '../class/Constants.php';
 require '../class/Ovirt.php';
-require '../class/OLink.php';
 require '../class/Validator.php';
 require '../class/PlatformDB.php';
 
-Validator::DetectErrors();
-
-if(isset($_POST['exec']) && isset($_POST['vm'])){
+if(isset($_POST['exec']) && isset($_POST['vm']) && isset($_POST['vmnm'])){
 	$command = $_POST['exec'];
 	$vmid = $_POST['vm'];
+	$vmname = $_POST['vmnm'];
 	$allowedExec = array(Constants::OVIRT_VM_EXEC_RUN,Constants::OVIRT_VM_EXEC_START,Constants::OVIRT_VM_EXEC_STOP,Constants::OVIRT_VM_EXEC_DELETE);
 	if(in_array($command, $allowedExec)){
 		switch($command){
 			case Constants::OVIRT_VM_EXEC_START:
 					$xml =  simplexml_load_string(Ovirt::ovirt_start_vm(OLink::get_vmstart_link($vmid)));
 					if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-						echo "VM Started";
+						Output("start","Started ".$vmname);
 					}else{
-						Constants::ERROR_VMSTART.Constants::ERROR_CODE_3005;
+						Output("start",Constants::ERROR_VMSTART.Constants::ERROR_CODE_3005);
 					}
 				break;
 				
 			case Constants::OVIRT_VM_EXEC_STOP:
 					$xml = simplexml_load_string(Ovirt::ovirt_shutdown_vm(OLink::get_vmshutdown_link($vmid)));
 					if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-						echo "VM Shutdown Complete";
+						Output("stop","Shutdown Complete :".$vmname);
 					}else{
-						Constants::ERROR_VMSHUTDOWN.Constants::ERROR_CODE_3006;
+						Output("stop",Constants::ERROR_VMSHUTDOWN.Constants::ERROR_CODE_3006);
 					}
 				break;
 				
@@ -35,30 +36,52 @@ if(isset($_POST['exec']) && isset($_POST['vm'])){
 					$c = new Creditional();		
 					if(PlatformDB::checkIfVMIdExistsForUser($vmid, $c->getUsername()) == 1){
 						$xml = simplexml_load_string(Ovirt::ovirt_delete_vm(OLink::get_deletevm_link($vmid)));
-						if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-							if(PlatformDB::deleteVMfromDbWithVmIdandUser($vmid, $c->getUsername()) == Constants::DB_SUCCESS){
-								echo "VM Deleted";
+						if(!empty($xml)){
+							if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
+								if(PlatformDB::deleteVMfromDbWithVmIdandUser($vmid, $c->getUsername()) == Constants::DB_SUCCESS){
+									Output("delete","Deleted ".$vmname);
+								}else{
+									Output("delete",Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3009);
+								}
 							}else{
-								echo Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3009;
+								Output("delete",Constants::ERROR_VMDELETE.Constants::ERROR_CODE_3007);
 							}
 						}else{
-							Constants::ERROR_VMDELETE.Constants::ERROR_CODE_3007;
-						}							
+							Output("delete",Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3010);
+						}
+							
 					}else{
-						echo Constants::ERROR_VM_DOESNT_EXISTS_FORUSER.Constants::ERROR_CODE_3007;
+						Output("delete",Constants::ERROR_VM_DOESNT_EXISTS_FORUSER.Constants::ERROR_CODE_3007);
 					}
 					
 				break;
 				
 			case Constants::OVIRT_VM_EXEC_RUN:
-				echo $command." ".$vmid;
+				$c = new Creditional();	
+				if(PlatformDB::checkIfVMIdExistsForUser($vmid, $c->getUsername()) == 1){
+					if(in_array(Ovirt::ovirt_vm_status(OLink::get_vmstatus_link($vmid)), Ovirt::GraphicsAllowedVMOptions())){
+						$gid= Ovirt::ovirt_getgraphicsconsoleId_vm(OLink::get_vmconsoleid_link($vmid));
+						$remotefile = Ovirt::ovirt_graphicconsole_ticket(OLink::get_vmremote_connectionfile_link($vmid, $gid));
+						Output("run",$remotefile);
+					}else{
+						Output("run",Constants::ERROR_VM_NOTUP_OR_POWERINGUP.Constants::ERROR_CODE_3011);
+					}
+				}else{
+					Output("run",Constants::ERROR_VM_DOESNT_EXISTS_FORUSER.Constants::ERROR_CODE_3007);
+				}					
 				break;			
 		}
 	}else{
-		echo Constants::ERROR_INVALID_COMMAND.Constants::ERROR_CODE_3004;
+		Output("error",Constants::ERROR_INVALID_COMMAND.Constants::ERROR_CODE_3004);
 	}
 }else{
-	echo Constants::ERROR_EXESP_INVALID_REQUEST.Constants::ERROR_CODE_3003;
+	Output("error",Constants::ERROR_EXESP_INVALID_REQUEST.Constants::ERROR_CODE_3003);
+}
+
+function Output($command, $string){
+	$a = array($command,$string);
+	$s = implode("~#~", $a);
+	print_r($s);
 }
 
 ?>

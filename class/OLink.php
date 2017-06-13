@@ -11,6 +11,10 @@ class OLink{
 		return Constants::OVIRT_API_URL."/vms/$vmid";
 	}	
 	
+	public static function get_vmstatus_link($vmid){ 										# specific vm (get complete status)
+		return Constants::OVIRT_API_URL."/vms/$vmid";
+	}
+	
 	public static function get_vmconsoleid_link($vmid){											# get specific graphic console id
 		return Constants::OVIRT_API_URL."/vms/$vmid/graphicsconsoles";
 	}	

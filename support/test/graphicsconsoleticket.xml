@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action>
+    <remote_viewer_connection_file>[virt-viewer]
+type=spice
+host=10.36.199.74
+port=-1
+password=w3yaszFSSrt8
+# Password is valid for 120 seconds.
+delete-this-file=1
+fullscreen=0
+toggle-fullscreen=shift+f11
+release-cursor=shift+f12
+secure-attention=ctrl+alt+end
+tls-port=5900
+enable-smartcard=0
+enable-usb-autoshare=0
+usb-filter=null
+tls-ciphers=DEFAULT
+host-subject=O=localdomain,CN=10.36.199.74
+ca=-----BEGIN CERTIFICATE-----\nMIIDxjCCAq6gAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwSTELMAkGA1UEBhMCVVMxFDASBgNVBAoM\nC2xvY2FsZG9tYWluMSQwIgYDVQQDDBtsb2NhbGhvc3QubG9jYWxkb21haW4uOTc0ODMwHhcNMTcw\nNTAxMTMyNzIwWhcNMjcwNDMwMTMyNzIwWjBJMQswCQYDVQQGEwJVUzEUMBIGA1UECgwLbG9jYWxk\nb21haW4xJDAiBgNVBAMMG2xvY2FsaG9zdC5sb2NhbGRvbWFpbi45NzQ4MzCCASIwDQYJKoZIhvcN\nAQEBBQADggEPADCCAQoCggEBAMf2c6h6lqY8hyrX85v6GXOYjomFRo+lEMPbEu4krx8KnfqZ1k9l\nPMEn4KfBOJDxGZych70WaM4fMO0abfn24m98ESab1hRmZuSbTglwYYnW7/sEiOMa4vWhCD3XEcBm\nNxSDN+qUBBl35su/IuS61tz9pQee/ao35hnMlynlj2TohBXgX79LS933DhBhoJKlB1DvM99gJwGY\nuO5+cypdyc6VxQW1VnjJZcyJLYGbLVjUSB3dhyNyNtNPbXUzjXbi/3lTzpLEiS2rHW8aEA44hZ7N\n2YroNnVjDE4S+GuyJVTO4uDh0PC5IEcbYqjEVL3kQFZUw/XmY4860J8+UCCHUrcCAwEAAaOBtzCB\ntDAdBgNVHQ4EFgQU4G3ZCylxK6ir+Oqh//FhI5ky1mcwcgYDVR0jBGswaYAU4G3ZCylxK6ir+Oqh\n//FhI5ky1mehTaRLMEkxCzAJBgNVBAYTAlVTMRQwEgYDVQQKDAtsb2NhbGRvbWFpbjEkMCIGA1UE\nAwwbbG9jYWxob3N0LmxvY2FsZG9tYWluLjk3NDgzggIQADAPBgNVHRMBAf8EBTADAQH/MA4GA1Ud\nDwEB/wQEAwIBBjANBgkqhkiG9w0BAQsFAAOCAQEAQ5f+BdxmkiKI7ElGfm54hfv2/WLPA/i+vJRI\nSCimbDDhDkZH388T9CfqIzKXRyWS/ppxXz0VioD1Elqb3ow+uu7dmru8SuSJiWrd9rLR9JV4BEMq\npVDg3nYL4rVx3WygGOC2C64Wv6xoxaDlK9Ag9pKm/JqorUQCQxm8MkN6+wxHEa+Z2Kr/h7mLMMF/\nXDvFy6k+NNGPVY2SpvUJg4nkxM64HioghpnLzFQXHOEP1t62ODGBUI1CfR8D6N6tHpubDysKUoRg\n+pVENoLcYVezKuTCtTUcEUeRJ1VtgiP0TczNESITTWNNNDHxOQPjam1nK3C6a9UDeB4/yYX2dgnD\ntg==\n-----END CERTIFICATE-----\n
+secure-channels=main;inputs;cursor;playback;record;display;smartcard;usbredir
+versions=rhev-win64:2.0-160;rhev-win32:2.0-160;rhel7:2.0-6;rhel6:99.0-1
+newer-version-url=http://www.ovirt.org/documentation/admin-guide/virt/console-client-resources
+
+[ovirt]
+host=ctffrontend:443
+vm-guid=c2eb90c6-dc3b-4608-bdfb-eaaaf714fbc9
+sso-token=4FwPm2raktuhf5K9tUYoFF3-w1kp5iEIq7h6F2Oo2Lkw0NL6XNhjAPXxAmpCiHzkMn4CTHXrgRYT3Do8izIlgQ
+admin=1
+ca=-----BEGIN CERTIFICATE-----\nMIIDxjCCAq6gAwIBAgICEAAwDQYJKoZIhvcNAQELBQAwSTELMAkGA1UEBhMCVVMxFDASBgNVBAoM\nC2xvY2FsZG9tYWluMSQwIgYDVQQDDBtsb2NhbGhvc3QubG9jYWxkb21haW4uOTc0ODMwHhcNMTcw\nNTAxMTMyNzIwWhcNMjcwNDMwMTMyNzIwWjBJMQswCQYDVQQGEwJVUzEUMBIGA1UECgwLbG9jYWxk\nb21haW4xJDAiBgNVBAMMG2xvY2FsaG9zdC5sb2NhbGRvbWFpbi45NzQ4MzCCASIwDQYJKoZIhvcN\nAQEBBQADggEPADCCAQoCggEBAMf2c6h6lqY8hyrX85v6GXOYjomFRo+lEMPbEu4krx8KnfqZ1k9l\nPMEn4KfBOJDxGZych70WaM4fMO0abfn24m98ESab1hRmZuSbTglwYYnW7/sEiOMa4vWhCD3XEcBm\nNxSDN+qUBBl35su/IuS61tz9pQee/ao35hnMlynlj2TohBXgX79LS933DhBhoJKlB1DvM99gJwGY\nuO5+cypdyc6VxQW1VnjJZcyJLYGbLVjUSB3dhyNyNtNPbXUzjXbi/3lTzpLEiS2rHW8aEA44hZ7N\n2YroNnVjDE4S+GuyJVTO4uDh0PC5IEcbYqjEVL3kQFZUw/XmY4860J8+UCCHUrcCAwEAAaOBtzCB\ntDAdBgNVHQ4EFgQU4G3ZCylxK6ir+Oqh//FhI5ky1mcwcgYDVR0jBGswaYAU4G3ZCylxK6ir+Oqh\n//FhI5ky1mehTaRLMEkxCzAJBgNVBAYTAlVTMRQwEgYDVQQKDAtsb2NhbGRvbWFpbjEkMCIGA1UE\nAwwbbG9jYWxob3N0LmxvY2FsZG9tYWluLjk3NDgzggIQADAPBgNVHRMBAf8EBTADAQH/MA4GA1Ud\nDwEB/wQEAwIBBjANBgkqhkiG9w0BAQsFAAOCAQEAQ5f+BdxmkiKI7ElGfm54hfv2/WLPA/i+vJRI\nSCimbDDhDkZH388T9CfqIzKXRyWS/ppxXz0VioD1Elqb3ow+uu7dmru8SuSJiWrd9rLR9JV4BEMq\npVDg3nYL4rVx3WygGOC2C64Wv6xoxaDlK9Ag9pKm/JqorUQCQxm8MkN6+wxHEa+Z2Kr/h7mLMMF/\nXDvFy6k+NNGPVY2SpvUJg4nkxM64HioghpnLzFQXHOEP1t62ODGBUI1CfR8D6N6tHpubDysKUoRg\n+pVENoLcYVezKuTCtTUcEUeRJ1VtgiP0TczNESITTWNNNDHxOQPjam1nK3C6a9UDeB4/yYX2dgnD\ntg==\n-----END CERTIFICATE-----\n
+</remote_viewer_connection_file>
+    <ticket>
+        <expiry>120</expiry>
+    </ticket>
+</action>

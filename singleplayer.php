@@ -62,7 +62,7 @@ error_reporting(E_ALL);
 				<tr class="c-name">
 					<td  colspan="3">
 						<div id="loading">
-							<?php echo "<pre>"; ?><p id="status">status</p><?php echo "</pre>"; ?>
+							<?php echo "<pre>";?><p id="status">status</p><?php echo "</pre>";?>
 						</div>
 					</td>
 				</tr>
@@ -75,39 +75,7 @@ error_reporting(E_ALL);
 			<script src="pjs/dashboard.js"></script>
 		</div>	
 		<div id="side_menu">
-			<h4 align="center">Available VM's</h4>
-				<table>
-					<?php
-					require 'class/PlatformValidator.php';
-					require 'class/Validator.php';
-					require 'class/Constants.php';
-					$c = new Creditional();
-					$resultvm = mysqli_query($connection, "SELECT VMNAME,VMID FROM vm WHERE USERNAME='".$c->getUsername()."'");
-					$pv = new PlatformValidator();
-					if($resultvm){
-						if(mysqli_num_rows($resultvm) == 0){
-								echo '<tr class="tg">
-								    	<td>No VM\'s available</td>
-								  	</tr>';
-						}else{
-							while($vmrow = mysqli_fetch_assoc($resultvm)){
-								$vmname = $pv->RemoveVMNameextraInfo($vmrow['VMNAME']);
-								$vmid = $vmrow['VMID'];
-								echo "<tr class=\"tg\">
-									    <td class=\"t-name\">$vmname</td>
-									    <td class=\"t-icon\"><img src=\"images/icon/run.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_RUN."\",\"$vmid\");'/></td>
-									    <td class=\"t-icon\"><img src=\"images/icon/start.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_START."\",\"$vmid\");'/></td>
-									    <td class=\"t-icon\"><img src=\"images/icon/stop.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_STOP."\",\"$vmid\");'/></td>
-									    <td class=\"t-icon\"><img src=\"images/icon/delete.png\" width=\"23\" height=\"23\" onclick='Ovirt.exec(\"".Constants::OVIRT_VM_EXEC_DELETE."\",\"$vmid\");'/></td>
-									  </tr>";
-							}	
-						}						
-					}else{
-						echo mysqli_error($connection);
-					}
-
-					?>			  				  				  
-				</table>
+			<?php include_once 'plattemplate/availablevm.php'; ?>
 		</div>	
 	</div>
 	<script src="pjs/splayers.js"></script>
