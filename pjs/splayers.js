@@ -9,15 +9,17 @@ function runButtonClick(){
 				var output = status.split("~#~");
 				switch(output[0]){
 					case "run":
-						download("Console.vv",output[1]);					
+						$('#status').text(output[1]);					
 					break;
 					
 					case "start":
-						$('#status').text(output[1]);	
+						$('#status').text(output[1]);
+						$("#side_menu").load("plattemplate/availablevm.php");	
 					break;
 					
 					case "stop":
-						$('#status').text(output[1]);	
+						$('#status').text(output[1]);		
+						$("#side_menu").load("plattemplate/availablevm.php");				
 					break;	
 					
 					case "delete":
@@ -26,7 +28,11 @@ function runButtonClick(){
 					
 					case "error":
 						$('#status').text(output[1]);	
-					break;								
+					break;
+					
+					case "running":
+						download("Open-Me.vv",output[1]);
+					break;													
 				}
 			}	
 		});

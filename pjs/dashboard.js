@@ -7,7 +7,10 @@ $(document).ready(function(){
 	});
 	$('#options').click(function(){
 		$(location).attr("href", "./template/logout.php");
-	});			
+	});	
+	$('#back').click(function(){
+		$(location).attr("href", "./dashboard.php");
+	});		
 });
 
 $(document).ready(function(){

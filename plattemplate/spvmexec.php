@@ -15,21 +15,43 @@ if(isset($_POST['exec']) && isset($_POST['vm']) && isset($_POST['vmnm'])){
 	if(in_array($command, $allowedExec)){
 		switch($command){
 			case Constants::OVIRT_VM_EXEC_START:
-					$xml =  simplexml_load_string(Ovirt::ovirt_start_vm(OLink::get_vmstart_link($vmid)));
-					if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-						Output("start","Started ".$vmname);
+					$c = new Creditional();	
+					if(PlatformDB::checkIfVMIdExistsForUser($vmid, $c->getUsername()) == 1){
+						$xml =  simplexml_load_string(Ovirt::ovirt_start_vm(OLink::get_vmstart_link($vmid)));
+						if(!empty($xml)){
+							if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
+								Output("start","Started ".$vmname);
+							}else{
+								Output("start",Constants::ERROR_VMSTART.Constants::ERROR_CODE_3005);
+							}
+						}else{
+							Output("start",Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3010);
+						}		
 					}else{
-						Output("start",Constants::ERROR_VMSTART.Constants::ERROR_CODE_3005);
+						Output("start",Constants::ERROR_VM_DOESNT_EXISTS_FORUSER.Constants::ERROR_CODE_3007);
 					}
 				break;
 				
 			case Constants::OVIRT_VM_EXEC_STOP:
-					$xml = simplexml_load_string(Ovirt::ovirt_shutdown_vm(OLink::get_vmshutdown_link($vmid)));
-					if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-						Output("stop","Shutdown Complete :".$vmname);
+					$c = new Creditional();	
+					if(PlatformDB::checkIfVMIdExistsForUser($vmid, $c->getUsername()) == 1){
+						if(in_array(Ovirt::ovirt_vm_status(OLink::get_vmstatus_link($vmid)), Ovirt::GraphicsAllowedVMOptions())){
+							$xml = simplexml_load_string(Ovirt::ovirt_shutdown_vm(OLink::get_vmshutdown_link($vmid)));
+							if(!empty($xml)){
+								if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
+									Output("stop","Shutdown Complete :".$vmname);
+								}else{
+									Output("stop",Constants::ERROR_VMSHUTDOWN.Constants::ERROR_CODE_3006);
+								}
+							}else{
+								Output("stop",Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3010);
+							}
+						}else{
+							Output("stop",Constants::ERROR_VM_NOTUP_OR_POWERINGUP.Constants::ERROR_CODE_3011);
+						}		
 					}else{
-						Output("stop",Constants::ERROR_VMSHUTDOWN.Constants::ERROR_CODE_3006);
-					}
+						Output("stop",Constants::ERROR_VM_DOESNT_EXISTS_FORUSER.Constants::ERROR_CODE_3007);
+					}	
 				break;
 				
 			case Constants::OVIRT_VM_EXEC_DELETE:
@@ -62,7 +84,7 @@ if(isset($_POST['exec']) && isset($_POST['vm']) && isset($_POST['vmnm'])){
 					if(in_array(Ovirt::ovirt_vm_status(OLink::get_vmstatus_link($vmid)), Ovirt::GraphicsAllowedVMOptions())){
 						$gid= Ovirt::ovirt_getgraphicsconsoleId_vm(OLink::get_vmconsoleid_link($vmid));
 						$remotefile = Ovirt::ovirt_graphicconsole_ticket(OLink::get_vmremote_connectionfile_link($vmid, $gid));
-						Output("run",$remotefile);
+						Output("running",$remotefile);
 					}else{
 						Output("run",Constants::ERROR_VM_NOTUP_OR_POWERINGUP.Constants::ERROR_CODE_3011);
 					}

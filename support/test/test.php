@@ -1,59 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
+   
+         	<?php       	
 
-<div class="container">
-	  <div class="dropdown">
-         <h1>hello</h1>
-         <form method="post" action="test.php">
-         	<input type="submit" value="Create" name="vmcreate" />
-         </form>
-         <form method="post" action="test.php">         
-            <input type="submit" value="Delete" name="vmdelete" />
-         </form>
-         <form method="post" action="test.php">         
-            <input type="submit" value="Post" name="vmpost" />
-         </form>
-         <form action="test.php" method="post">
-			To file: <input type="text" name="tofile" />
-			<input type="submit" />
-		</form>         
-         	<?php
-         			
-			$xml = simplexml_load_file("graphicsconsoleticket.xml");
-			$attr = $xml->remote_viewer_connection_file;
-			//echo $attr;
-			
-			if(isset($_POST['tofile'])){
-				$filename = 'test-download.html';
-				$htmlcode1 = "<HTML> \n <BODY>";
-				$htmlcode2 = "</BODY> \n <HTML>";
-				$somecontent = $htmlcode1.$_POST["tofile"].$htmlcode2;
-				!$handle = fopen($filename, 'w');
-				fwrite($handle, $somecontent);
-				fclose($handle);
-				
-				
-				header("Cache-Control: public");
-				header("Content-Description: File Transfer");
-				header("Content-Length: ". filesize("$filename")-ob_get_length().";");
-				header("Content-Disposition: attachment; filename=$filename");
-				header("Content-Type: application/octet-stream; "); 
-				header("Content-Transfer-Encoding: binary");
-				
-				readfile($filename);
+require 'class/Constants.php';
+require 'class/Ovirt.php';
 
-			}
-					
-			?> 
-	</div>
-</div>
-
-</body>
-</html>
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, "https://ctffrontend/ovirt-engine/api/vms");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+	curl_setopt($ch, CURLOPT_USERPWD, Constants::OVIRT_USERNAME . ":" . Constants::OVIRT_PASSWORD);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, Ovirt::postheader());
+	
+	$result = curl_exec($ch);
+	if (curl_errno($ch)) {
+	    return 'Error:' . curl_error($ch);
+	}
+	curl_close ($ch);
+	echo "<pre>".$result."</pre>";
+?> 

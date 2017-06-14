@@ -2,6 +2,11 @@
 session_start();
 if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TYPE'])){
 	header('location:index.php');
+}else{
+	if(!isset($_GET['scenario'])){
+		require 'class/Constants.php';
+		header('location:'.Constants::SPLAYERDEFAULT);
+	}
 }
 
 ini_set('display_errors', 1);
@@ -69,15 +74,15 @@ error_reporting(E_ALL);
 			</table>
 			<div id="loading-buttons">
 				<input type="hidden" id="scenario" value="<?php if(isset($_GET['scenario'])){echo $_GET['scenario'];}?>" />
-				<button >Back</button>
+				<button id="back">Back</button>
 				<button id="play">Create Scenario</button>
 			</div>
-			<script src="pjs/dashboard.js"></script>
 		</div>	
 		<div id="side_menu">
-			<?php include_once 'plattemplate/availablevm.php'; ?>
+				<?php include 'plattemplate/availablevm.php'; ?>			
 		</div>	
 	</div>
 	<script src="pjs/splayers.js"></script>
+	<script src="pjs/dashboard.js"></script>
 </body>
 </html>

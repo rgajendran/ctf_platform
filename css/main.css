@@ -60,8 +60,6 @@ button:focus {outline:0;}
 }
 
 #primary_nav_wrap{
-	border-top:solid 1px #ABD17D;
-	border-bottom:solid 1px #ABD17D;
 	background:#111;
 	position:relative;
 }
@@ -70,8 +68,12 @@ button:focus {outline:0;}
 {
 	list-style:none;
 	float:left;
-	margin:0;
+	margin:0px 0px 2% 0px;
 	padding:0;
+	width:100%;
+	border-top:solid 1px #ABD17D;
+	border-bottom:solid 1px #ABD17D;	
+	background-color:#354b1b;
 }
 
 #primary_nav_wrap ul a
@@ -152,7 +154,8 @@ button:focus {outline:0;}
 	width:57%;
 	float:left;
 	padding:10px;
-	border:double 1px #ABD17D;
+	border:solid 1px #ABD17D;
+	background-color:#111;
 }
 
 #s_selected{
@@ -172,6 +175,7 @@ button:focus {outline:0;}
 	width:40%;
 	border:solid 1px #ABD17D;
 	float:right;
+	background-color:#354b1b;	
 }
 
 #status{
@@ -217,11 +221,12 @@ input{
    text-align:justify;
 }
 /*---------vm status table ------------------*/
-table{
+#side_menu table{
 	width:100%;
 	height:auto;
 	border-top:solid 1px #ABD17D;
 	border-collapse: collapse;
+	background-color:#111;
 }
 
 .tg > td{
@@ -232,17 +237,29 @@ table{
 }
 
 .tg > .t-name {
-	width:48%;
+	width:50%;
 	float:left;
 	height:auto;
 	margin-left:0.8%;
+	background-color:#111;
 }
 
 .tg > .t-icon {
-	width:12%;
+	width:11.4%;
 	float:left;
 	height:auto;
 	text-align:center;
-	border-left:solid 1px #ABD17D;
+	border:solid 0.2px #ABD17D;
 	cursor:pointer;
+	overflow:auto;
+	background-color:#111;
+}
+
+.tg > .t-icon:hover{
+	background-color:#354b1b;
+}
+
+.tg > .t-icon > .img{
+	opacity: 0.4;
+    filter: alpha(opacity=40);
 }

@@ -104,6 +104,10 @@ class Ovirt{
 		$attr = $xml->graphics_console->attributes();
 		return $attr['id'];
 	}
+	
+	public static function ovirt_vm_getraw($link){
+		return Curl::curl_get_and_getresponse($link);
+	}
 		
 }
 
