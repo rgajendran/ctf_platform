@@ -1,21 +1,26 @@
-   
-         	<?php       	
-
-require 'class/Constants.php';
-require 'class/Ovirt.php';
-
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, "https://ctffrontend/ovirt-engine/api/vms");
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-	curl_setopt($ch, CURLOPT_USERPWD, Constants::OVIRT_USERNAME . ":" . Constants::OVIRT_PASSWORD);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, Ovirt::postheader());
-	
-	$result = curl_exec($ch);
-	if (curl_errno($ch)) {
-	    return 'Error:' . curl_error($ch);
-	}
-	curl_close ($ch);
-	echo "<pre>".$result."</pre>";
-?> 
+<!doctype html>
+<html>
+<head>
+<title>PHP Countdown Timer</title>
+<style>
+.green{color:green;}
+ 
+h1{
+font-size:3em;
+font-weight:bold;
+font-family:Arial, Helvetica, sans-serif;
+}
+ 
+</style>
+</head>
+<body>
+<?php
+$date = strtotime("December 3, 2014 2:00 PM");
+$remaining = $date - time();
+$days_remaining = floor($remaining / 86400);
+$hours_remaining = floor(($remaining % 86400) / 3600);
+?>
+ 
+<h1>There are <span class="green"> <?php echo $days_remaining?></span> days and <span class="green"> <?php echo $hours_remaining?></span> hours left</h1>
+</body>
+</html>

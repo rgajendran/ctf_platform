@@ -1,0 +1,187 @@
+body{
+	font-family: 'Iceland', cursive;
+	color:#ABD17D;
+}
+
+a{
+	text-decoration: none;
+}
+
+#wrapper{
+	width:81%;
+	height:80%;
+	margin:5% auto;
+	float:none;
+	border:solid 1px #ABD17D;
+	border-radius:0.3em;
+	background:#111;
+}
+
+#head{
+	color:#ABD17D;
+}
+
+#menu{
+	width:20%;
+	height:auto;
+	float:left;
+}
+
+#content{
+	width:80%;
+	height:auto;
+	float:right;
+}
+
+#head{
+	color:#ABD17D;
+}
+
+h1{
+	width:100%;
+	padding:10px;
+	font-size:x-large;
+	text-align:center;
+	color:#ABD17D;
+}
+
+span{
+	display:block;
+	padding:10px;
+	font-size: large;
+	text-align:center;
+	border:solid 1px #ABD17D;
+	color:#ABD17D;
+	margin-top:1.5%;
+	border-radius:2em;
+	cursor: pointer;
+}
+
+span:hover{
+	background:#ABD17D;
+	color:#000000;
+}
+
+input, select, button{
+	font-family: 'Iceland', cursive;
+	outline: none;
+}
+
+/*-------------- CSS ----------------------*/
+
+table{
+	color:#ABD17D;
+	width:80%;
+	margin:0px auto;
+}
+
+table tr th, td{
+	width:33.33%;
+
+}
+
+table, th, td {
+    border: 1px solid #435e21;
+    border-collapse: collapse;
+}
+
+.table_heading{
+	background:#111;
+}
+
+th, td {
+    padding: 15px;
+}
+
+button{
+	width:100%;
+	border:solid 1px #ABD17D;
+	font-family: 'Iceland', cursive;
+	background:inherit;
+	color:#ABD17D;
+	font-size:large;
+	padding-top:3%;
+	padding-bottom:3%;
+	border-radius: 1em;
+	cursor: pointer;
+}	
+
+button:hover{
+	background:#ABD17D;
+	color:#000000;
+}
+
+input{
+	width:95%;
+	height:30px;	
+	border:solid 1px #ABD17D;
+	background:inherit;
+	color:#ABD17D;
+	font-size:large;
+	padding:5px 5px;
+}
+
+/*--------------- ScrollBar -------------------*/
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ceb342;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #faf434;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #000000;
+}
+::-webkit-scrollbar-track {
+  background: #abd17d;
+  border: 0px none #ffffff;
+  border-radius: 90px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #41a428;
+}
+::-webkit-scrollbar-track:active {
+  background: #ffff00;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/*------------------custom -------------------*/
+
+textarea{
+	width:96%;
+	background:inherit;
+	border:solid #ABD17D 1px;
+	font-family: 'Iceland', cursive;
+	font-size:large;
+	color:#ABD17D;
+}
+
+.cgame-title{
+	font-size:larger;
+	text-align:left;
+	padding-left:30px;
+}
+
+select{
+	width:97%;
+	height:40px;
+	background:inherit;
+	border:solid 1px #ABD17D;
+	font-size:larger;
+	color:#ABD17D;
+}
+
+select > option {
+   background: #111;
+}

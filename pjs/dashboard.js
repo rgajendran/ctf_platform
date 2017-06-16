@@ -3,14 +3,14 @@ $(document).ready(function(){
 		$(location).attr("href", "./singleplayer.php");
 	});	
 	$('#multiplayer').click(function(){
-		$(location).attr("href", "./singleplayer.php");
+		$(location).attr("href", "./multiplayer.php");
 	});
 	$('#options').click(function(){
 		$(location).attr("href", "./template/logout.php");
 	});	
 	$('#back').click(function(){
 		$(location).attr("href", "./dashboard.php");
-	});		
+	});			
 });
 
 $(document).ready(function(){
@@ -27,3 +27,4 @@ $(document).ready(function(){
 		});
 	});
 });
+

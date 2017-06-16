@@ -28,7 +28,7 @@ class PlatformDB{
 	public static function checkVMNumberCount($username){
 		include '../plattemplate/connection.php';	
 		$result = mysqli_query($connection, "SELECT VMNAME FROM vm WHERE USERNAME='$username'");
-		if(mysqli_num_rows($result) <= 4){
+		if(mysqli_num_rows($result) <= Constants::SINGLE_PLAYER_ALLOWED_VMS_TO_CREATE){
 			return true;
 		}else{
 			return false;

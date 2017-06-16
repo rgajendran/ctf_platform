@@ -266,4 +266,19 @@ button{
 button:hover{
 	background:#ABD17D;
 	color:#000000;
-}​
+}
+
+input{
+	width:95%;
+	height:30px;	
+	border:solid 1px #ABD17D;
+	background:inherit;
+	color:#ABD17D;
+	font-size:large;
+	padding:5px 5px;
+}
+​
+#textarea textarea{
+	width:100%;
+	margin:0px auto;
+}
