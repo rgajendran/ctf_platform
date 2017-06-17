@@ -5,6 +5,34 @@ class Validator{
 		return stripslashes(htmlspecialchars(htmlentities(trim(filter_var($input), FILTER_SANITIZE_STRING))));
 	}
 	
+	public static function PregAlphaNumericUnderScoreSpace($string){
+		return preg_replace('/[^A-Za-z0-9_\ ]/','', $string);
+	}
+
+	public static function PregAlphaNumericUnderScore($string){
+		return preg_replace('/[^A-Za-z0-9_]/','', $string);
+	}
+	
+	public static function PregAlphaNumericSpace($string){
+		return preg_replace('/[^A-Za-z0-9\ ]/','', $string);
+	}
+	
+	public static function PregOnlyAlphaSpace($string){
+		return preg_replace('/[^A-Za-z-\ ]/','', $string);
+	}
+	
+	public static function PregOnlyNumericSpace($string){
+		return preg_replace('/[^0-9\ ]/','', $string);
+	}	
+	
+	public static function PregOnlyAlpha($string){
+		return preg_replace('/[^A-Za-z]/','', $string);
+	}
+	
+	public static function PregOnlyNumeric($string){
+		return preg_replace('/[^0-9]/','', $string);
+	}
+		
 	public static function BooleanEmptyCheck($input){
 		$string = preg_replace('/\s+/', '', $input);
 		if(!empty($string)){
@@ -73,6 +101,8 @@ class Validator{
 			ini_set('display_startup_errors', 1);
 			error_reporting(E_ALL);
 	}
+	
+	
 	
 }
 

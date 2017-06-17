@@ -1,3 +1,8 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -101,14 +106,12 @@
 							  </tr>	
 							  <tr>
 							    <th>
-							    	<div id="plotteama">
-							    		
-							    	</div>
+							    	<div id="plotteama"></div>
+							    	<div id="plotteamaadd"></div>
 							    </th>
 							    <th>
-							    	<div id="plotteamb">
-							    		
-							    	</div>							    	
+							    	<div id="plotteamb"></div>
+							    	<div id="plotteambadd"></div>							    								    	
 							    </th>
 							  </tr>	
 							  <tr>

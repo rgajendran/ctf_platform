@@ -37,7 +37,25 @@ var teamajs = function(){
 		url: "plattemplate/findplayers.php",
 		data: {team:"a", val:string},
 		success: function(status){
-			$('#setteama').text(status);
+			$('#plotteama').empty();
+			$('#plotteamaadd').empty();
+			var split = status.split('~#~');
+			for(var i=0; i<split.length; i++){
+				var addh3 = document.createElement("p");
+				var text = document.createTextNode(split[i]);
+				addh3.setAttribute("class","splayer");
+				addh3.appendChild(text);				
+				document.getElementById("plotteama").appendChild(addh3);	
+					
+				if(split[i] != "No user found"){
+					var button = document.createElement("p");
+					var btext = document.createTextNode("+");
+					button.appendChild(btext);
+					button.setAttribute("class","plusbtn");
+					button.setAttribute("onclick","go.execTeam('"+split[i]+"')");
+					document.getElementById("plotteamaadd").appendChild(button);					
+				}			
+			}
 		}
 	});	
 };
@@ -49,7 +67,35 @@ var teambjs = function(){
 		url: "plattemplate/findplayers.php",
 		data: {team:"b", val:string},
 		success: function(status){
-			$('#setteamb').text(status);	
+			$('#plotteamb').empty();
+			$('#plotteambadd').empty();
+			var split = status.split('~#~');
+			for(var i=0; i<split.length; i++){
+				var addh3 = document.createElement("p");
+				var text = document.createTextNode(split[i]);
+				addh3.setAttribute("class","splayer");
+				addh3.setAttribute("onclick","s");
+				addh3.appendChild(text);				
+				document.getElementById("plotteamb").appendChild(addh3);
+				
+				var button = document.createElement("p");
+				var btext = document.createTextNode("+");
+				button.appendChild(btext);
+				button.setAttribute("class","plusbtn");
+				button.setAttribute("onclick","s");
+				document.getElementById("plotteambadd").appendChild(button);						
+			}	
 		}
 	});	
 };
+
+
+function execFunction(){
+	
+	this.execTeam = function(username){
+		console.log(username);
+	};
+
+}
+
+var go = new execFunction();

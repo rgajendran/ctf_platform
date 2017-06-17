@@ -48,7 +48,7 @@ const ERROR_CODE_3008 = ' [3008]';                                              
 const ERROR_CODE_3009 = ' [3009]';                                                      # spvmexec unable to delete db vm after delete ovirt vm  [CRITICAL]
 const ERROR_CODE_3010 = ' [3010]';                                                      # spvmexec unable to find ovirtvm however db vm exists   [CRITICAL]	
 const ERROR_CODE_3011 = ' [3011]';                                                      # spvmexec vm not started yet                            [LOW]
-
+const ERROR_CODE_3012 = ' [3012]';                                                      # findplayers invalid request                            [LOW]
 }
 
 ?>

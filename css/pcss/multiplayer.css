@@ -185,3 +185,47 @@ select{
 select > option {
    background: #111;
 }
+
+.splayer{
+	text-align:left;
+	padding:1%;
+}
+
+.plusbtn{
+	text-align:center;
+	width:20%;
+	padding:1%;
+	background:inherit;
+	cursor:pointer;
+	border:solid 1px #ABD17D;
+	border-radius:1em;
+}
+
+.plusbtn:hover{
+	background:#ABD17D;
+	color:#111;
+}
+
+#plotteama{
+	width:70%;
+	float:left;
+	display:inline;
+}
+
+#plotteamb{
+	width:70%;
+	float:left;
+	display:inline;
+}
+
+#plotteambadd{
+	width:30%;
+	float:left;
+	display:inline;
+}
+
+#plotteamaadd{
+	width:30%;
+	float:left;
+	display:inline;
+}

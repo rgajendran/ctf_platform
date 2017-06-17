@@ -9,29 +9,35 @@ function runButtonClick(){
 				var output = status.split("~#~");
 				switch(output[0]){
 					case "run":
-						$('#status').text(output[1]);					
+						$('#status').text(output[1]);		
+									
 					break;
 					
 					case "start":
 						$('#status').text(output[1]);
 						$("#side_menu").load("plattemplate/availablevm.php");	
+						$.notify("VM Started",{position:"bottom center", className:"success"});
 					break;
 					
 					case "stop":
 						$('#status').text(output[1]);		
-						$("#side_menu").load("plattemplate/availablevm.php");				
+						$("#side_menu").load("plattemplate/availablevm.php");	
+						$.notify("VM Stopped",{position:"bottom center", className:"warn"});			
 					break;	
 					
 					case "delete":
 						$('#status').text(output[1]);	
+						$.notify("VM Deleted",{position:"bottom center", className:"error"});
 					break;	
 					
 					case "error":
 						$('#status').text(output[1]);	
+						$.notify(output[1],{position:"bottom center", className:"error"});
 					break;
 					
 					case "running":
 						download("Open-Me.vv",output[1]);
+						$.notify("Open downloaded file",{position:"bottom center", className:"info"});
 					break;													
 				}
 			}	

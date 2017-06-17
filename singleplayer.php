@@ -84,5 +84,7 @@ error_reporting(E_ALL);
 	</div>
 	<script src="pjs/splayers.js"></script>
 	<script src="pjs/dashboard.js"></script>
+	<script src="noti/notify.js"></script>
+	<script src="noti/notify.min.js"></script>	
 </body>
 </html>
