@@ -37,6 +37,8 @@ const ERROR_VM_NOTUP_OR_POWERINGUP = "VM has not started yet";                  
 const SUCCESS_EXESP_CREATED_VM = "VM Created";                                          # Success exesp.php
 const SINGLE_PLAYER_ALLOWED_VMS_TO_CREATE = 4;											# PlatformDB (number starts from 0)
 const MULTIPLAYER_ALLOWED_PLAYERS_NUMBER = 5;											# findplayer.php 
+const SESSION_CREATEGAME_TEAMA = "teama";                                               # multiplayer, findplayers session name
+const SESSION_CREATEGAME_TEAMB = "teamb";                                               # multiplayer, findplayers session name
 #### Error Codes                                                                        # Errors code starts from here
 const ERROR_CODE_3001 = ' [3001]';                                                      # exesp post value mismatch                              [LOW]
 const ERROR_CODE_3002 = ' [3002]';                                                      # exesp ovirt template name invalid                      [LOW]

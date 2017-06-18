@@ -17,16 +17,32 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 	}
 }else if(isset($_POST['username']) && isset($_POST['team'])){
 	$username = Validator::PregAlphaNumericUnderScore(Validator::filterString($_POST['username']));
-	session_start();
 	include '../plattemplate/connection.php';
 	$sql = mysqli_query($connection, "SELECT ".DBV::login_users_username." FROM ".DBV::TB_loginusers." WHERE ".DBV::login_users_username."='$username'");
 	if(mysqli_num_rows($sql) == 1){
-		if($_POST['team'] == "a"){
-			sessionExtract('teama', $username);
-		}else if($_POST['team'] == "b"){
-			sessionExtract('teamb', $username);
+		if($_POST['team'] == "at"){
+			sessionExtract(Constants::SESSION_CREATEGAME_TEAMA, $username);
+		}else if($_POST['team'] == "bt"){
+			sessionExtract(Constants::SESSION_CREATEGAME_TEAMB, $username);
 		}
 	}
+}
+
+function sessionExtract($session, $username){
+		session_start();
+		if(in_array($username, array_merge($_SESSION[Constants::SESSION_CREATEGAME_TEAMA],$_SESSION[Constants::SESSION_CREATEGAME_TEAMB]))){
+			
+		}else{
+			if(!isset($_SESSION[$session])){
+				$_SESSION[$session] = array();			
+			}
+			$count = count($_SESSION[$session]);
+	
+			if($count < Constants::MULTIPLAYER_ALLOWED_PLAYERS_NUMBER){ 
+				$_SESSION[$session][$count++] = $username;			
+			}
+			echo implode("~#~", $_SESSION[$session]);			
+		}
 }
 
 function doTask($type, $username){
@@ -43,17 +59,7 @@ function doTask($type, $username){
 	}
 }
 
-function sessionExtract($session, $username){
-		if(!isset($_SESSION[$session])){
-			$_SESSION[$session] = array();			
-		}
-
-		$count = count($_SESSION['teama']);
-		if($count < Constants::MULTIPLAYER_ALLOWED_PLAYERS_NUMBER){
-			$_SESSION[$session][$count++] = $username;
-		}
-		
-		echo implode("~#~", $_SESSION[$session]);
+function sessionOutput($error, $output){
+	echo print_r($error . "#~#" . $output, true);
 }
-
 ?>

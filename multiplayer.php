@@ -109,21 +109,45 @@ session_start();
 							    <th>
 							    	<div id="viewteama">
 							    		<?php
-							    		foreach($_SESSION['teama'] as $key=>$usn){
-							    			echo "<p class='vplayer'>$usn</p>";
+							    		require 'class/Constants.php';
+							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA])){
+								    		foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMA] as $key=>$usn){
+								    			echo "<p class='vplayer'>$usn</p>";
+								    		}								    			
+							    		}else{
+							    			echo "<p class='vplayer'>Please choose players</p>";
 							    		}
-							    		
 							    		?>
 							    	</div>
-							    	<div id="viewteamaadd"></div>
+							    	<div id="viewteamaadd">
+							    		<?php
+							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA])){
+									    	foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMA] as $key=>$usn){
+								    			echo "<p class='plusbtn'>-</p>";
+								    		}
+										}
+										?>								    		
+							    	</div>
 							    </th>
 							    <th>
-							    	<div id="viewteamb"></div>
+							    	<div id="viewteamb">
+							    		<?php
+							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB])){
+									    	foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMB] as $key=>$usn){
+								    			echo "<p class='vplayer'>$usn</p>";
+								    		}
+										}else{
+											echo "<p class='vplayer'>Please choose players</p>";
+										}
+										?>								    		
+							    	</div>
 							    	<div id="viewteambadd">
 							    		<?php
-								    	foreach($_SESSION['teamb'] as $key=>$usn){
-							    			echo "<p class='vplayer'>$usn</p>";
-							    		}	
+							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB])){
+									    	foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMB] as $key=>$usn){
+								    			echo "<p class='plusbtn'>-</p>";
+								    		}
+										}
 										?>					    		
 							    	</div>							    								    	
 							    </th>

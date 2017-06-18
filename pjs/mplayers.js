@@ -96,7 +96,7 @@ function execFunction(){
 		$.ajax({
 			method: "POST",
 			url: "plattemplate/findplayers.php",
-			data: {team:"a",username:usernames},
+			data: {team:"at",username:usernames},
 			success: function(status){
 					$('#viewteama').empty();
 					$('#viewteamaadd').empty();
@@ -104,7 +104,7 @@ function execFunction(){
 					for(var i=0; i<split.length; i++){ 
 						var addh3 = document.createElement("p");
 						var text = document.createTextNode(split[i]);
-						addh3.setAttribute("class","splayer");
+						addh3.setAttribute("class","vplayer");
 						addh3.setAttribute("onclick","s");
 						addh3.appendChild(text);				
 						document.getElementById("viewteama").appendChild(addh3);
@@ -124,7 +124,7 @@ function execFunction(){
 		$.ajax({
 			method: "POST",
 			url: "plattemplate/findplayers.php",
-			data: {team:"b",username:usernames},
+			data: {team:"bt",username:usernames},
 			success: function(status){
 					$('#viewteamb').empty();
 					$('#viewteambadd').empty();
@@ -132,7 +132,7 @@ function execFunction(){
 					for(var i=0; i<split.length; i++){ 
 						var addh3 = document.createElement("p");
 						var text = document.createTextNode(split[i]);
-						addh3.setAttribute("class","splayer");
+						addh3.setAttribute("class","vplayer");
 						addh3.setAttribute("onclick","s");
 						addh3.appendChild(text);				
 						document.getElementById("viewteamb").appendChild(addh3);
