@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -103,7 +104,30 @@ error_reporting(E_ALL);
 							  <tr class="table_heading">
 							    <th id="setteama">Team A</th>
 							    <th id="setteamb">Team B</th>
-							  </tr>	
+							  </tr>
+							  <tr>
+							    <th>
+							    	<div id="viewteama">
+							    		<?php
+							    		foreach($_SESSION['teama'] as $key=>$usn){
+							    			echo "<p class='vplayer'>$usn</p>";
+							    		}
+							    		
+							    		?>
+							    	</div>
+							    	<div id="viewteamaadd"></div>
+							    </th>
+							    <th>
+							    	<div id="viewteamb"></div>
+							    	<div id="viewteambadd">
+							    		<?php
+								    	foreach($_SESSION['teamb'] as $key=>$usn){
+							    			echo "<p class='vplayer'>$usn</p>";
+							    		}	
+										?>					    		
+							    	</div>							    								    	
+							    </th>
+							  </tr>								  	
 							  <tr>
 							    <th>
 							    	<div id="plotteama"></div>

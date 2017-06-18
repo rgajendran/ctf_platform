@@ -36,6 +36,7 @@ const ERROR_VM_UNABLE_TO_DELETE = "Unable to delete VM, Try again later";       
 const ERROR_VM_NOTUP_OR_POWERINGUP = "VM has not started yet";                          # Errors spvmexec
 const SUCCESS_EXESP_CREATED_VM = "VM Created";                                          # Success exesp.php
 const SINGLE_PLAYER_ALLOWED_VMS_TO_CREATE = 4;											# PlatformDB (number starts from 0)
+const MULTIPLAYER_ALLOWED_PLAYERS_NUMBER = 5;											# findplayer.php 
 #### Error Codes                                                                        # Errors code starts from here
 const ERROR_CODE_3001 = ' [3001]';                                                      # exesp post value mismatch                              [LOW]
 const ERROR_CODE_3002 = ' [3002]';                                                      # exesp ovirt template name invalid                      [LOW]

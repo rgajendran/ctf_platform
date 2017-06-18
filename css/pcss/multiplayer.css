@@ -186,7 +186,7 @@ select > option {
    background: #111;
 }
 
-.splayer{
+.splayer, .vplayer{
 	text-align:left;
 	padding:1%;
 }
@@ -206,25 +206,26 @@ select > option {
 	color:#111;
 }
 
-#plotteama{
+#plotteama, #viewteama{
 	width:70%;
 	float:left;
 	display:inline;
 }
 
-#plotteamb{
+#plotteamb, #viewteamb{
 	width:70%;
 	float:left;
 	display:inline;
 }
 
-#plotteambadd{
+#plotteamaadd, #viewteamaadd{
 	width:30%;
 	float:left;
 	display:inline;
+	text-align:center;
 }
 
-#plotteamaadd{
+#plotteambadd, #viewteambadd{
 	width:30%;
 	float:left;
 	display:inline;
