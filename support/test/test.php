@@ -15,18 +15,13 @@ font-family:Arial, Helvetica, sans-serif;
 </head>
 <body>
 <?php
-require '../../class/Validator.php';
+session_start();
+$_SESSION['teama'] = array('hiran','hiranrajkumar','kapil','kapildev');
+print_r($_SESSION['teama'])."</br>";
+unset($_SESSION['teama'][array_search("hiran", $_SESSION['teama'])]);
+print_r($_SESSION['teama']);
 
-$string = "<h1>Hello World _ !23!$%^'\"|</h1>";
-echo $string;
 
-echo "PregAlphaNumericUnderScoreSpace : ".Validator::PregAlphaNumericUnderScoreSpace($string)."<br/>";
-echo "PregAlphaNumericSpace : ".Validator::PregAlphaNumericSpace($string)."<br/>";
-echo "PregOnlyAlphaSpace : ".Validator::PregOnlyAlphaSpace($string)."<br/>";
-echo "PregOnlyNumericSpace : ".Validator::PregOnlyNumericSpace($string)."<br/>";
-echo "PregOnlyAlpha : ".Validator::PregOnlyAlpha($string)."<br/>";
-echo "PregOnlyNumeric : ".Validator::PregOnlyNumeric($string)."<br/>";
-echo "N : ".Validator::PregAlphaNumericUnderScore($string);
 ?>
 </body>
 </html>

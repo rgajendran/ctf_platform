@@ -26,22 +26,34 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 			sessionExtract(Constants::SESSION_CREATEGAME_TEAMB, $username);
 		}
 	}
+}else if(isset($_POST['un']) && isset($_POST['tms'])){
+	session_start();
+	$username = $_POST['un'];
+	$team = $_POST['tms'];
+	if($team == "a"){
+		unset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA][array_search($username, $_SESSION[Constants::SESSION_CREATEGAME_TEAMA])]);
+		sessionOutput("success", implode("~#~", $_SESSION[Constants::SESSION_CREATEGAME_TEAMA]));
+	}else if($team == "b"){
+		unset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB][array_search($username, $_SESSION[Constants::SESSION_CREATEGAME_TEAMB])]);
+		sessionOutput("success", implode("~#~", $_SESSION[Constants::SESSION_CREATEGAME_TEAMB]));
+	}
 }
 
 function sessionExtract($session, $username){
 		session_start();
+		if(!isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) || !isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB])){
+			$_SESSION[Constants::SESSION_CREATEGAME_TEAMA] = array();			
+			$_SESSION[Constants::SESSION_CREATEGAME_TEAMB] = array();			
+		}
 		if(in_array($username, array_merge($_SESSION[Constants::SESSION_CREATEGAME_TEAMA],$_SESSION[Constants::SESSION_CREATEGAME_TEAMB]))){
-			
+			sessionOutput("error", implode("~#~", $_SESSION[$session]));
 		}else{
-			if(!isset($_SESSION[$session])){
-				$_SESSION[$session] = array();			
-			}
 			$count = count($_SESSION[$session]);
 	
 			if($count < Constants::MULTIPLAYER_ALLOWED_PLAYERS_NUMBER){ 
 				$_SESSION[$session][$count++] = $username;			
 			}
-			echo implode("~#~", $_SESSION[$session]);			
+			sessionOutput("success", implode("~#~", $_SESSION[$session]));			
 		}
 }
 

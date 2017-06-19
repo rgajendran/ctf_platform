@@ -21,10 +21,10 @@ session_start();
 		<h1 id="head">Multiplayer Portal</h1>
 		<div id="menu">
 			<h1>Options</h1>
-			<a href="multiplayer.php?option=fgame"><span>FIND GAME</span></a>
-			<a href="multiplayer.php?option=cgame"><span>CREATE GAME</span></a>
-			<a href="multiplayer.php?option=my-upcominggame"><span>MY UPCOMING GAME</span></a>
-			<a href="dashboard.php"><span>BACK</span></a>
+			<a href="multiplayer.php?option=fgame"><span class="span">FIND GAME</span></a>
+			<a href="multiplayer.php?option=cgame"><span class="span">CREATE GAME</span></a>
+			<a href="multiplayer.php?option=my-upcominggame"><span class="span">MY UPCOMING GAME</span></a>
+			<a href="dashboard.php"><span class="span">BACK</span></a>
 		</div>
 		<div id="content">
 			<?php
@@ -110,7 +110,7 @@ session_start();
 							    	<div id="viewteama">
 							    		<?php
 							    		require 'class/Constants.php';
-							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA])){
+							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) > 0){
 								    		foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMA] as $key=>$usn){
 								    			echo "<p class='vplayer'>$usn</p>";
 								    		}								    			
@@ -123,7 +123,7 @@ session_start();
 							    		<?php
 							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA])){
 									    	foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMA] as $key=>$usn){
-								    			echo "<p class='plusbtn'>-</p>";
+								    			echo "<p class='plusbtn' onclick='go.deleteTeamA(\"$usn\");'>-</p>";
 								    		}
 										}
 										?>								    		
@@ -132,7 +132,7 @@ session_start();
 							    <th>
 							    	<div id="viewteamb">
 							    		<?php
-							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB])){
+							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) > 0){
 									    	foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMB] as $key=>$usn){
 								    			echo "<p class='vplayer'>$usn</p>";
 								    		}
@@ -145,7 +145,7 @@ session_start();
 							    		<?php
 							    		if(isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB])){
 									    	foreach($_SESSION[Constants::SESSION_CREATEGAME_TEAMB] as $key=>$usn){
-								    			echo "<p class='plusbtn'>-</p>";
+								    			echo "<p class='plusbtn' onclick='go.deleteTeamB(\"$usn\");'>-</p>";
 								    		}
 										}
 										?>					    		
@@ -180,5 +180,7 @@ session_start();
 			?>
 		</div>	
 		<script src="pjs/mplayers.js"></script>
+		<script src="noti/notify.js"></script>
+		<script src="noti/notify.min.js"></script>	
 </body>
 </html>

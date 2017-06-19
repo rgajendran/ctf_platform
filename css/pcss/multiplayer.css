@@ -45,7 +45,7 @@ h1{
 	color:#ABD17D;
 }
 
-span{
+.span{
 	display:block;
 	padding:10px;
 	font-size: large;
@@ -57,7 +57,7 @@ span{
 	cursor: pointer;
 }
 
-span:hover{
+.span:hover{
 	background:#ABD17D;
 	color:#000000;
 }
