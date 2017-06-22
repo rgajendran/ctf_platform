@@ -230,3 +230,10 @@ select > option {
 	float:left;
 	display:inline;
 }
+
+/*-----------------creategame multiplayer---------------------*/
+.createbtn{
+	width:20%;
+	height:5%;
+	margin:1% auto 5% auto;
+}

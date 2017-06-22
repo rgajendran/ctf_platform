@@ -12,6 +12,5 @@ class Generator{
 	    }
 	    return implode($password); 
 	}
-
 }
 ?>

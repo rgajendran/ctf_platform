@@ -39,6 +39,11 @@ const SINGLE_PLAYER_ALLOWED_VMS_TO_CREATE = 4;											# PlatformDB (number st
 const MULTIPLAYER_ALLOWED_PLAYERS_NUMBER = 5;											# findplayer.php 
 const SESSION_CREATEGAME_TEAMA = "teama";                                               # multiplayer, findplayers session name
 const SESSION_CREATEGAME_TEAMB = "teamb";                                               # multiplayer, findplayers session name
+const ERROR_TIME_INVALID = "Invalid Time";                                              # 
+const ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO = "Unable to find scenario";              # findplayer.php scenario name modified
+#### Findplayer                                                                         # findplayer.php [STARTS_HERE]
+const FP_GAME_TYPE_CLOSED = 'closed';                                                      # findplayer.php switch option
+const FP_GAME_TYPE_OPENFORALL = 'openforall';                                              # findplayer.php switch option
 #### Error Codes                                                                        # Errors code starts from here
 const ERROR_CODE_3001 = ' [3001]';                                                      # exesp post value mismatch                              [LOW]
 const ERROR_CODE_3002 = ' [3002]';                                                      # exesp ovirt template name invalid                      [LOW]
@@ -52,6 +57,8 @@ const ERROR_CODE_3009 = ' [3009]';                                              
 const ERROR_CODE_3010 = ' [3010]';                                                      # spvmexec unable to find ovirtvm however db vm exists   [CRITICAL]	
 const ERROR_CODE_3011 = ' [3011]';                                                      # spvmexec vm not started yet                            [LOW]
 const ERROR_CODE_3012 = ' [3012]';                                                      # findplayers invalid request                            [LOW]
+const ERROR_CODE_3013 = ' [3013]';                                                      # findplayers length exceeds                             [LOW]
+const ERROR_CODE_3014 = ' [3014]';                                                      # findplayer unable to find scenario (Name modified)     [CRITICAL]
 }
 
 ?>

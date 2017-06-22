@@ -10,6 +10,7 @@ class DBV{
 	
 	#columns loginusers
 	const login_users_username = 'USERNAME';
+	const login_users_userid = 'USERID';
 	
 }
 

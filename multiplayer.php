@@ -22,7 +22,7 @@ session_start();
 		<div id="menu">
 			<h1>Options</h1>
 			<a href="multiplayer.php?option=fgame"><span class="span">FIND GAME</span></a>
-			<a href="multiplayer.php?option=cgame"><span class="span">CREATE GAME</span></a>
+			<a href="multiplayer.php?option=cgame&type=closed"><span class="span">CREATE GAME</span></a>
 			<a href="multiplayer.php?option=my-upcominggame"><span class="span">MY UPCOMING GAME</span></a>
 			<a href="dashboard.php"><span class="span">BACK</span></a>
 		</div>
@@ -64,12 +64,12 @@ session_start();
 							  </tr>	
 							  <tr class="table_heading">
 							    <th class="cgame-title">End Time</th>
-							    <th><input type="datetime-local" id="starttime"></th>
+							    <th><input type="datetime-local" id="endtime"></th>
 							  </tr>	
 							  <tr class="table_heading">
-							    <th class="cgame-title">Scenario</th>
+							    <th class="cgame-title" id="scenario">Scenario</th>
 							    <th>
-							    	<select id="scenario">
+							    	<select id="scena">
 										<?php
 										include 'plattemplate/connection.php';
 										$result = mysqli_query($connection, "SELECT TEMP_NAME FROM smenu WHERE TYPE='ctf'");
@@ -93,13 +93,13 @@ session_start();
 							    <th class="cgame-title">Game Type</th>
 							    <th>
 							    	<select id="gtype">
-										<option value='closed'>Closed</option>
+										<option value='closed' >Closed</option>
 										<option value='openforall'>Open For All</option>										
 									</select>
 							    </th>
 							  </tr>						  							  						  								  						  							  						  
 							</table>	
-							<h1>Configure Team</h1>
+							<h1 id="out">Configure Team</h1>
 							<table>
 							  <tr class="table_heading">
 							    <th id="setteama">Team A</th>
@@ -165,8 +165,9 @@ session_start();
 							  <tr>
 							    <th><input type="text" id="searcha" placeholder="Search Player (Type & Press enter)"></th>
 							    <th><input type="text" id="searchb" placeholder="Search Player (Type & Press enter)"></th>
-							  </tr>								  							  
+							  </tr>							  							  
 							</table></br></br>			
+							<h1><button class="createbtn" id="createg">Create Game</button></h1>
 			  <?php break;
 					
 				case "my-upcominggame":

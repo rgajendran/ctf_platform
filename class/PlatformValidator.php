@@ -13,6 +13,14 @@ class PlatformValidator{
 			$frst = substr($last, $len+1);
 			return $frst;		
 		}
+		
+		public static function lengthLimitError($min, $max, $title, $code){
+			return "$title should be between $min to $max characters$code";
+		}
+		
+		public static function dateError($title){
+			return "$title Format Invalid";
+		}
 }
 
 ?>

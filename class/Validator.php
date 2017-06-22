@@ -102,6 +102,22 @@ class Validator{
 			error_reporting(E_ALL);
 	}
 	
+	public static function StringLength($min, $max, $string){
+		if((strlen($string) >= $min) && (strlen($string) <= $max)){
+			 return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static function validateDate($datetime)
+	{ #2017-06-21 dd-mm-yyyy 02:00
+		if(!empty($datetime)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	
 }

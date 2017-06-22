@@ -61,6 +61,37 @@ class PlatformDB{
 		}
 	}
 	
+	public static function checkIfScenarioExists($scenario){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT TEMP_NAME FROM smenu WHERE TEMP_NAME='$scenario'");
+		if(mysqli_num_rows($result) == 1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $type, $desc){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEAM_A, TEAM_B, TYPE, DESP) VALUES (
+		'$user','$gameid','$starttime','$endtime','$scenario','$teama','$teamb','$type','$desc')");
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static function authorizeGameId($gameid){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT GAME_ID FROM game WHERE GAME_ID='$gameid'");
+		if(mysqli_num_rows($result) == 0){
+			return true;
+		}else{
+			return false;
+		}		
+	}
+	
 }
 
 ?>

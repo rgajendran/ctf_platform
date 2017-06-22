@@ -30,6 +30,36 @@ $(document).ready(function(){
 	});
 });
 
+$(document).ready(function(){
+	$('#createg').click(function(){
+		var title = $('#title').val();
+		var desc = $('#desc').val();
+		var starttime = $('#starttime').val();
+		var endtime = $('#endtime').val();
+		var scenario = $('#scena').val();
+		var teama = $('#teama').val();
+		var teamb = $('#teamb').val();
+		var gametype = $('#gtype').val();
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {title:title, desc:desc, starttime:starttime, endtime:endtime, scenario:scenario, teama:teama, teamb:teamb, gametype:gametype},
+			success: function(status){
+				var split = status.split("#*#");
+				switch(split[0]){
+					case "error":
+						$.notify(split[1],{position:"bottom center", className:"error"});
+					break;
+					
+					case "success":
+						$.notify(split[1],{position:"bottom center", className:"success"});
+					break;
+				}
+			}	
+		});
+	});
+});
+
 var teamajs = function(){
 	var string = $("#searcha").val();
 	$.ajax({
