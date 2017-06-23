@@ -71,10 +71,10 @@ class PlatformDB{
 		}
 	}
 	
-	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $type, $desc){
+	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $type, $title,$desc){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEAM_A, TEAM_B, TYPE, DESP) VALUES (
-		'$user','$gameid','$starttime','$endtime','$scenario','$teama','$teamb','$type','$desc')");
+		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEAM_A, TEAM_B, TYPE, TITLE, DESP) VALUES (
+		'$user','$gameid','$starttime','$endtime','$scenario','$teama','$teamb','$type','$title','$desc')");
 		if($result){
 			return true;
 		}else{

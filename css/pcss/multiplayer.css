@@ -237,3 +237,11 @@ select > option {
 	height:5%;
 	margin:1% auto 5% auto;
 }
+
+#mpftable > .mphost{
+	width:5%;
+}
+
+#mpftable > .mpftr > .mptimer{
+	width:10%;
+}

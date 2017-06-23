@@ -33,16 +33,33 @@ session_start();
 				
 				case "fgame": ?>
 							<h1>Find Game</h1>
-							<table>
+							<table id="mpftable">
 							  <tr class="table_heading">
-							    <th>Team Code</th>
-							    <th>Team Name</th> 
+							    <th>Host</th>
+							    <th>Title</th> 
+							    <th>Scenario</th> 
+							    <th>Starts_In</th> 
+							    <th>View</th>
 							  </tr>
-
-							  <tr>
-							    <td><?php echo $team_list_row['TEAM'];?></td>
-							    <td><?php echo $team_list_row['TEAMNAME'];?></td> 
-							  </tr>
+						  	<?php
+						  	include 'plattemplate/connection.php';
+						  	$sql = mysqli_query($connection, "SELECT * FROM game");
+						  	if(mysqli_num_rows($sql) > 0){
+							  	$count = 0;
+								while($row = mysqli_fetch_assoc($sql)){
+									$count++;
+									echo "<tr class='mpftr'>
+									<td class='mphost'>".$row['HOST']."</td>
+									<td class='mptitle'>".$row['TITLE']."</td>
+									<td class='mpscenario'>".$row['SCENARIO']."</td>
+									<td class='mptimer'><p id='"."timer$count"."'></p></td>
+									<td class='mpview'><a href='multiplayer.php?option=viewgame&id=".$row['ID']."'>View</a></td>
+									</tr>";	
+								}						  		
+						  	}else{
+						  		echo "No Events Available";
+						  	}
+						  	?>
 							</table>
 						<?php
 					break;
@@ -174,6 +191,10 @@ session_start();
 					
 					break;	
 					
+				case "viewgame":
+					
+					break;	
+					
 				default:
 					header('location:multiplayer.php?option=fgame');
 					break;					
@@ -182,6 +203,33 @@ session_start();
 		</div>	
 		<script src="pjs/mplayers.js"></script>
 		<script src="noti/notify.js"></script>
-		<script src="noti/notify.min.js"></script>	
+		<script src="noti/notify.min.js"></script>
+		<?php
+			  	include 'plattemplate/connection.php';
+			  	$sql = mysqli_query($connection, "SELECT START_TIME FROM game");
+			  	$count = 0;
+				if(mysqli_num_rows($sql) > 0){
+					while($row = mysqli_fetch_assoc($sql)){
+						$count++;			
+					
+					echo "<script>var countDownDate$count = new Date(\"".$row['START_TIME']."\").getTime();
+							var x$count = setInterval(function() {
+								var now$count = new Date().getTime();
+								var distance$count = countDownDate$count - now$count;
+								var days$count = Math.floor(distance$count / (1000 * 60 * 60 * 24));
+								var hours$count = Math.floor((distance$count % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+								var minutes$count = Math.floor((distance$count % (1000 * 60 * 60)) / (1000 * 60));
+								var seconds$count = Math.floor((distance$count % (1000 * 60)) / 1000);
+								
+								document.getElementById(\""."timer$count"."\").innerHTML = days$count + \"d \" + hours$count + \"h \"
+								  + minutes$count + \"m \" + seconds$count + \"s \";
+								if (distance$count < 0) {
+								    clearInterval(x$count);
+								    document.getElementById(\""."timer$count"."\").innerHTML = \"STARTED\";
+								}
+							}, 1000);</script>";		
+					}					
+				}							
+		?>
 </body>
 </html>

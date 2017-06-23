@@ -71,7 +71,7 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 													if(PlatformDB::authorizeGameId($gameid)){
 														$c = new Creditional();
 														include '../plattemplate/connection.php';
-														if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $desc)){
+														if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
 															$errA = 0;
 															$errB = 0;
 															for($i = 0; $i<count($avsession); $i++){
@@ -119,7 +119,7 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 											$gameid = randomTokenNstatic();
 											if(PlatformDB::authorizeGameId($gameid)){
 												$c = new Creditional();
-												if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $desc)){
+												if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
 													validateOutput("success","Successfully Game Created");
 												}else{
 													validateOutput("error","Unable to insert data, Try again or complain with error code");
@@ -130,10 +130,10 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 											break;	
 									}									
 								}else{
-									validateOutput("error",Constants::ERROR_EXESP_INVALID_REQUEST);
+									validateOutput("error", Constants::ERROR_EXESP_INVALID_REQUEST);
 								}
 							}else{
-								validateOutput("error",Constants::ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO.Constants::ERROR_CODE_3014);
+								validateOutput("error", Constants::ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO.Constants::ERROR_CODE_3014);
 							}
 						}else{
 							validateOutput("error","Invalid Time Set");
@@ -142,16 +142,16 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 						validateOutput("error","Invalid Time Set");
 					}
 				}else{
-					validateOutput("error",PlatformValidator::lengthLimitError(5, 15, "Team B", Constants::ERROR_CODE_3013));	
+					validateOutput("error", PlatformValidator::lengthLimitError(5, 15, "Team B", Constants::ERROR_CODE_3013));	
 				}
 			}else{
-				validateOutput("error",PlatformValidator::lengthLimitError(5, 15, "Team A", Constants::ERROR_CODE_3013));	
+				validateOutput("error", PlatformValidator::lengthLimitError(5, 15, "Team A", Constants::ERROR_CODE_3013));	
 			}
 	   }else{
-	   	  validateOutput("error",PlatformValidator::lengthLimitError(2, 200, "Description", Constants::ERROR_CODE_3013));
+	   	  validateOutput("error", PlatformValidator::lengthLimitError(2, 200, "Description", Constants::ERROR_CODE_3013));
 	   }
 	}else{
-		validateOutput("error",PlatformValidator::lengthLimitError(2, 20, "Title", Constants::ERROR_CODE_3013));
+		validateOutput("error", PlatformValidator::lengthLimitError(2, 20, "Title", Constants::ERROR_CODE_3013));
 	}
 }
 
