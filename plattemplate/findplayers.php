@@ -153,6 +153,22 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 	}else{
 		validateOutput("error", PlatformValidator::lengthLimitError(2, 20, "Title", Constants::ERROR_CODE_3013));
 	}
+}else if(isset($_POST['gameid'])){
+	include '../plattemplate/connection.php';
+	$gameId = Validator::PregAlphaNumeric($_POST['gameid']);
+	$c = new Creditional();
+	$uid = $c->getUserId();
+	$sql = mysqli_query($connection, "SELECT GAME_ID FROM game_players WHERE GAME_ID='$gameId' AND PLAYER='$uid'");
+	if(mysqli_num_rows($sql) == 1){
+		$sqlc = mysqli_query($connection, "UPDATE game_players SET P_STATUS='1' WHERE GAME_ID='$gameId' AND PLAYER='$uid'");
+		if($sqlc){
+			echo "You have joined your team";
+		}else{
+			echo "Technical Error";
+		}
+	}else{
+		echo "Technical Error";
+	}
 }
 
 function sessionExtract($session, $username,$userid){

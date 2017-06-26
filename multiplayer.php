@@ -21,6 +21,8 @@ session_start();
 		<h1 id="head">Multiplayer Portal</h1>
 		<div id="menu">
 			<h1>Options</h1>
+			<a href="multiplayer.php?option=lobby"><span class="span">LOBBY</span></a>
+			<a href="multiplayer.php?option=request"><span class="span">REQUESTS</span></a>
 			<a href="multiplayer.php?option=fgame"><span class="span">FIND GAME</span></a>
 			<a href="multiplayer.php?option=cgame&type=closed"><span class="span">CREATE GAME</span></a>
 			<a href="multiplayer.php?option=my-upcominggame"><span class="span">MY UPCOMING GAME</span></a>
@@ -31,15 +33,51 @@ session_start();
 			$commands = $_GET['option'];
 			switch($commands){
 				
+				case "request": ?>
+							<h1>Pending Request</h1>
+							<table id="mpftable">
+							  <tr class="table_heading">
+							    <th class='mphost'>Title</th>
+							    <th class='mptitle'>Description</th> 
+							    <th class='mpview'>View</th> 
+							    <th class='mptimer'>Approve</th> 
+							  </tr>
+						  	<?php
+						  	require 'class/Validator.php';
+						  	include 'plattemplate/connection.php';
+							$c = new Creditional();
+							$uid = $c->getUserId();
+						  	$sql = mysqli_query($connection, "SELECT GAME_ID FROM game_players WHERE PLAYER='$uid' AND P_STATUS='0'");
+						  	if(mysqli_num_rows($sql) > 0){
+								while($row = mysqli_fetch_assoc($sql)){
+									$gameId = $row['GAME_ID'];
+									$pensql = mysqli_query($connection, "SELECT * FROM game WHERE GAME_ID='$gameId'");
+									while($prow = mysqli_fetch_assoc($pensql)){
+										echo "<tr class='mpftr'>
+										<td class='mphost'>".$prow['TITLE']."</td>
+										<td class='mptitle'>".$prow['DESP']."</td>
+										<td class='mpview'><a href='multiplayer.php?option=viewgame&from=request&id=".$row['GAME_ID']."'>View</a></td>
+										<td class='mptimer'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>APPROVE</button></td>
+										</tr>";											
+									}
+								}						  		
+						  	}else{
+						  		echo "<tr><td colspan='4'>No Events Available</td></tr>";
+						  	}
+						  	?>
+							</table>						
+				<?php	
+					break;
+				
 				case "fgame": ?>
 							<h1>Find Game</h1>
 							<table id="mpftable">
 							  <tr class="table_heading">
-							    <th>Host</th>
-							    <th>Title</th> 
-							    <th>Scenario</th> 
-							    <th>Starts_In</th> 
-							    <th>View</th>
+							    <th class='mphost'>Host</th>
+							    <th class='mptitle'>Title</th> 
+							    <th class='mpscenario'>Scenario</th> 
+							    <th class='mptimer'>Starts_In</th> 
+							    <th class='mpview'>View</th>
 							  </tr>
 						  	<?php
 						  	include 'plattemplate/connection.php';
@@ -53,7 +91,7 @@ session_start();
 									<td class='mptitle'>".$row['TITLE']."</td>
 									<td class='mpscenario'>".$row['SCENARIO']."</td>
 									<td class='mptimer'><p id='"."timer$count"."'></p></td>
-									<td class='mpview'><a href='multiplayer.php?option=viewgame&id=".$row['ID']."'>View</a></td>
+									<td class='mpview'><a href='multiplayer.php?option=viewgame&from=fgame&id=".$row['GAME_ID']."'>View</a></td>
 									</tr>";	
 								}						  		
 						  	}else{
@@ -187,13 +225,143 @@ session_start();
 							<h1><button class="createbtn" id="createg">Create Game</button></h1>
 			  <?php break;
 					
-				case "my-upcominggame":
-					
+				case "my-upcominggame": ?>
+							<h1>My Upcoming Game</h1>
+							<table id="mpftable">
+							  <tr class="table_heading">
+							    <th class='mphost'>Host</th>
+							    <th class='mptitle'>Title</th> 
+							    <th class='mpscenario'>Description</th> 
+							    <th class='mpview'>View</th> 
+							  </tr>
+						  	<?php
+						  	require 'class/Validator.php';
+						  	include 'plattemplate/connection.php';
+							$c = new Creditional();
+							$uid = $c->getUserId();
+						  	$sql = mysqli_query($connection, "SELECT GAME_ID FROM game_players WHERE PLAYER='$uid' AND P_STATUS='1'");
+						  	if(mysqli_num_rows($sql) > 0){
+								while($row = mysqli_fetch_assoc($sql)){
+									$gameId = $row['GAME_ID'];
+									$pensql = mysqli_query($connection, "SELECT * FROM game WHERE GAME_ID='$gameId'");
+									while($prow = mysqli_fetch_assoc($pensql)){
+										echo "<tr class='mpftr'>
+										<td class='mphost'>".$prow['HOST']."</td>
+										<td class='mptitle'>".$prow['TITLE']."</td>
+										<td class='mpscenario'>".$prow['DESP']."</td>
+										<td class='mpview'><button onclick='submit.redirect(\"multiplayer.php?option=viewgame&from=my-upcominggame&id=$gameId\");'>View</button></td>
+										</tr>";											
+									}
+								}						  		
+						  	}else{
+						  		echo "<tr><td colspan='4'>No Events Available</td></tr>";
+						  	}
+						  	?>
+							</table>
+							<?php					
 					break;	
 					
-				case "viewgame":
-					
+				case "viewgame": 
+					if(isset($_GET['id'])){
+						require 'class/DBV.php';
+						require 'class/Validator.php';
+						$gameId = Validator::PregAlphaNumeric($_GET['id']);
+						include 'plattemplate/connection.php';
+						$query = mysqli_query($connection, "SELECT * FROM ".DBV::TB_game." WHERE GAME_ID='$gameId'");
+						if(mysqli_num_rows($query) == 1){
+						$assoc = mysqli_fetch_assoc($query);
+						if(isset($_GET['from'])){
+							$from = $_GET['from'];
+							$url = "multiplayer.php?option=$from";	
+						}else{
+							$url = "multiplayer.php?option=request";	
+						}	
+						?>
+							<h1>Game Summary</h1>
+							<table>
+							  <tr class="table_heading">
+							    <th class="cgame-title">Title</th>
+							    <th><?php echo $assoc['TITLE']; ?></th>
+							  </tr>
+							  <tr class="table_heading">
+							    <th class="cgame-title">Description</th>
+							    <th><?php echo $assoc['DESP']; ?></th>
+							  </tr>	
+							  <tr class="table_heading">
+							    <th class="cgame-title">Start Time</th>
+							    <th><?php echo $assoc['START_TIME']; ?></th>
+							  </tr>	
+							  <tr class="table_heading">
+							    <th class="cgame-title">End Time</th>
+							    <th><?php echo $assoc['END_TIME']; ?></th>
+							  </tr>	
+							  <tr class="table_heading">
+							    <th class="cgame-title" id="scenario">Scenario</th>
+							    <th><?php echo $assoc['SCENARIO']; ?></th>
+							  </tr>
+							  <tr class="table_heading">
+							    <th class="cgame-title">Game Type</th>
+							    <th><?php echo $assoc['TYPE']; ?></th>
+							  </tr>						  							  						  								  						  							  						  
+							</table>	
+							<h1 id="out">Players</h1>
+							<table>
+							  <tr class="table_heading">
+							    <th id="setteama"><?php echo $assoc['TEAM_A']; ?></th>
+							    <th id="setteamb"><?php echo $assoc['TEAM_B']; ?></th>
+							  </tr>
+							  <tr>
+							    <th>
+							    	<div id="viewteama">
+							    		<?php
+							    		$teamA = $assoc['TEAM_A'];
+							    		$teamB = $assoc['TEAM_B'];
+										$query1 = mysqli_query($connection, "SELECT PLAYER FROM ".DBV::TB_game_players." WHERE GAME_ID='$gameId' AND TEAM='$teamA'");
+										if(mysqli_num_rows($query1) > 0){
+								    		while($r = mysqli_fetch_assoc($query1)){
+								    			$query11 = mysqli_query($connection, "SELECT USERNAME FROM ".DBV::TB_loginusers." WHERE USERID='".$r['PLAYER']."'");
+												$query11Assoc = mysqli_fetch_assoc($query11);
+								    			echo "<p class='vplayer'>".$query11Assoc['USERNAME']."</p>";
+								    		}											
+										}
+							    		?>
+							    	</div>
+							    	<div id="viewteamaadd"></div>
+							    </th>
+							    <th>
+							    	<div id="viewteamb">
+							    		<?php
+										$query1 = mysqli_query($connection, "SELECT PLAYER FROM ".DBV::TB_game_players." WHERE GAME_ID='$gameId' AND TEAM='$teamB'");
+										if(mysqli_num_rows($query1) > 0){
+								    		while($r = mysqli_fetch_assoc($query1)){
+								    			$query11 = mysqli_query($connection, "SELECT USERNAME FROM ".DBV::TB_loginusers." WHERE USERID='".$r['PLAYER']."'");
+												$query11Assoc = mysqli_fetch_assoc($query11);
+								    			echo "<p class='vplayer'>".$query11Assoc['USERNAME']."</p>";
+								    		}
+										}
+							    		?>								    		
+							    	</div>
+							    	<div id="viewteambadd"></div>							    								    	
+							    </th>
+							  </tr>								  						  							  
+							</table></br></br>			
+							<h1><button class="createbtn" onclick="submit.redirect('<?php echo $url; ?>')">Back</button></h1>
+						<?php
+						}
+					}else{
+						if(isset($_GET['from'])){
+							$from = $_GET['from'];
+							header("location:multiplayer.php?option=$from");	
+						}else{
+							header("location:multiplayer.php?option=request");	
+						}	
+					}
+									
 					break;	
+					
+				case "lobby":
+				
+				break; 	
 					
 				default:
 					header('location:multiplayer.php?option=fgame');
@@ -205,6 +373,7 @@ session_start();
 		<script src="noti/notify.js"></script>
 		<script src="noti/notify.min.js"></script>
 		<?php
+		if($_GET['option'] == "fgame"){
 			  	include 'plattemplate/connection.php';
 			  	$sql = mysqli_query($connection, "SELECT START_TIME FROM game");
 			  	$count = 0;
@@ -225,11 +394,13 @@ session_start();
 								  + minutes$count + \"m \" + seconds$count + \"s \";
 								if (distance$count < 0) {
 								    clearInterval(x$count);
+								    
 								    document.getElementById(\""."timer$count"."\").innerHTML = \"STARTED\";
 								}
 							}, 1000);</script>";		
 					}					
-				}							
+				}				
+		}						
 		?>
 </body>
 </html>

@@ -254,4 +254,24 @@ function execFunction(){
 	
 }
 
+function Commands(){
+	this.redirect = function(link){
+		$(location).attr('href', link);
+	};
+	
+	this.reqAccept = function(id){
+		console.log(id);
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {gameid:id},
+			success: function(status){
+				$(location).attr('href', 'multiplayer.php?option=request');
+				$.notify(status,{position:"bottom center", className:"warn"});
+			}
+		});
+	};
+}
+
+var submit = new Commands();
 var go = new execFunction();

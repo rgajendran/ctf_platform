@@ -238,10 +238,27 @@ select > option {
 	margin:1% auto 5% auto;
 }
 
-#mpftable > .mphost{
-	width:5%;
+.mphost, .mptitle, .mpscenario, .mptimer{
+	width:20%;
 }
 
-#mpftable > .mpftr > .mptimer{
+.mpview{
 	width:10%;
+	text-align:center;
+}
+
+.mpview > a{
+	color:#ABD17D;
+}
+
+.mpview > a:hover{
+	color:#CEB342;
+}
+
+.mptimer > p{
+	background:#CED187;
+	color:#111;
+	padding:10px;
+	text-align:center;
+	font-style:normal;
 }

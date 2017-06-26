@@ -17,6 +17,10 @@ class Validator{
 		return preg_replace('/[^A-Za-z0-9\ ]/','', $string);
 	}
 	
+	public static function PregAlphaNumeric($string){
+		return preg_replace('/[^A-Za-z0-9]/','', $string);
+	}
+	
 	public static function PregOnlyAlphaSpace($string){
 		return preg_replace('/[^A-Za-z-\ ]/','', $string);
 	}
@@ -136,6 +140,10 @@ class Creditional{
 	
 	public function getTeam(){
 		return $_SESSION['TEAM'];
+	}
+
+	public function getUserId(){
+		return $_SESSION['USERID'];
 	}
 	
 	
