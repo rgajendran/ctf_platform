@@ -13,25 +13,22 @@ function runButtonClick(){
 									
 					break;
 					
-					case "start":
-						$('#status').text(output[1]);
-						$("#side_menu").load("plattemplate/availablevm.php");	
-						$.notify("VM Started",{position:"bottom center", className:"success"});
+					case "start":					
+						$.notify(output[1],{position:"bottom center", className:"success"});
+						reloadAfterThree();
 					break;
 					
-					case "stop":
-						$('#status').text(output[1]);		
-						$("#side_menu").load("plattemplate/availablevm.php");	
-						$.notify("VM Stopped",{position:"bottom center", className:"warn"});			
+					case "stop":						
+						$.notify(output[1],{position:"bottom center", className:"warn"});	
+						reloadAfterThree();		
 					break;	
 					
 					case "delete":
-						$('#status').text(output[1]);	
-						$.notify("VM Deleted",{position:"bottom center", className:"error"});
+						$.notify(output[1],{position:"bottom center", className:"error"});
+						reloadAfterThree();
 					break;	
 					
 					case "error":
-						$('#status').text(output[1]);	
 						$.notify(output[1],{position:"bottom center", className:"error"});
 					break;
 					
@@ -44,6 +41,13 @@ function runButtonClick(){
 		});
 	};
 	
+}
+
+function reloadAfterThree() {
+  setTimeout(
+    function() {
+		$(location).attr('href', 'singleplayer.php?scenario=Liverpool');
+    }, 3000);
 }
 
 function download(filename, text) {

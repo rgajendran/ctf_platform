@@ -60,6 +60,21 @@ $(document).ready(function(){
 	});
 });
 
+$(document).ready(function(){
+	$('#gtype').change(function(){
+		
+		var input = $(this).val();
+		if(input == "openforall"){
+			$(location).attr('href', "multiplayer.php?option=cgame&type=openforall");
+		}else if(input == "closed"){
+			$(location).attr('href', "multiplayer.php?option=cgame&type=closed");
+		}
+		
+	});
+	
+});
+
+
 var teamajs = function(){
 	var string = $("#searcha").val();
 	$.ajax({

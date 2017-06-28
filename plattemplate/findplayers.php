@@ -76,15 +76,20 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 															$errB = 0;
 															for($i = 0; $i<count($avsession); $i++){
 																foreach($_SESSION[$avsession[$i]] as $key=>$value){
+																	if($value == $c->getUsername()){
+																		$pstat = 1;
+																	}else{
+																		$pstat = 0;
+																	}
 																	if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
 																		$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																		'$gameid','$teama','$key','NA','NA')");	
+																		'$gameid','$teama','$key','$pstat','NA')");	
 																		if($sql){
 																			$errA++;
 																		}
 																	}else{
 																		$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																		'$gameid','$teamb','$key','NA','NA')");		
+																		'$gameid','$teamb','$key','$pstat','NA')");		
 																		if($sql){
 																			$errB++;
 																		}															

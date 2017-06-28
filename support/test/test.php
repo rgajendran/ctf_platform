@@ -15,12 +15,8 @@ font-family:Arial, Helvetica, sans-serif;
 </head>
 <body>
 <?php
-session_start();
-$_SESSION['teama'] = array('hiran','hiranrajkumar','kapil','kapildev');
-print_r($_SESSION['teama'])."</br>";
-unset($_SESSION['teama'][array_search("hiran", $_SESSION['teama'])]);
-print_r($_SESSION['teama']);
 
+echo passthru("ruby /var/www/html/SecGen/secgen.rb -p");
 
 ?>
 </body>

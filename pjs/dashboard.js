@@ -22,9 +22,16 @@ $(document).ready(function(){
 			url: "plattemplate/exesp.php",
 			data: {scenario: scenario, vmn:vmname},
 			success: function(status){
-				$('#status').text(status);
+				$.notify(status,{position:"bottom center", className:"success"});
+				reloadAfterThree();
 			}	
 		});
 	});
 });
 
+function reloadAfterThree() {
+  setTimeout(
+    function() {
+		$(location).attr('href', 'singleplayer.php?scenario=Liverpool');
+    }, 3000);
+}

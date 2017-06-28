@@ -84,15 +84,21 @@ session_start();
 						  	$sql = mysqli_query($connection, "SELECT * FROM game");
 						  	if(mysqli_num_rows($sql) > 0){
 							  	$count = 0;
+								date_default_timezone_set('Europe/London');
 								while($row = mysqli_fetch_assoc($sql)){
 									$count++;
-									echo "<tr class='mpftr'>
-									<td class='mphost'>".$row['HOST']."</td>
-									<td class='mptitle'>".$row['TITLE']."</td>
-									<td class='mpscenario'>".$row['SCENARIO']."</td>
-									<td class='mptimer'><p id='"."timer$count"."'></p></td>
-									<td class='mpview'><a href='multiplayer.php?option=viewgame&from=fgame&id=".$row['GAME_ID']."'>View</a></td>
-									</tr>";	
+										$timezone = 'Europe/London'; 
+										$date = new DateTime('now', new DateTimeZone($timezone));
+										$localtime = $date->format('Y-m-d H:i:s');
+										if(strtotime($row['START_TIME']) > strtotime($localtime)){
+											echo "<tr class='mpftr'>
+												<td class='mphost'>".$row['HOST']."</td>
+												<td class='mptitle'>".$row['TITLE']."</td>
+												<td class='mpscenario'>".$row['SCENARIO']."</td>
+												<td class='mptimer'><p id='"."timer$count"."'></p></td>
+												<td class='mpview'><a href='multiplayer.php?option=viewgame&from=fgame&id=".$row['GAME_ID']."'>View</a></td>
+											</tr>";	
+										}
 								}						  		
 						  	}else{
 						  		echo "No Events Available";
@@ -148,12 +154,13 @@ session_start();
 							    <th class="cgame-title">Game Type</th>
 							    <th>
 							    	<select id="gtype">
-										<option value='closed' >Closed</option>
-										<option value='openforall'>Open For All</option>										
+										<option value='closed' <?php if($_GET['type'] == "closed"){echo "selected";}?>>Closed</option>
+										<option value='openforall' <?php if($_GET['type'] == "openforall"){echo "selected";}?>>Open For All</option>										
 									</select>
 							    </th>
 							  </tr>						  							  						  								  						  							  						  
 							</table>	
+							<?php if($_GET['type'] == "closed"){?>
 							<h1 id="out">Configure Team</h1>
 							<table>
 							  <tr class="table_heading">
@@ -221,7 +228,9 @@ session_start();
 							    <th><input type="text" id="searcha" placeholder="Search Player (Type & Press enter)"></th>
 							    <th><input type="text" id="searchb" placeholder="Search Player (Type & Press enter)"></th>
 							  </tr>							  							  
-							</table></br></br>			
+							</table>
+							<?php } ?>
+							</br></br>			
 							<h1><button class="createbtn" id="createg">Create Game</button></h1>
 			  <?php break;
 					
@@ -347,6 +356,8 @@ session_start();
 							</table></br></br>			
 							<h1><button class="createbtn" onclick="submit.redirect('<?php echo $url; ?>')">Back</button></h1>
 						<?php
+						}else{
+							header("location:multiplayer.php?option=fgame");	
 						}
 					}else{
 						if(isset($_GET['from'])){

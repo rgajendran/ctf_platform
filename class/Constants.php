@@ -42,8 +42,8 @@ const SESSION_CREATEGAME_TEAMB = "teamb";                                       
 const ERROR_TIME_INVALID = "Invalid Time";                                              # 
 const ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO = "Unable to find scenario";              # findplayer.php scenario name modified
 #### Findplayer                                                                         # findplayer.php [STARTS_HERE]
-const FP_GAME_TYPE_CLOSED = 'closed';                                                      # findplayer.php switch option
-const FP_GAME_TYPE_OPENFORALL = 'openforall';                                              # findplayer.php switch option
+const FP_GAME_TYPE_CLOSED = 'closed';                                                   # findplayer.php switch option
+const FP_GAME_TYPE_OPENFORALL = 'openforall';                                           # findplayer.php switch option
 #### Error Codes                                                                        # Errors code starts from here
 const ERROR_CODE_3001 = ' [3001]';                                                      # exesp post value mismatch                              [LOW]
 const ERROR_CODE_3002 = ' [3002]';                                                      # exesp ovirt template name invalid                      [LOW]

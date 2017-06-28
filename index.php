@@ -106,11 +106,11 @@
 	include 'template/connection.php';
 	$tRs = mysqli_query($connection, "SELECT value FROM options WHERE name='HOME_TIME'");
 	if($tRs){
-	while($tRs_row = mysqli_fetch_assoc($tRs)){
-		?>
-	<input type="hidden" id="sttimer" value="<?php echo $tRs_row['value'];?>"  />	
-		<?php
-	}
+		while($tRs_row = mysqli_fetch_assoc($tRs)){
+			?>
+		<input type="hidden" id="sttimer" value="<?php echo $tRs_row['value'];?>"  />	
+			<?php
+		}
 	}
 	?>
 	<script src="js/hometimer.js"></script>
