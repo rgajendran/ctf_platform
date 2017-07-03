@@ -262,3 +262,52 @@ select > option {
 	text-align:center;
 	font-style:normal;
 }
+
+/*------------------secgen local dropdown------------------------*/
+#primary_nav_wrap
+{
+	margin:15px;
+}
+
+#primary_nav_wrap{
+	background:#111;
+	position:relative;
+		width:auto;
+}
+
+#primary_nav_wrap ul
+{
+	list-style:none;
+	float:left;
+	margin:0px 0px 2% 0px;
+	padding:0;
+	width:100%;
+	border-top:solid 1px #ABD17D;
+	border-bottom:solid 1px #ABD17D;	
+	background-color:#354b1b;
+}
+
+#primary_nav_wrap ul a
+{
+	display:block;
+	color:#ABD17D;
+	text-decoration:none;
+	font-weight:700;
+	font-size:17px;
+	line-height:42px;
+	padding:0 15px;
+	font-family: 'Iceland', cursive;
+}
+
+#primary_nav_wrap ul li
+{
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0;
+}
+
+#primary_nav_wrap ul li.current-menu-item
+{
+	background:#111;
+}

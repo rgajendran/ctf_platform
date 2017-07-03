@@ -38,6 +38,31 @@ error_reporting(E_ALL);
 								$tempname = $row['TEMP_NAME'];
 								echo "<li><a href='singleplayer.php?scenario=$tempname'>$tempname</a>";	
 							}
+							echo "<li><a href='#'>Request SecGen Scenarios</a>";
+								$dir = $_SERVER['DOCUMENT_ROOT']."/SecGen/scenarios";
+					
+								function listFolderFiles($dir){
+								    $ffs = scandir($dir);
+								
+								    unset($ffs[array_search('.', $ffs, true)]);
+								    unset($ffs[array_search('..', $ffs, true)]);
+									
+									echo "<ul>";
+								    // prevent empty ordered elements
+								    if (count($ffs) < 1)
+								        return;
+								    foreach($ffs as $ff){
+								    	$path = strstr($dir, "scenarios");
+								        echo "<li><a href='singleplayer.php?scenario=$ff&&fp=$path/$ff'>$ff</a>";
+								        if(is_dir($dir.'/'.$ff)) {
+								        	listFolderFiles($dir.'/'.$ff);
+										}
+								    }
+									echo "</ul>";
+								}
+								listFolderFiles($dir);
+							
+							echo "</li>";
 						echo "</ul>";				   
 					?>
 			</nav>		

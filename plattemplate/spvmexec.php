@@ -20,7 +20,7 @@ if(isset($_POST['exec']) && isset($_POST['vm']) && isset($_POST['vmnm'])){
 						$xml =  simplexml_load_string(Ovirt::ovirt_start_vm(OLink::get_vmstart_link($vmid)));
 						if(!empty($xml)){
 							if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-								Output("start","Started ".$vmname);
+								Output("start","Starting ".$vmname);
 							}else{
 								Output("start",Constants::ERROR_VMSTART.Constants::ERROR_CODE_3005);
 							}
@@ -39,7 +39,7 @@ if(isset($_POST['exec']) && isset($_POST['vm']) && isset($_POST['vmnm'])){
 							$xml = simplexml_load_string(Ovirt::ovirt_shutdown_vm(OLink::get_vmshutdown_link($vmid)));
 							if(!empty($xml)){
 								if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
-									Output("stop","Shutdown Complete :".$vmname);
+									Output("stop","Shutting down :".$vmname);
 								}else{
 									Output("stop",Constants::ERROR_VMSHUTDOWN.Constants::ERROR_CODE_3006);
 								}
@@ -61,7 +61,7 @@ if(isset($_POST['exec']) && isset($_POST['vm']) && isset($_POST['vmnm'])){
 						if(!empty($xml)){
 							if($xml->status == Constants::OVIRT_API_REPLY_STATUS_COMPLETE){
 								if(PlatformDB::deleteVMfromDbWithVmIdandUser($vmid, $c->getUsername()) == Constants::DB_SUCCESS){
-									Output("delete","Deleted ".$vmname);
+									Output("delete","Deleting ".$vmname);
 								}else{
 									Output("delete",Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3009);
 								}

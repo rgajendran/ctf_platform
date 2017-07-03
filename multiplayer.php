@@ -21,8 +21,7 @@ session_start();
 		<h1 id="head">Multiplayer Portal</h1>
 		<div id="menu">
 			<h1>Options</h1>
-			<a href="multiplayer.php?option=lobby"><span class="span">LOBBY</span></a>
-			<a href="multiplayer.php?option=request"><span class="span">REQUESTS</span></a>
+			<a href="multiplayer.php?option=request"><span class="span">INVITATION</span></a>
 			<a href="multiplayer.php?option=fgame"><span class="span">FIND GAME</span></a>
 			<a href="multiplayer.php?option=cgame&type=closed"><span class="span">CREATE GAME</span></a>
 			<a href="multiplayer.php?option=my-upcominggame"><span class="span">MY UPCOMING GAME</span></a>
@@ -101,7 +100,7 @@ session_start();
 										}
 								}						  		
 						  	}else{
-						  		echo "No Events Available";
+						  		echo "<tr><td colspan='4'>No Events Available</td></tr>";
 						  	}
 						  	?>
 							</table>
