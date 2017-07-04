@@ -212,13 +212,13 @@ select > option {
 	display:inline;
 }
 
-#plotteamb, #viewteamb{
+#plotteamb, #viewteamb, #plotsearchteama, #viewsearchteama{
 	width:70%;
 	float:left;
 	display:inline;
 }
 
-#plotteamaadd, #viewteamaadd{
+#plotteamaadd, #viewteamaadd, #plotsearchteamaadd, #viewsearchteamaadd{
 	width:30%;
 	float:left;
 	display:inline;

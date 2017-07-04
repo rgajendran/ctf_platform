@@ -17,6 +17,13 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 	}else{
 		echo Constants::ERROR_EXESP_INVALID_REQUEST.Constants::ERROR_CODE_3012;
 	}
+}else if(isset($_POST['search']) && isset($_POST['team'])){
+	$search =  Validator::PregAlphaNumericUnderScore(Validator::filterString($_POST['search']));
+	if(strlen($search) > 3){
+		doTask("d", $search);	
+	}else{
+		echo "Type more than 3 characters";
+	}
 }else if(isset($_POST['username']) && isset($_POST['team'])){
 	$username = Validator::PregAlphaNumericUnderScore(Validator::filterString($_POST['username']));
 	include '../plattemplate/connection.php';
@@ -30,6 +37,10 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 			while($row = mysqli_fetch_assoc($sql)){
 				sessionExtract(Constants::SESSION_CREATEGAME_TEAMB, $username,$row[DBV::login_users_userid]);
 			}
+		}else if($_POST['team'] == "st"){
+			while($row = mysqli_fetch_assoc($sql)){
+				sessionExtract(Constants::SESSION_CREATETEAM, $username,$row[DBV::login_users_userid]);
+			}
 		}
 	}
 }else if(isset($_POST['un']) && isset($_POST['tms'])){
@@ -42,6 +53,9 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 	}else if($team == "b"){
 		unset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB][array_search($username, $_SESSION[Constants::SESSION_CREATEGAME_TEAMB])]);
 		sessionOutput("success", implode("~#~", $_SESSION[Constants::SESSION_CREATEGAME_TEAMB]));
+	}else if($team == "s"){
+		unset($_SESSION[Constants::SESSION_CREATETEAM][array_search($username, $_SESSION[Constants::SESSION_CREATETEAM])]);
+		sessionOutput("success", implode("~#~", $_SESSION[Constants::SESSION_CREATETEAM]));
 	}
 }else if(isset($_POST['title']) && isset($_POST['desc']) && isset($_POST['starttime']) && isset($_POST['endtime']) && 
 isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) && isset($_POST['gametype'])){
@@ -178,9 +192,10 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 
 function sessionExtract($session, $username,$userid){
 		session_start();
-		if(!isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) || !isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB])){
+		if(!isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) || !isset($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) || !isset($_SESSION[Constants::SESSION_CREATETEAM])){
 			$_SESSION[Constants::SESSION_CREATEGAME_TEAMA] = array();			
-			$_SESSION[Constants::SESSION_CREATEGAME_TEAMB] = array();			
+			$_SESSION[Constants::SESSION_CREATEGAME_TEAMB] = array();	
+			$_SESSION[Constants::SESSION_CREATETEAM] = array();			
 		}
 		if(in_array($username, array_merge($_SESSION[Constants::SESSION_CREATEGAME_TEAMA],$_SESSION[Constants::SESSION_CREATEGAME_TEAMB]))){
 			sessionOutput("error", implode("~#~", $_SESSION[$session]));

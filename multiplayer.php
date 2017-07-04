@@ -21,10 +21,11 @@ session_start();
 		<h1 id="head">Multiplayer Portal</h1>
 		<div id="menu">
 			<h1>Options</h1>
-			<a href="multiplayer.php?option=request"><span class="span">INVITATION</span></a>
-			<a href="multiplayer.php?option=fgame"><span class="span">FIND GAME</span></a>
+			<a href="multiplayer.php?option=request"><span class="span">INVITES</span></a>
+			<a href="multiplayer.php?option=fgame"><span class="span">OPEN GAME</span></a>
 			<a href="multiplayer.php?option=cgame&type=closed"><span class="span">CREATE GAME</span></a>
 			<a href="multiplayer.php?option=my-upcominggame"><span class="span">MY UPCOMING GAME</span></a>
+			<a href="multiplayer.php?option=team"><span class="span">CREATE TEAM</span></a>
 			<a href="dashboard.php"><span class="span">BACK</span></a>
 		</div>
 		<div id="content">
@@ -232,6 +233,52 @@ session_start();
 							</br></br>			
 							<h1><button class="createbtn" id="createg">Create Game</button></h1>
 			  <?php break;
+			  
+				case "team": 
+				?>
+							<h1>Create Teams</h1>
+							<table>
+							  <tr class="table_heading">
+							    <th id="setteama">Team A</th>
+							  </tr>
+							  <tr>
+							    <th>
+							    	<div id="viewsearchteama">
+							    		<?php
+							    		require 'class/Constants.php';
+							    		if(isset($_SESSION[Constants::SESSION_CREATETEAM]) && count($_SESSION[Constants::SESSION_CREATETEAM]) > 0){
+								    		foreach($_SESSION[Constants::SESSION_CREATETEAM] as $key=>$usn){
+								    			echo "<p class='vplayer'>$usn</p>";
+								    		}								    			
+							    		}else{
+							    			echo "<p class='vplayer'>Please choose players</p>";
+							    		}
+							    		?>
+							    	</div>
+							    	<div id="viewsearchteamaadd">
+							    		<?php
+							    		if(isset($_SESSION[Constants::SESSION_CREATETEAM])){
+									    	foreach($_SESSION[Constants::SESSION_CREATETEAM] as $key=>$usn){
+								    			echo "<p class='plusbtn' onclick='go.deleteTeamSearch(\"$usn\");'>-</p>";
+								    		}
+										}
+										?>								    		
+							    	</div>
+							    </th>
+							  </tr>								  	
+							  <tr>
+							    <th>
+							    	<div id="plotsearchteama"></div>
+							    	<div id="plotsearchteamaadd"></div>
+							    </th>
+							  </tr>	
+							  <tr>
+							    <th><input type="text" id="teamsearch" placeholder="Search Player (Type & Press enter)"></th>
+							  </tr>							  							  
+							</table>				
+					
+					<?php 
+					break;
 					
 				case "my-upcominggame": ?>
 							<h1>My Upcoming Game</h1>

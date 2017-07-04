@@ -16,7 +16,11 @@ font-family:Arial, Helvetica, sans-serif;
 <body>
 <?php
 
-echo passthru("ruby /var/www/html/SecGen/secgen.rb -p");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+echo shell_exec('echo $PATH');
+#echo exec('sudo nohup /var/www/html/bash/runsecgen.sh > /var/www/html/bash/logger 2>&1 &');
 
 ?>
 </body>

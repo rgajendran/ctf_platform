@@ -146,6 +146,10 @@ class Creditional{
 		return $_SESSION['USERID'];
 	}
 	
+	public function getType(){
+		return $_SESSION['TYPE'];
+	}
+	
 	
 }
 

@@ -28,6 +28,13 @@ $(document).ready(function(){
 			teambjs();
 		};
 	});
+	
+	$('#teamsearch').keypress(function(event){
+		var key = (event.keyCode ? event.keyCode : event.which);
+		if(key == 13){
+			teamsearchjs();
+		};
+	});	
 });
 
 $(document).ready(function(){
@@ -76,21 +83,21 @@ $(document).ready(function(){
 
 
 var teamajs = function(){
-	var string = $("#searcha").val();
+	var string = $("#teamsearch").val();
 	$.ajax({
 		method: "POST",
 		url: "plattemplate/findplayers.php",
 		data: {team:"a", val:string},
 		success: function(status){
-			$('#plotteama').empty();
-			$('#plotteamaadd').empty();
+			$('#plotsearchteama').empty();
+			$('#plotsearchteamaadd').empty();
 			var split = status.split('~#~');
 			for(var i=0; i<split.length; i++){
 				var addh3 = document.createElement("p");
 				var text = document.createTextNode(split[i]);
 				addh3.setAttribute("class","splayer");
 				addh3.appendChild(text);				
-				document.getElementById("plotteama").appendChild(addh3);	
+				document.getElementById("plotsearchteama").appendChild(addh3);	
 					
 				if(split[i] != "No user found"){
 					var button = document.createElement("p");
@@ -98,7 +105,7 @@ var teamajs = function(){
 					button.appendChild(btext);
 					button.setAttribute("class","plusbtn");
 					button.setAttribute("onclick","go.execTeamA('"+split[i]+"')");
-					document.getElementById("plotteamaadd").appendChild(button);					
+					document.getElementById("plotsearchteamaadd").appendChild(button);					
 				}			
 			}
 		}
@@ -129,6 +136,35 @@ var teambjs = function(){
 				button.setAttribute("class","plusbtn");
 				button.setAttribute("onclick","go.execTeamB('"+split[i]+"')");
 				document.getElementById("plotteambadd").appendChild(button);						
+			}	
+		}
+	});	
+};
+
+var teamsearchjs = function(){
+	var string = $("#teamsearch").val();
+	$.ajax({
+		method: "POST",
+		url: "plattemplate/findplayers.php",
+		data: {team:"team", search:string},
+		success: function(status){
+			$('#plotsearchteama').empty();
+			$('#plotsearchteamaadd').empty();
+			var split = status.split('~#~');
+			for(var i=0; i<split.length; i++){
+				var addh3 = document.createElement("p");
+				var text = document.createTextNode(split[i]);
+				addh3.setAttribute("class","splayer");
+				addh3.setAttribute("onclick","s");
+				addh3.appendChild(text);				
+				document.getElementById("plotsearchteama").appendChild(addh3);
+				
+				var button = document.createElement("p");
+				var btext = document.createTextNode("+");
+				button.appendChild(btext);
+				button.setAttribute("class","plusbtn");
+				button.setAttribute("onclick","go.execSearchTeam('"+split[i]+"')");
+				document.getElementById("plotsearchteamaadd").appendChild(button);						
 			}	
 		}
 	});	
@@ -173,7 +209,26 @@ function execFunction(){
 					}
 			}
 		});
-	};	
+	};
+	
+	this.execSearchTeam = function(usernames){
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {team:"st",username:usernames},
+			success: function(status){
+					$('#viewsearchteama').empty();
+					$('#viewsearchteamaadd').empty();
+					var split = status.split('#~#');
+					if(split[0] == "error"){
+						$.notify("Username already selected",{position:"bottom center", className:"warn"});
+						viewSessionArrayTeamSearch(split[1],"deleteTeamSearch");
+					}else if(split[0] == "success"){
+						viewSessionArrayTeamSearch(split[1],"deleteTeamSearch");
+					}
+			}
+		});
+	};			
 		
 	this.deleteTeamA = function(uns){
 		$.ajax({
@@ -214,6 +269,26 @@ function execFunction(){
 			}
 		});		
 	};
+	
+	this.deleteTeamSearch = function(uns){
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {tms:"s",un:uns},
+			success: function(status){
+					$('#viewsearchteama').empty();
+					$('#viewsearchteamaadd').empty();
+					var split = status.split('#~#');
+					if(split[0] == "error"){
+						$.notify("Unable to remove username",{position:"bottom center", className:"warn"});
+						viewSessionArrayTeamSearch(split[1],"deleteTeamSearch");
+					}else if(split[0] == "success"){
+						$.notify("Successfully removed",{position:"bottom center", className:"success"});
+						viewSessionArrayTeamSearch(split[1],"deleteTeamSearch");
+					}
+			}
+		});		
+	};	
 		
 	function viewSessionArrayTeamA(string, funs){
 		    var split = string.split("~#~");
@@ -263,6 +338,32 @@ function execFunction(){
 				button.setAttribute("class","plusbtn");
 				button.setAttribute("onclick","go."+funs+"('"+split[i]+"')");
 				document.getElementById("viewteambadd").appendChild(button);							
+			}
+		}
+	};
+	
+	function viewSessionArrayTeamSearch(string,funs){
+		var split = string.split('~#~');
+		if(split[0] == ''){			
+	    	var addh3 = document.createElement("p");
+	    	var text = document.createTextNode("Please choose players");
+	    	addh3.setAttribute("class","vplayer");
+	    	addh3.appendChild(text);
+	    	document.getElementById("viewsearchteama").appendChild(addh3);
+	    }else{
+			for(var i=0; i<split.length; i++){ 
+				var addh3 = document.createElement("p");
+				var text = document.createTextNode(split[i]);
+				addh3.setAttribute("class","vplayer");
+				addh3.appendChild(text);				
+				document.getElementById("viewsearchteama").appendChild(addh3);
+				
+				var button = document.createElement("p");
+				var btext = document.createTextNode("-");
+				button.appendChild(btext);
+				button.setAttribute("class","plusbtn");
+				button.setAttribute("onclick","go."+funs+"('"+split[i]+"')");
+				document.getElementById("viewsearchteamaadd").appendChild(button);							
 			}
 		}
 	};
