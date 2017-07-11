@@ -81,10 +81,13 @@ session_start();
 							  </tr>
 						  	<?php
 						  	include 'plattemplate/connection.php';
-						  	$sql = mysqli_query($connection, "SELECT * FROM game");
+							date_default_timezone_set('Europe/London');
+							$timezone = 'Europe/London'; 
+							$dates = new DateTime('now', new DateTimeZone($timezone));
+							$local = strtotime($dates->format('Y-m-d H:i:s'));
+						  	$sql = mysqli_query($connection, "SELECT * FROM game WHERE START_TIME > $local");
 						  	if(mysqli_num_rows($sql) > 0){
 							  	$count = 0;
-								date_default_timezone_set('Europe/London');
 								while($row = mysqli_fetch_assoc($sql)){
 									$count++;
 										$timezone = 'Europe/London'; 
@@ -101,7 +104,7 @@ session_start();
 										}
 								}						  		
 						  	}else{
-						  		echo "<tr><td colspan='4'>No Events Available</td></tr>";
+						  		echo "<tr><td colspan='5'>No Events Available</td></tr>";
 						  	}
 						  	?>
 							</table>
@@ -236,10 +239,33 @@ session_start();
 			  
 				case "team": 
 				?>
+							<h1>My Teams</h1>
+							<table>
+									<?php
+									require 'class/Validator.php';
+									include 'plattemplate/connection.php';
+									$c = new Creditional();
+									$sql = mysqli_query($connection, "SELECT * FROM teams WHERE HOST='".$c->getUsername()."'");
+									if(mysqli_num_rows($sql) == 0){
+										echo "<tr><th colspan='2'>No Teams Found</th></tr>";
+									}else{
+										while($row = mysqli_fetch_assoc($sql)){
+											echo "<tr class='table_heading'><th>".$row['TEAM']."</th>";
+											echo "<th class='viewplayers'>".
+												$row['P_1']."</br>".
+												$row['P_2']."</br>".
+												$row['P_3']."</br>".
+												$row['P_4']."</br>".
+												$row['P_5']."</br>".
+											"</th></tr>";
+										}	
+									}									
+									?>
+							</table>
 							<h1>Create Teams</h1>
 							<table>
 							  <tr class="table_heading">
-							    <th id="setteama">Team A</th>
+							    <th id="setteama"><input type="text" id="oteamCreate" placeholder="Enter a name for your team"></th>
 							  </tr>
 							  <tr>
 							    <th>
@@ -273,7 +299,7 @@ session_start();
 							    </th>
 							  </tr>	
 							  <tr>
-							    <th><input type="text" id="teamsearch" placeholder="Search Player (Type & Press enter)"></th>
+							    <th><input type="text" id="teamsearch" placeholder="Search Player (Type & Press enter)"><input type="submit" value="Create Team" id="teamsearchbtn" onclick="createteam.create();"/></th>
 							  </tr>							  							  
 							</table>				
 					

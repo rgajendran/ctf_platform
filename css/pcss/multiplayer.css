@@ -311,3 +311,27 @@ select > option {
 {
 	background:#111;
 }
+
+#teamsearch{
+	width:72%;
+	height:10%;
+	float:left;
+}
+
+#teamsearchbtn{
+	width:25%;
+	height:10%;
+	float:right;
+}
+
+#teamsearchbtn:hover{
+	background:#ABD17D;
+	color:#111;
+	cursor:pointer;
+}
+
+.viewplayers{
+	text-align:left;
+	padding-left:5%;
+}
+

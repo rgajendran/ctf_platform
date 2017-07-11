@@ -158,13 +158,16 @@ var teamsearchjs = function(){
 				addh3.setAttribute("onclick","s");
 				addh3.appendChild(text);				
 				document.getElementById("plotsearchteama").appendChild(addh3);
-				
-				var button = document.createElement("p");
-				var btext = document.createTextNode("+");
-				button.appendChild(btext);
-				button.setAttribute("class","plusbtn");
-				button.setAttribute("onclick","go.execSearchTeam('"+split[i]+"')");
-				document.getElementById("plotsearchteamaadd").appendChild(button);						
+				if(split[i] != "Type more than 3 characters"){
+					if(split[i] != "No user found"){
+						var button = document.createElement("p");
+						var btext = document.createTextNode("+");
+						button.appendChild(btext);
+						button.setAttribute("class","plusbtn");
+						button.setAttribute("onclick","go.execSearchTeam('"+split[i]+"')");
+						document.getElementById("plotsearchteamaadd").appendChild(button);
+					}		
+				}				
 			}	
 		}
 	});	
@@ -357,13 +360,12 @@ function execFunction(){
 				addh3.setAttribute("class","vplayer");
 				addh3.appendChild(text);				
 				document.getElementById("viewsearchteama").appendChild(addh3);
-				
 				var button = document.createElement("p");
 				var btext = document.createTextNode("-");
 				button.appendChild(btext);
 				button.setAttribute("class","plusbtn");
 				button.setAttribute("onclick","go."+funs+"('"+split[i]+"')");
-				document.getElementById("viewsearchteamaadd").appendChild(button);							
+				document.getElementById("viewsearchteamaadd").appendChild(button);											
 			}
 		}
 	};
@@ -376,7 +378,6 @@ function Commands(){
 	};
 	
 	this.reqAccept = function(id){
-		console.log(id);
 		$.ajax({
 			method: "POST",
 			url: "plattemplate/findplayers.php",
@@ -389,5 +390,27 @@ function Commands(){
 	};
 }
 
+function CreateTeam(){
+	this.create = function(){
+		var str = $("#oteamCreate").val();
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {teamname:str},
+			success: function(status){
+				console.log(status);
+				var split = status.split("#*#");
+				if(split[0] == "error"){
+					$.notify(split[1],{position:"bottom center", className:"warn"});
+				}else if(split[0] == "good"){
+					$.notify(split[1],{position:"bottom center", className:"success"});
+					$(location).attr('href', 'multiplayer.php?option=team');
+				}
+			}
+		});
+	};
+}
+
 var submit = new Commands();
 var go = new execFunction();
+var createteam = new CreateTeam();

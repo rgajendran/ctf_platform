@@ -19,7 +19,7 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 	}
 }else if(isset($_POST['search']) && isset($_POST['team'])){
 	$search =  Validator::PregAlphaNumericUnderScore(Validator::filterString($_POST['search']));
-	if(strlen($search) > 3){
+	if(strlen($search) > 2){
 		doTask("d", $search);	
 	}else{
 		echo "Type more than 3 characters";
@@ -187,6 +187,43 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 		}
 	}else{
 		echo "Technical Error";
+	}
+}else if(isset($_POST['teamname'])){
+	session_start();
+	if(!isset($_SESSION[Constants::SESSION_CREATETEAM])){
+		$_SESSION[Constants::SESSION_CREATETEAM] = array();
+	}
+	
+	if(count($_SESSION[Constants::SESSION_CREATETEAM]) < 5 || count($_SESSION[Constants::SESSION_CREATETEAM]) > 5){
+		validateOutput("error", "Select 5 players to create team");
+	}else{
+		$teamname = Validator::PregAlphaNumericUnderScoreSpace(Validator::filterString($_POST['teamname']));
+		if(strlen($teamname) >= 4 && strlen($teamname) <= 15){
+			include '../plattemplate/connection.php';
+			$c = new Creditional();
+			$un = $c->getUsername();
+			$s = 0;
+			$sqlcheck = mysqli_query($connection, "SELECT * FROM teams WHERE HOST='$un'");
+			
+			if(mysqli_num_rows($sqlcheck) < 2){
+				foreach($_SESSION[Constants::SESSION_CREATETEAM] as $value){
+					$s++;
+					${"p$s"} = $value;
+				}
+				$sql = mysqli_query($connection, "INSERT INTO teams (HOST, TEAM, P_1, P_2, P_3, P_4, P_5) VALUES ('$un', '$teamname', '$p1','$p2','$p3','$p4','$p5')");
+				if($sql){
+					validateOutput("good", "Created Team : ");
+					unset($_SESSION[Constants::SESSION_CREATETEAM]);
+				}else{
+					validateOutput("error", "Train again later");
+				}
+			}else{
+				validateOutput("error", "User can create only 2 teams");	
+			}
+						
+		}else{
+			validateOutput("error", "Team name should be between 4 to 15 characters");
+		}
 	}
 }
 
