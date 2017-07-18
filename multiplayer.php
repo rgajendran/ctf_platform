@@ -458,7 +458,11 @@ session_start();
 		<?php
 		if($_GET['option'] == "fgame"){
 			  	include 'plattemplate/connection.php';
-			  	$sql = mysqli_query($connection, "SELECT START_TIME FROM game");
+				date_default_timezone_set('Europe/London');
+				$timezone = 'Europe/London'; 
+				$dates = new DateTime('now', new DateTimeZone($timezone));
+				$locals = strtotime($dates->format('Y-m-d H:i:s'));
+			  	$sql = mysqli_query($connection, "SELECT START_TIME FROM game WHERE START_TIME > $locals");
 			  	$count = 0;
 				if(mysqli_num_rows($sql) > 0){
 					while($row = mysqli_fetch_assoc($sql)){
