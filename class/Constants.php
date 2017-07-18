@@ -2,8 +2,9 @@
 class Constants{
 	
 const LOCKPICK = 'lockpick';
-const SPLAYERDEFAULT = 'singleplayer.php?scenario=Liverpool';                         # Platform singleplayer.php
-const SECGEN_URL = '/var/www/html/SecGen/';                                             # Platform SecGen unused
+const SPLAYERDEFAULT = 'singleplayer.php?scenario=Liverpool';                           # Platform singleplayer.php
+const SECGEN_URL = '/var/www/html/SecGen';                                             # Platform SecGen unused
+const LOC_LOG_DIR = '/var/www/html/log';                                               # Log Directory
 const OVIRT_USERNAME = 'admin@internal';                                                # Ovirt
 const OVIRT_PASSWORD = 'oVirtEngine';                                                   # Ovirt
 const OVIRT_DEFAULT_TEMPLATE_SIZE = '1073741824';                                       # Ovirt

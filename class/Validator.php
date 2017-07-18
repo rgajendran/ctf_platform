@@ -123,7 +123,6 @@ class Validator{
 		}
 	}
 	
-	
 }
 
 class Creditional{
