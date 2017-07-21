@@ -30,5 +30,9 @@ class OLink{
 	public static function get_vmshutdown_link($vmid){												# shutdown vm with id
 		return Constants::OVIRT_API_URL."/vms/$vmid/shutdown";
 	}	
+	
+	public static function get_createtemplate_link(){
+		return Constants::OVIRT_API_URL."/templates";
+	}
 }
 ?>

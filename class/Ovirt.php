@@ -108,6 +108,14 @@ class Ovirt{
 	public static function ovirt_vm_getraw($link){
 		return Curl::curl_get_and_getresponse($link);
 	}
+	
+	public static function ovirt_create_template_with_vmid($tempname, $vmid){
+		$xml = "<template>
+					<name>$tempname</name>
+					<vm id='$vmid'/>
+				</template>";
+		return Curl::curl_postdata_and_getresponse(OLink::get_createtemplate_link(), $xml);		
+	}
 		
 }
 
