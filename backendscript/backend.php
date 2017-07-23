@@ -24,7 +24,8 @@ if(mysqli_num_rows($sql) > 0){
 			$ovurl = Constants::OVIRT_API_URL;
 			$logdir = Constants::LOC_LOG_DIR;
 			$vmname = randomToken();
-			exec('nohup ruby '.$secgendir.'/secgen.rb --scenario '.$secgendir.'/'.$scenario.' --ovirtuser '.$ovuser.' --ovirtpass '.$ovpass.' --ovirt-template '.$ovtemp.' --ovirt-url '.$ovurl.' --ovirt-vmname '.$vmname.' r > '.$logdir.'/bscript_secgen.txt &');
+			exec('nohup ruby '.$secgendir.'/secgen.rb --scenario '.$secgendir.'/'.$scenario.' --ovirtuser '.$ovuser.' --ovirtpass '.$ovpass.' --ovirt-template '.$ovtemp.' --ovirt-url '.$ovurl.
+			' --ovirt-vmname '.$vmname.' r > '.$logdir.'/bscript_secgen.txt; /usr/bin/php /var/www/html/platform/backendscript/shutdown.php');
 			$insert = mysqli_query($connection, "UPDATE backend SET PROCESSING='1' WHERE ID='$id'");
 			if($insert){
 				$fu = mysqli_query($connection, "UPDATE backend SET FOLDER='$vmname' WHERE ID='$id'");

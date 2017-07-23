@@ -9,7 +9,7 @@ $x = Curl::curl_get_and_getresponse(Constants::OVIRT_API_URL."/vms");
 $xml = simplexml_load_string($x);
 include '/var/www/html/platform/plattemplate/connection.php';
 foreach($xml->vm as $vm){
-	$sql = mysqli_query($connection, "SELECT FOLDER,VMNO FROM backend WHERE PROCESSING='1'");
+	$sql = mysqli_query($connection, "SELECT FOLDER,VMNO FROM backend WHERE COMPLETED='1'");
 	while($row = mysqli_fetch_assoc($sql)){
 		for($i = 0; $i<=$row['VMNO']; $i++){
 			if($vm->name == $row['FOLDER'].$i){
@@ -18,11 +18,20 @@ foreach($xml->vm as $vm){
 				if($result->reason == "Operation Failed"){
 					echo "Failed".$r;
 				}else{
-					echo $r;
+					$f = $row['FOLDER'];
+					$retrieve = mysqli_query($connection, "SELECT BACKUP, VMNO FROM backend WHERE FOLDER='$f'");
+					while($r = mysqli_fetch_assoc($retrieve)){
+						$backup = $r['BACKUP'];
+						$update = mysqli_query($connection, "UPDATE smenu SET $backup='$f'");
+						if($update){
+							echo "Sucessfully Completed Task for : ".$f;
+						}else{
+							echo "Failed to Complete the Task for : ".$f;
+						}
+					}
 				}
 			}			
 		}
 	}
 }
-//echo '<pre>'.$x.'</pre>';
 ?>
