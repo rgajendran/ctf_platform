@@ -13,20 +13,26 @@ foreach($xml->vm as $vm){
 	while($row = mysqli_fetch_assoc($sql)){
 		for($i = 0; $i<=$row['VMNO']; $i++){
 			if($vm->name == $row['FOLDER'].$i){
-				$r = Ovirt::ovirt_create_template_with_vmid($row['FOLDER'], $vm['id']);
+				$r = Ovirt::ovirt_create_template_with_vmid($row['FOLDER'].$i, $vm['id']);
 				$result = simplexml_load_string($r);
 				if($result->reason == "Operation Failed"){
 					echo "Failed".$r;
 				}else{
 					$f = $row['FOLDER'];
-					$retrieve = mysqli_query($connection, "SELECT BACKUP, VMNO FROM backend WHERE FOLDER='$f'");
+					$retrieve = mysqli_query($connection, "SELECT BACKUP, VMNO, SCENARIONAME, CTF FROM backend WHERE FOLDER='$f'");
 					while($r = mysqli_fetch_assoc($retrieve)){
 						$backup = $r['BACKUP'];
-						$update = mysqli_query($connection, "UPDATE smenu SET $backup='$f'");
+						$sce = $r['SCENARIONAME'];
+						$ctf = $r['CTF'];
+						$update = mysqli_query($connection, "UPDATE smenu SET $backup='$f' WHERE TEMP_NAME='$sce'");
 						if($update){
-							echo "Sucessfully Completed Task for : ".$f;
+							if($ctf == "T"){
+								exec('cp '.Constants::SECGEN_URL.'/projects/'.$f.'/marker.xml '.Constants::PROJECT_DIR.'/marker/'.$f.'.xml');
+							}else{
+								echo "Sucessfully Completed Task for : ".$f."\n";
+							}		
 						}else{
-							echo "Failed to Complete the Task for : ".$f;
+							echo "Failed to Complete the Task for : ".$f."\n";
 						}
 					}
 				}
