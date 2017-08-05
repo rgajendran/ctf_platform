@@ -63,7 +63,7 @@ class PlatformDB{
 	
 	public static function checkIfScenarioExists($scenario){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "SELECT TEMP_NAME FROM smenu WHERE TEMP_NAME='$scenario'");
+		$result = mysqli_query($connection, "SELECT TEMP_SCENARIO FROM smenu WHERE TEMP_NAME='$scenario'");
 		if(mysqli_num_rows($result) == 1){
 			return true;
 		}else{
@@ -92,6 +92,27 @@ class PlatformDB{
 		}		
 	}
 	
+	public static function checkIfPlayerPlayedTemplate($snsarray, $template){
+		include '../plattemplate/connection.php';
+		
+		foreach($snsarray as $key => $value){
+			$result = mysqli_query($connection, "SELECT TEMPLATE FROM scenariologger WHERE USERID='$key' AND TEMPLATE='$template'");
+			if(mysqli_num_rows($result) > 0){
+				return false;
+			}else{
+				return true;
+			}                
+		}
+	
+	}
+	
+	public static function smenuGetTemplateByBackupNumber($scenario, $backupno){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT $backupno FROM smenu WHERE TEMP_SCENARIO='$scenario'");
+		while($row = mysqli_fetch_assoc($result)){
+			return $row[$backupno];
+		}
+	}
 }
 
 ?>

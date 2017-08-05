@@ -136,9 +136,9 @@ session_start();
 							    	<select id="scena">
 										<?php
 										include 'plattemplate/connection.php';
-										$result = mysqli_query($connection, "SELECT TEMP_NAME FROM smenu WHERE TYPE='ctf'");
+										$result = mysqli_query($connection, "SELECT TEMP_SCENARIO FROM smenu WHERE TYPE='ctf'");
 										while($row = mysqli_fetch_assoc($result)){
-											$tempname = $row['TEMP_NAME'];
+											$tempname = $row['TEMP_SCENARIO'];
 											echo "<option value='$tempname'>$tempname</option>";
 										}
 										?>

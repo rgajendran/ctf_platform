@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.3
--- Generation Time: Jul 23, 2017 at 01:11 AM
+-- Generation Time: Aug 05, 2017 at 07:25 PM
 -- Server version: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- PHP Version: 5.6.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `backend` (
   `ID` int(11) NOT NULL,
+  `CTF` varchar(1) NOT NULL,
   `SCENARIONAME` varchar(50) NOT NULL,
   `SCENARIO` varchar(50) NOT NULL,
   `PROCESSING` varchar(1) NOT NULL,
@@ -41,9 +42,9 @@ CREATE TABLE `backend` (
 -- Dumping data for table `backend`
 --
 
-INSERT INTO `backend` (`ID`, `SCENARIONAME`, `SCENARIO`, `PROCESSING`, `COMPLETED`, `FOLDER`, `BACKUP`, `VMNO`) VALUES
-(1, 'NS', 'scenarios/ctf/flawed_fortress_1.xml', '1', 0, 'KW4gTCt8BL', 'BACKUP1', 3),
-(2, 'NS2', 'scenarios/default_scenario.xml', '1', 0, 'RaSm5JamGc', 'BACKUP2', 1);
+INSERT INTO `backend` (`ID`, `CTF`, `SCENARIONAME`, `SCENARIO`, `PROCESSING`, `COMPLETED`, `FOLDER`, `BACKUP`, `VMNO`) VALUES
+(1, 'F', 'NS', 'scenarios/ctf/flawed_fortress_1.xml', '1', 0, 'KW4gTCt8BL', 'BACKUP1', 3),
+(2, 'T', 'NS2', 'scenarios/default_scenario.xml', '1', 1, 'ilK5UQ0Pyz', 'BACKUP2', 1);
 
 -- --------------------------------------------------------
 
@@ -213,6 +214,7 @@ INSERT INTO `loginusers` (`ID`, `USERID`, `USERNAME`, `PASSWORD`, `TYPE`) VALUES
 CREATE TABLE `scenariologger` (
   `ID` int(11) NOT NULL,
   `SCENARIO` varchar(50) NOT NULL,
+  `TEMPLATE` varchar(20) NOT NULL,
   `USERID` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -241,9 +243,9 @@ CREATE TABLE `smenu` (
 --
 
 INSERT INTO `smenu` (`ID`, `DIR`, `TYPE`, `TEMPLATE`, `TEMP_SIZE`, `TEMP_NAME`, `TEMP_SCENARIO`, `BACKUP1`, `BACKUP2`, `BACKUP3`, `VMNO`) VALUES
-(1, 'D', 'ctf', 'vagrant-debian7', '1073741824', 'Liverpool', '', '', '', '', 0),
-(2, 'D', 'game', 'vagrant-debian77', '1073741824', 'Edge_Hill', '', '', '', '', 0),
-(3, 'D', 'game', 'KaliLinux', '1073741824', 'Kali_Linux', '', '', '', '', 0);
+(1, 'D', 'ctf', 'vagrant-debian7', '1073741824', 'Liverpool', 'liverpool', '', 'ilK5UQ0Pyz', '', 0),
+(2, 'D', 'game', 'vagrant-debian77', '1073741824', 'Edge_Hill', 'edge_hill', '', 'ilK5UQ0Pyz', '', 0),
+(3, 'D', 'game', 'KaliLinux', '1073741824', 'Kali_Linux', 'kali_linux', '', 'ilK5UQ0Pyz', '', 0);
 
 -- --------------------------------------------------------
 
