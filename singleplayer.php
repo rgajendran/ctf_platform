@@ -35,7 +35,7 @@ error_reporting(E_ALL);
 							include 'plattemplate/connection.php';
 							$result = mysqli_query($connection, "SELECT * FROM smenu");
 							while($row = mysqli_fetch_assoc($result)){
-								$tempname = $row['TEMP_NAME'];
+								$tempname = $row['TEMP_SCENARIO'];
 								echo "<li><a href='singleplayer.php?scenario=$tempname'>$tempname</a>";	
 							}
 							echo "<li><a href='#'>Request SecGen Scenarios</a>";

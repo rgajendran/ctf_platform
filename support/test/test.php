@@ -31,6 +31,13 @@ if(mysqli_num_rows($sql) > 0){
 	exec('');
 }
 
+$arr = array(1 => true, 2 => true, 3 => true);
+$val = array_search(true, $arr);
+if(empty(array_search(true, $arr))){
+	echo "No Match";
+}else{
+	echo "Matched";
+}
 
 
 

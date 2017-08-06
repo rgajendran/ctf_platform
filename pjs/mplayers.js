@@ -83,29 +83,30 @@ $(document).ready(function(){
 
 
 var teamajs = function(){
-	var string = $("#teamsearch").val();
+	var string = $("#searcha").val();
 	$.ajax({
 		method: "POST",
 		url: "plattemplate/findplayers.php",
 		data: {team:"a", val:string},
 		success: function(status){
-			$('#plotsearchteama').empty();
-			$('#plotsearchteamaadd').empty();
+			console.log(status);
+			$('#plotteama').empty();
+			$('#plotteamaadd').empty();
 			var split = status.split('~#~');
 			for(var i=0; i<split.length; i++){
 				var addh3 = document.createElement("p");
 				var text = document.createTextNode(split[i]);
 				addh3.setAttribute("class","splayer");
 				addh3.appendChild(text);				
-				document.getElementById("plotsearchteama").appendChild(addh3);	
+				document.getElementById("plotteama").appendChild(addh3);	
 					
-				if(split[i] != "No user found"){
+				if(split[i] != "No user found" && split[i] != "Type more than 3 characters"){
 					var button = document.createElement("p");
 					var btext = document.createTextNode("+");
 					button.appendChild(btext);
 					button.setAttribute("class","plusbtn");
 					button.setAttribute("onclick","go.execTeamA('"+split[i]+"')");
-					document.getElementById("plotsearchteamaadd").appendChild(button);					
+					document.getElementById("plotteamaadd").appendChild(button);					
 				}			
 			}
 		}
@@ -119,6 +120,7 @@ var teambjs = function(){
 		url: "plattemplate/findplayers.php",
 		data: {team:"b", val:string},
 		success: function(status){
+			console.log(status);
 			$('#plotteamb').empty();
 			$('#plotteambadd').empty();
 			var split = status.split('~#~');
@@ -130,12 +132,14 @@ var teambjs = function(){
 				addh3.appendChild(text);				
 				document.getElementById("plotteamb").appendChild(addh3);
 				
-				var button = document.createElement("p");
-				var btext = document.createTextNode("+");
-				button.appendChild(btext);
-				button.setAttribute("class","plusbtn");
-				button.setAttribute("onclick","go.execTeamB('"+split[i]+"')");
-				document.getElementById("plotteambadd").appendChild(button);						
+				if(split[i] != "No user found" && split[i] != "Type more than 3 characters"){
+					var button = document.createElement("p");
+					var btext = document.createTextNode("+");
+					button.appendChild(btext);
+					button.setAttribute("class","plusbtn");
+					button.setAttribute("onclick","go.execTeamB('"+split[i]+"')");
+					document.getElementById("plotteambadd").appendChild(button);		
+				}				
 			}	
 		}
 	});	

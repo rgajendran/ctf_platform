@@ -12,6 +12,10 @@ class DBV{
 	const login_users_username = 'USERNAME';
 	const login_users_userid = 'USERID';
 	
+	#smenu 
+	const smenu_template1 = 'BACKUP1';
+	const smenu_template2 = 'BACKUP2';
+	const smenu_template3 = 'BACKUP3';
 }
 
 
