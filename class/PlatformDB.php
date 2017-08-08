@@ -63,7 +63,7 @@ class PlatformDB{
 	
 	public static function checkIfScenarioExists($scenario){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "SELECT TEMP_SCENARIO FROM smenu WHERE TEMP_NAME='$scenario'");
+		$result = mysqli_query($connection, "SELECT TEMP_SCENARIO FROM smenu WHERE TEMP_SCENARIO='$scenario'");
 		if(mysqli_num_rows($result) == 1){
 			return true;
 		}else{
@@ -71,10 +71,10 @@ class PlatformDB{
 		}
 	}
 	
-	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $type, $title,$desc){
+	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $template, $teama, $teamb, $type, $title,$desc){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEAM_A, TEAM_B, TYPE, TITLE, DESP) VALUES (
-		'$user','$gameid','$starttime','$endtime','$scenario','$teama','$teamb','$type','$title','$desc')");
+		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEMPLATE, TEAM_A, TEAM_B, TYPE, TITLE, DESP) VALUES (
+		'$user','$gameid','$starttime','$endtime','$scenario','$template','$teama','$teamb','$type','$title','$desc')");
 		if($result){
 			return true;
 		}else{
@@ -108,9 +108,74 @@ class PlatformDB{
 	
 	public static function smenuGetTemplateByBackupNumber($scenario, $backupno){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "SELECT $backupno FROM smenu WHERE TEMP_SCENARIO='$scenario'");
+		$result = mysqli_query($connection, "SELECT ".$backupno." FROM smenu WHERE TEMP_SCENARIO='$scenario'");
 		while($row = mysqli_fetch_assoc($result)){
 			return $row[$backupno];
+		}
+	}
+	
+	public static function create_hint_secgen_table($table){
+		include '../template/connection.php';
+	 	$flagSql = "CREATE TABLE `".$table."_secgenflag` (
+						  `ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+						  `TEAM` int(11) NOT NULL,
+						  `C_ID` varchar(6) NOT NULL,
+						  `STATUS` int(1) NOT NULL,
+						  `VM` varchar(200) NOT NULL,
+						  `IP` text NOT NULL,
+						  `FLAG` text NOT NULL,
+						  `FLAG_POINTS` int(100) NOT NULL
+						) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+						
+		$hintSql = "CREATE TABLE `".$table."_hint` (
+						  `ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+						  `TEAM` int(2) NOT NULL,
+						  `SYSTEM_NAME` varchar(100) NOT NULL,
+						  `C_ID` varchar(10) NOT NULL,
+						  `CHALLENGE` int(5) NOT NULL,
+						  `HINT_STATUS` int(1) NOT NULL,
+						  `HINT_ID` varchar(100) NOT NULL,
+						  `HINT_TYPE` varchar(100) NOT NULL,
+						  `HINT_TEXT` text NOT NULL
+						) ENGINE=InnoDB DEFAULT CHARSET=latin1;";			
+						
+		$result = mysqli_query($connection, $flagSql);
+		if($result){
+			$r = mysqli_query($connection, $hintSql);
+			if($r){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}				
+	}
+	
+	public static function delete_hint_secgen_table($table){
+		include '../template/connection.php';
+		mysqli_query($connection, "DROP TABLE IF EXISTS $table_secgenflag");
+		mysqli_query($connection, "DROP TABLE IF EXISTS $table_hint");
+	}
+	
+	public static function insert_recreate_vm_usingbackendtable($scenario, $scenario_path, $CTF, $backupno){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "INSERT INTO backend (CTF, SCENARIONAME, SCENARIO, PROCESSING, COMPLETED, BACKUP) VALUES ('$CTF',
+		'$scenario','$scenario_path','0','0','$backupno')");
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static function check_backend_progress($scenario, $backupno){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT SCENARIONAME FROM backend WHERE SCENARIONAME='$scenario' AND BACKUP='$backupno'");
+		if(mysqli_num_rows($result) > 0){
+			return false;
+		}else{
+			return true;
 		}
 	}
 }

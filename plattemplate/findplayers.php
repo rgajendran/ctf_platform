@@ -75,6 +75,7 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 	$teama = Validator::PregAlphaNumericUnderScoreSpace($_POST['teama']);
 	$teamb = Validator::PregAlphaNumericUnderScoreSpace($_POST['teamb']);
 	$gametype = $_POST['gametype'];
+	$gameid = randomTokenNstatic();
 	if(Validator::StringLength(2, 20, $title)){
 	   if(Validator::StringLength(2, 200, $desc)) {
 			if(Validator::StringLength(5, 15, $teama)){
@@ -90,13 +91,13 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 											if(count($_SESSION[$avsession[0]]) >= 3 && count($_SESSION[$avsession[1]]) >= 3){
 												if(count($_SESSION[$avsession[0]]) == count($_SESSION[$avsession[1]])){
 													//STEP AA check scenario has been used by user
-													$back1 = PlatformDB::checkIfPlayerPlayedTemplate(array_merge($_SESSION[$avsession[0]],$_SESSION[$avsession[1]]), PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1));
+													$back1 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1));
 													$back1temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1);
 
-													$back2 = PlatformDB::checkIfPlayerPlayedTemplate(array_merge($_SESSION[$avsession[0]],$_SESSION[$avsession[1]]), PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2));
+													$back2 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2));
 													$back2temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2);		
 													
-													$back3 = PlatformDB::checkIfPlayerPlayedTemplate(array_merge($_SESSION[$avsession[0]],$_SESSION[$avsession[1]]), PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3));
+													$back3 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3));
 													$back3temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3);	
 													$checkbackup = array(1 => $back1, 2 => $back2, 3 => $back3);
 													$arraysearch = array_search(true, $checkbackup);
@@ -112,56 +113,94 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 																$temp = $back3temp;
 																break;		
 														}
-														$gameid = randomTokenNstatic();
 														if(PlatformDB::authorizeGameId($gameid)){
 															$c = new Creditional();
 															include '../plattemplate/connection.php';
-															if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $temp, $teama, $teamb, $gametype, $title, $desc)){
-																//STEP AS MODIFY START
-																$errA = 0;
-																$errB = 0;
-																for($i = 0; $i<count($avsession); $i++){
-																	foreach($_SESSION[$avsession[$i]] as $key=>$value){
-																		if($value == $c->getUsername()){
-																			$pstat = 1;
-																		}else{
-																			$pstat = 0;
-																		}
-																		if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
-																			$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																			'$gameid','$teama','$key','$pstat','NA')");	
-																			if($sql){
-																				$errA++;
+															if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $teama, $teamb, $gametype, $title, $desc)){																
+																if(PlatformDB::create_hint_secgen_table($gameid)){ //create hint and secgenflag table
+																															
+																		//STEP AS MODIFY START
+																		$errA = 0;
+																		$errB = 0;
+																		for($i = 0; $i<count($avsession); $i++){
+																			foreach($_SESSION[$avsession[$i]] as $key=>$value){
+																				if($value == $c->getUsername()){
+																					$pstat = 1;
+																				}else{
+																					$pstat = 0;
+																				}
+																				if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
+																					$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																					'$gameid','$teama','$key','$pstat','NA')");	
+																					if($sql){
+																						$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
+																						if($res){
+																							$errA++;																							
+																						}
+																					}
+																				}else{
+																					$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																					'$gameid','$teamb','$key','$pstat','NA')");		
+																					if($sql){
+																						$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
+																						if($res){
+																							$errB++;
+																						}
+																					}															
+																				}
 																			}
-																		}else{
-																			$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																			'$gameid','$teamb','$key','$pstat','NA')");		
-																			if($sql){
-																				$errB++;
-																			}															
 																		}
-																	}
-																}
-																if(count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) == $errA && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) == $errB){
-																	validateOutput("success","Successfully Game Created");
+																		if(count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) == $errA && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) == $errB){
+																			validateOutput("success","Successfully Game Created");
+																		}else{
+																			$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
+																			if($sql){
+																				$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
+																				if($dsql){
+																					validateOutput("error","Game creation failed");
+																				}else{
+																					validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
+																				}
+																			}else{
+																				validateOutput("error", "Technical Error");
+																			}
+																		}
+																		//STEP AS MODIFY END																	
 																}else{
-																	$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
-																	if($sql){
-																		validateOutput("error","Game creation failed");
-																	}else{
-																		validateOutput("error", "Technical Error");
-																	}
+																	PlatformDB::delete_hint_secgen_table($gameid);
+																	validate("error","Technical Error, Try again or complain with the error code".Constants::ERROR_CODE_3015);
 																}
-																//STEP AS MODIFY END
 															}else{
-																validateOutput("error","Unable to insert data, Try again or complain with error code");
+																validateOutput("error","Unable to insert data, Try again or complain with the error code");
 															}												
 														}else{
 															validateOutput("error","Technical Error, Try again");
 														}														
 													}else{
-														validateOutput("error", "Your scenario is being generated, try again later or choose different scenario");
 														//insert into backend table
+														if(!empty(array_search(false, $checkbackup))){
+															foreach(array_keys($checkbackup, false) as $keys){
+																$getVals = "BACKUP".$keys;
+																if(PlatformDB::check_backend_progress($scenario, $getVals)){
+																	if(PlatformDB::insert_recreate_vm_usingbackendtable($scenario, "scenario/ctf/".$scenario, "T", $getVals)){
+																		$out = "T";
+																	}else{
+																		$out = "F";
+																	}																	
+																}else{
+																	$out = "FT";
+																}
+															}
+															if($out == "T"){
+																validateOutput("success", "Your scenario is being generated, try again later or choose different scenario");	
+															}else if($out == "F"){
+																validateOutput("error", "Your scenario generation failed, try again later or choose different scenario");
+															}else if($out == "FT"){
+																validateOutput("success", "Your new scenario generation is in queue, Please wait");
+															}
+														}else{
+															validateOutput("error", "Technical Error, try again later or complain with error code :".Constants::ERROR_CODE_3017);
+														}
 													}																							
 													//END AA
 												}else{

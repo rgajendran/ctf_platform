@@ -52,6 +52,7 @@ $(document).ready(function(){
 			url: "plattemplate/findplayers.php",
 			data: {title:title, desc:desc, starttime:starttime, endtime:endtime, scenario:scenario, teama:teama, teamb:teamb, gametype:gametype},
 			success: function(status){
+				console.log(status);
 				var split = status.split("#*#");
 				switch(split[0]){
 					case "error":
