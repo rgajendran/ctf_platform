@@ -33,46 +33,48 @@ foreach(array_keys($arr, true) as $keys){
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-include '/var/www/html/platform/plattemplate/connection.php';
 
-require '../../class/PlatformDB.php';
-require '../../class/Constants.php';
-require '../../class/DBV.php';
+$team = 2;
+$filename = "marker";
+$tablename = "tSSWhEdPtz";
 
-session_start();
-$avsession = array(Constants::SESSION_CREATEGAME_TEAMA, Constants::SESSION_CREATEGAME_TEAMB);
-/*if(PlatformDB::checkIfPlayerPlayedTemplate(array_merge($_SESSION[$avsession[0]],$_SESSION[$avsession[1]]), PlatformDB::smenuGetTemplateByBackupNumber('liverpool', DBV::smenu_template1))){
-	echo "True";
+include '../../template/connection.php';
+if(file_exists("../../marker/".$filename.".xml")){
+	$xml = simplexml_load_file("../../marker/".$filename.".xml");
+	for($i = 1; $i<=$team; $i++){
+		foreach($xml->system as $system){
+			$count = count($system->challenge);
+			$q = mysqli_query($connection, "SELECT C_ID FROM secgen WHERE C_NO='$count'");
+			$chall = 0;
+			foreach($system->challenge as $challenge){
+				$chall++;
+				$num = 0;		
+				foreach(mysqli_fetch_assoc($q) as $cid){
+					$secgenflag = mysqli_query($connection,"INSERT INTO ".$tablename."_secgenflag (TEAM, C_ID, STATUS, VM, IP, FLAG, FLAG_POINTS) VALUES('$i', '$cid', '0', '$system->system_name', 
+					'$system->platform', '$challenge->flag','100')");
+					if($secgenflag){
+						foreach($challenge->hint as $hint){
+							$num++;
+							$randomKey = strtoupper(md5(bin2hex(openssl_random_pseudo_bytes(16)).time()));
+							$hintText = addslashes($hint->hint_text);
+							$hint_update = mysqli_query($connection, "INSERT INTO ".$tablename."_hint (TEAM, SYSTEM_NAME, C_ID, CHALLENGE, HINT_STATUS, HINT_ID, HINT_TYPE, HINT_TEXT) VALUES 
+							('$i','$system->system_name','$cid','$chall','0','$hint->hint_id','$hint->hint_type','$hintText')");
+							if(!$hint_update){
+								echo mysqli_error($connection);
+							}			
+						}
+					}else{
+						echo "Error 2";
+					}		
+
+				}
+			}
+		}				
+	}
+	echo "Success 3";
 }else{
-	echo "False";
-}*/
-
-//echo PlatformDB::checkIfPlayerPlayedTemplate(array_merge($_SESSION[$avsession[0]],$_SESSION[$avsession[1]]), PlatformDB::smenuGetTemplateByBackupNumber('liverpool', DBV::smenu_template1));
-
-//echo "<br>".PlatformDB::smenuGetTemplateByBackupNumber('liverpool', DBV::smenu_template1)."<br>";
-
-$template = "ilK5UQ0Pya";
-$snsarray = $_SESSION['teama']+$_SESSION['teamb'];
-
-
-foreach($snsarray as $key => $value){
-	$result = mysqli_query($connection, "SELECT TEMPLATE FROM scenariologger WHERE USERID='$key' AND TEMPLATE='$template'");
-	if(mysqli_num_rows($result) == 0){
-		echo $key."<br>";
-	}else{
-		echo $key."<br>";
-	}                
+	echo "Error 3";
 }
-
-print_r($snsarray);
-
-
-
-
-
-
-
-
 
 
 

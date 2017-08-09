@@ -154,8 +154,8 @@ class PlatformDB{
 	
 	public static function delete_hint_secgen_table($table){
 		include '../template/connection.php';
-		mysqli_query($connection, "DROP TABLE IF EXISTS $table_secgenflag");
-		mysqli_query($connection, "DROP TABLE IF EXISTS $table_hint");
+		mysqli_query($connection, "DROP TABLE IF EXISTS ".$table."_secgenflag");
+		mysqli_query($connection, "DROP TABLE IF EXISTS ".$table."_hint");
 	}
 	
 	public static function insert_recreate_vm_usingbackendtable($scenario, $scenario_path, $CTF, $backupno){
@@ -177,6 +177,47 @@ class PlatformDB{
 		}else{
 			return true;
 		}
+	}
+	
+	public static function insert_hint_and_secgenflag_data($filename, $tablename, $team){
+		include '../template/connection.php';
+		if(file_exists("../marker/".$filename.".xml")){
+			$xml = simplexml_load_file("../marker/".$filename.".xml");
+			for($i = 1; $i<=$team; $i++){
+				foreach($xml->system as $system){
+					$count = count($system->challenge);
+					$q = mysqli_query($connection, "SELECT C_ID FROM secgen WHERE C_NO='$count'");
+					$chall = 0;
+					foreach($system->challenge as $challenge){
+						$chall++;
+						$num = 0;		
+						foreach(mysqli_fetch_assoc($q) as $cid){
+							$secgenflag = mysqli_query($connection,"INSERT INTO ".$tablename."_secgenflag (TEAM, C_ID, STATUS, VM, IP, FLAG, FLAG_POINTS) VALUES('$i', '$cid', '0', '$system->system_name', 
+							'$system->platform', '$challenge->flag','100')");
+							if($secgenflag){
+								foreach($challenge->hint as $hint){
+									$num++;
+									$randomKey = strtoupper(md5(bin2hex(openssl_random_pseudo_bytes(16)).time()));
+									$hintText = addslashes($hint->hint_text);
+									$hint_update = mysqli_query($connection, "INSERT INTO ".$tablename."_hint (TEAM, SYSTEM_NAME, C_ID, CHALLENGE, HINT_STATUS, HINT_ID, HINT_TYPE, HINT_TEXT) VALUES 
+									('$i','$system->system_name','$cid','$chall','0','$hint->hint_id','$hint->hint_type','$hintText')");
+									if(!$hint_update){
+										return false;
+									}			
+								}
+							}else{
+								return false;
+							}		
+		
+						}
+					}
+				}				
+			}
+			return true;
+		}else{
+			return false;
+		}
+
 	}
 }
 

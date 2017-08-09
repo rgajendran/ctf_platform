@@ -65,190 +65,6 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 		unset($_SESSION[Constants::SESSION_CREATETEAM][array_search($username, $_SESSION[Constants::SESSION_CREATETEAM])]);
 		sessionOutput("success", implode("~#~", $_SESSION[Constants::SESSION_CREATETEAM]));
 	}
-}else if(isset($_POST['title']) && isset($_POST['desc']) && isset($_POST['starttime']) && isset($_POST['endtime']) && 
-isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) && isset($_POST['gametype'])){
-	$title = Validator::PregAlphaNumericUnderScoreSpace($_POST['title']);
-	$desc = Validator::PregAlphaNumericUnderScoreSpace($_POST['desc']);
-	$starttime = $_POST['starttime'];
-	$endtime = $_POST['endtime'];
-	$scenario = Validator::PregAlphaNumericUnderScoreSpace($_POST['scenario']);
-	$teama = Validator::PregAlphaNumericUnderScoreSpace($_POST['teama']);
-	$teamb = Validator::PregAlphaNumericUnderScoreSpace($_POST['teamb']);
-	$gametype = $_POST['gametype'];
-	$gameid = randomTokenNstatic();
-	if(Validator::StringLength(2, 20, $title)){
-	   if(Validator::StringLength(2, 200, $desc)) {
-			if(Validator::StringLength(5, 15, $teama)){
-				if(Validator::StringLength(5, 15, $teamb)){
-					if(Validator::validateDate($starttime)){
-						if(Validator::validateDate($endtime)){
-							if(PlatformDB::checkIfScenarioExists($scenario)){
-								if(in_array($gametype, $allow = array(Constants::FP_GAME_TYPE_CLOSED,Constants::FP_GAME_TYPE_OPENFORALL))){
-									switch($gametype){
-										case Constants::FP_GAME_TYPE_CLOSED:
-											session_start();
-											$avsession = array(Constants::SESSION_CREATEGAME_TEAMA, Constants::SESSION_CREATEGAME_TEAMB);
-											if(count($_SESSION[$avsession[0]]) >= 3 && count($_SESSION[$avsession[1]]) >= 3){
-												if(count($_SESSION[$avsession[0]]) == count($_SESSION[$avsession[1]])){
-													//STEP AA check scenario has been used by user
-													$back1 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1));
-													$back1temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1);
-
-													$back2 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2));
-													$back2temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2);		
-													
-													$back3 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3));
-													$back3temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3);	
-													$checkbackup = array(1 => $back1, 2 => $back2, 3 => $back3);
-													$arraysearch = array_search(true, $checkbackup);
-													if(!empty($arraysearch)){
-														switch($arraysearch){
-															case 1:
-																$temp = $back1temp;
-																break;
-															case 2:
-																$temp = $back2temp;
-																break;
-															case 3:
-																$temp = $back3temp;
-																break;		
-														}
-														if(PlatformDB::authorizeGameId($gameid)){
-															$c = new Creditional();
-															include '../plattemplate/connection.php';
-															if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $teama, $teamb, $gametype, $title, $desc)){																
-																if(PlatformDB::create_hint_secgen_table($gameid)){ //create hint and secgenflag table
-																															
-																		//STEP AS MODIFY START
-																		$errA = 0;
-																		$errB = 0;
-																		for($i = 0; $i<count($avsession); $i++){
-																			foreach($_SESSION[$avsession[$i]] as $key=>$value){
-																				if($value == $c->getUsername()){
-																					$pstat = 1;
-																				}else{
-																					$pstat = 0;
-																				}
-																				if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
-																					$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																					'$gameid','$teama','$key','$pstat','NA')");	
-																					if($sql){
-																						$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
-																						if($res){
-																							$errA++;																							
-																						}
-																					}
-																				}else{
-																					$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																					'$gameid','$teamb','$key','$pstat','NA')");		
-																					if($sql){
-																						$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
-																						if($res){
-																							$errB++;
-																						}
-																					}															
-																				}
-																			}
-																		}
-																		if(count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) == $errA && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) == $errB){
-																			validateOutput("success","Successfully Game Created");
-																		}else{
-																			$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
-																			if($sql){
-																				$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
-																				if($dsql){
-																					validateOutput("error","Game creation failed");
-																				}else{
-																					validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
-																				}
-																			}else{
-																				validateOutput("error", "Technical Error");
-																			}
-																		}
-																		//STEP AS MODIFY END																	
-																}else{
-																	PlatformDB::delete_hint_secgen_table($gameid);
-																	validate("error","Technical Error, Try again or complain with the error code".Constants::ERROR_CODE_3015);
-																}
-															}else{
-																validateOutput("error","Unable to insert data, Try again or complain with the error code");
-															}												
-														}else{
-															validateOutput("error","Technical Error, Try again");
-														}														
-													}else{
-														//insert into backend table
-														if(!empty(array_search(false, $checkbackup))){
-															foreach(array_keys($checkbackup, false) as $keys){
-																$getVals = "BACKUP".$keys;
-																if(PlatformDB::check_backend_progress($scenario, $getVals)){
-																	if(PlatformDB::insert_recreate_vm_usingbackendtable($scenario, "scenario/ctf/".$scenario, "T", $getVals)){
-																		$out = "T";
-																	}else{
-																		$out = "F";
-																	}																	
-																}else{
-																	$out = "FT";
-																}
-															}
-															if($out == "T"){
-																validateOutput("success", "Your scenario is being generated, try again later or choose different scenario");	
-															}else if($out == "F"){
-																validateOutput("error", "Your scenario generation failed, try again later or choose different scenario");
-															}else if($out == "FT"){
-																validateOutput("success", "Your new scenario generation is in queue, Please wait");
-															}
-														}else{
-															validateOutput("error", "Technical Error, try again later or complain with error code :".Constants::ERROR_CODE_3017);
-														}
-													}																							
-													//END AA
-												}else{
-													validateOutput("error", "Both the teams needs to have same number of players");
-												}												
-											}else{
-												validateOutput("error", "Team needs to have 3 or more players");
-											}
-											break;
-										
-										case Constants::FP_GAME_TYPE_OPENFORALL:
-											$gameid = randomTokenNstatic();
-											if(PlatformDB::authorizeGameId($gameid)){
-												$c = new Creditional();
-												if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
-													validateOutput("success","Successfully Game Created");
-												}else{
-													validateOutput("error","Unable to insert data, Try again or complain with error code");
-												}
-											}else{
-												validateOutput("error","Technical Error, Try again");
-											}
-											break;	
-									}									
-								}else{
-									validateOutput("error", Constants::ERROR_EXESP_INVALID_REQUEST);
-								}
-							}else{
-								validateOutput("error", Constants::ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO.Constants::ERROR_CODE_3014);
-							}
-						}else{
-							validateOutput("error","Invalid Time Set");
-						}
-					}else{
-						validateOutput("error","Invalid Time Set");
-					}
-				}else{
-					validateOutput("error", PlatformValidator::lengthLimitError(5, 15, "Team B", Constants::ERROR_CODE_3013));	
-				}
-			}else{
-				validateOutput("error", PlatformValidator::lengthLimitError(5, 15, "Team A", Constants::ERROR_CODE_3013));	
-			}
-	   }else{
-	   	  validateOutput("error", PlatformValidator::lengthLimitError(2, 200, "Description", Constants::ERROR_CODE_3013));
-	   }
-	}else{
-		validateOutput("error", PlatformValidator::lengthLimitError(2, 20, "Title", Constants::ERROR_CODE_3013));
-	}
 }else if(isset($_POST['gameid'])){
 	include '../plattemplate/connection.php';
 	$gameId = Validator::PregAlphaNumeric($_POST['gameid']);
@@ -301,6 +117,194 @@ isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) &&
 		}else{
 			validateOutput("error", "Team name should be between 4 to 15 characters");
 		}
+	}
+}else if(isset($_POST['title']) && isset($_POST['desc']) && isset($_POST['starttime']) && isset($_POST['endtime']) && isset($_POST['scenario']) && isset($_POST['teama']) && isset($_POST['teamb']) && isset($_POST['gametype'])){
+	$title = Validator::PregAlphaNumericUnderScoreSpace($_POST['title']);
+	$desc = Validator::PregAlphaNumericUnderScoreSpace($_POST['desc']);
+	$starttime = $_POST['starttime'];
+	$endtime = $_POST['endtime'];
+	$scenario = Validator::PregAlphaNumericUnderScoreSpace($_POST['scenario']);
+	$teama = Validator::PregAlphaNumericUnderScoreSpace($_POST['teama']);
+	$teamb = Validator::PregAlphaNumericUnderScoreSpace($_POST['teamb']);
+	$gametype = $_POST['gametype'];
+	$gameid = randomTokenNstatic();
+	if(Validator::StringLength(2, 20, $title)){
+	   if(Validator::StringLength(2, 200, $desc)) {
+			if(Validator::StringLength(5, 15, $teama)){
+				if(Validator::StringLength(5, 15, $teamb)){
+					if(Validator::validateDate($starttime)){
+						if(Validator::validateDate($endtime)){
+							if(PlatformDB::checkIfScenarioExists($scenario)){
+								if(in_array($gametype, $allow = array(Constants::FP_GAME_TYPE_CLOSED,Constants::FP_GAME_TYPE_OPENFORALL))){
+									switch($gametype){
+										case Constants::FP_GAME_TYPE_CLOSED:
+											session_start();
+											$avsession = array(Constants::SESSION_CREATEGAME_TEAMA, Constants::SESSION_CREATEGAME_TEAMB);
+											if(count($_SESSION[$avsession[0]]) >= 3 && count($_SESSION[$avsession[1]]) >= 3){
+												if(count($_SESSION[$avsession[0]]) == count($_SESSION[$avsession[1]])){
+													//STEP AA check scenario has been used by user
+													$back1 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1));
+													$back1temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template1);
+
+													$back2 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2));
+													$back2temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template2);		
+													
+													$back3 = PlatformDB::checkIfPlayerPlayedTemplate($_SESSION[$avsession[0]]+$_SESSION[$avsession[1]], PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3));
+													$back3temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, DBV::smenu_template3);	
+													$checkbackup = array(1 => $back1, 2 => $back2, 3 => $back3);
+													$arraysearch = array_search(true, $checkbackup);
+													if(!empty($arraysearch)){
+														switch($arraysearch){
+															case 1:
+																$temp = $back1temp;
+																break;
+															case 2:
+																$temp = $back2temp;
+																break;
+															case 3:
+																$temp = $back3temp;
+																break;		
+														}
+														if(PlatformDB::authorizeGameId($gameid)){
+															$c = new Creditional();
+															include '../plattemplate/connection.php';
+															if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $teama, $teamb, $gametype, $title, $desc)){																
+																if(PlatformDB::create_hint_secgen_table($gameid)){ //create hint and secgenflag table
+																		if(PlatformDB::insert_hint_and_secgenflag_data("marker", $gameid, 2)){	//import hint and flags												
+																			//STEP AS MODIFY START
+																			$errA = 0;
+																			$errB = 0;
+																			for($i = 0; $i<count($avsession); $i++){
+																				foreach($_SESSION[$avsession[$i]] as $key=>$value){
+																					if($value == $c->getUsername()){
+																						$pstat = 1;
+																					}else{
+																						$pstat = 0;
+																					}
+																					if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
+																						$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																						'$gameid','$teama','$key','$pstat','NA')");	
+																						if($sql){
+																							$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
+																							if($res){
+																								$errA++;																							
+																							}
+																						}
+																					}else{
+																						$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																						'$gameid','$teamb','$key','$pstat','NA')");		
+																						if($sql){
+																							$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
+																							if($res){
+																								$errB++;
+																							}
+																						}															
+																					}
+																				}
+																			}
+																			if(count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) == $errA && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) == $errB){
+																				validateOutput("success","Successfully Game Created");
+																				unset($_SESSION[$avsession[0]]);
+																				unset($_SESSION[$avsession[1]]);
+																			}else{
+																				$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
+																				if($sql){
+																					$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
+																					if($dsql){
+																						validateOutput("error","Game creation failed");
+																					}else{
+																						validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
+																					}
+																				}else{
+																					validateOutput("error", "Technical Error");
+																				}
+																			}
+																			//STEP AS MODIFY END	
+																		}else{
+																			PlatformDB::delete_hint_secgen_table($gameid);
+																			validateOutput("error","Technical Error, Try again or complain with the error code".Constants::ERROR_CODE_3018);
+																		}																
+																}else{
+																	PlatformDB::delete_hint_secgen_table($gameid);
+																	validateOutput("error","Technical Error, Try again or complain with the error code".Constants::ERROR_CODE_3015);
+																}
+															}else{
+																validateOutput("error","Unable to insert data, Try again or complain with the error code");
+															}												
+														}else{
+															validateOutput("error","Technical Error, Try again");
+														}														
+													}else{
+														//insert into backend table
+														if(!empty(array_search(false, $checkbackup))){
+															foreach(array_keys($checkbackup, false) as $keys){
+																$getVals = "BACKUP".$keys;
+																if(PlatformDB::check_backend_progress($scenario, $getVals)){
+																	if(PlatformDB::insert_recreate_vm_usingbackendtable($scenario, "scenario/ctf/".$scenario, "T", $getVals)){
+																		$out = "T";
+																	}else{
+																		$out = "F";
+																	}																	
+																}else{
+																	$out = "FT";
+																}
+															}
+															if($out == "T"){
+																validateOutput("success", "Your scenario is being generated, try again later or choose different scenario");	
+															}else if($out == "F"){
+																validateOutput("error", "Your scenario generation failed, try again later or choose different scenario");
+															}else if($out == "FT"){
+																validateOutput("warn", "Your new scenario generation is in queue, Please wait");
+															}
+														}else{
+															validateOutput("error", "Technical Error, try again later or complain with error code :".Constants::ERROR_CODE_3017);
+														}
+													}																							
+													//END AA
+												}else{
+													validateOutput("error", "Both the teams needs to have same number of players");
+												}												
+											}else{
+												validateOutput("error", "Team needs to have 3 or more players");
+											}
+											break;
+										
+										case Constants::FP_GAME_TYPE_OPENFORALL:
+											if(PlatformDB::authorizeGameId($gameid)){
+												$c = new Creditional();
+												if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
+													validateOutput("success","Successfully Game Created");
+												}else{
+													validateOutput("error","Unable to insert data, Try again or complain with error code");
+												}
+											}else{
+												validateOutput("error","Technical Error, Try again");
+											}
+											break;	
+									}									
+								}else{
+									validateOutput("error", Constants::ERROR_EXESP_INVALID_REQUEST);
+								}
+							}else{
+								validateOutput("error", Constants::ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO.Constants::ERROR_CODE_3014);
+							}
+						}else{
+							validateOutput("error","Invalid Time Set");
+						}
+					}else{
+						validateOutput("error","Invalid Time Set");
+					}
+				}else{
+					validateOutput("error", PlatformValidator::lengthLimitError(5, 15, "Team B", Constants::ERROR_CODE_3013));	
+				}
+			}else{
+				validateOutput("error", PlatformValidator::lengthLimitError(5, 15, "Team A", Constants::ERROR_CODE_3013));	
+			}
+	   }else{
+	   	  validateOutput("error", PlatformValidator::lengthLimitError(2, 200, "Description", Constants::ERROR_CODE_3013));
+	   }
+	}else{
+		validateOutput("error", PlatformValidator::lengthLimitError(2, 20, "Title", Constants::ERROR_CODE_3013));
 	}
 }
 

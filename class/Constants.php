@@ -65,6 +65,7 @@ const ERROR_CODE_3014 = ' [3014]';                                              
 const ERROR_CODE_3015 = ' [3015]';                                                      # findplayer unable to delete hint or secgenflag table   [CRITICAL]
 const ERROR_CODE_3016 = ' [3016]';                                                      # findplayer unable to delete scenariologger             [CRITICAL]
 const ERROR_CODE_3017 = ' [3017]';                                                      # findplayer used template detection error               [LOW]
+const ERROR_CODE_3018 = ' [3018]';                                                      # findplayer unable to insert hint or secgenflag data    [CRITICAL]
 }
 
 ?>

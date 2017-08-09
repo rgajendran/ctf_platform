@@ -62,6 +62,10 @@ $(document).ready(function(){
 					case "success":
 						$.notify(split[1],{position:"bottom center", className:"success"});
 					break;
+					
+					case "warn":
+						$.notify(split[1],{position:"bottom center", className:"warn"});
+					break;					
 				}
 			}	
 		});
