@@ -66,6 +66,7 @@ const ERROR_CODE_3015 = ' [3015]';                                              
 const ERROR_CODE_3016 = ' [3016]';                                                      # findplayer unable to delete scenariologger             [CRITICAL]
 const ERROR_CODE_3017 = ' [3017]';                                                      # findplayer used template detection error               [LOW]
 const ERROR_CODE_3018 = ' [3018]';                                                      # findplayer unable to insert hint or secgenflag data    [CRITICAL]
+const ERROR_CODE_3019 = ' [3019]';                                                      # findplayer unable to delete scoreboard or team         [CRITICAL]
 }
 
 ?>

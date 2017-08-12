@@ -219,6 +219,48 @@ class PlatformDB{
 		}
 
 	}
+
+	public static function insert_scoreboard_team($gameid, $team1, $team2){
+		include '../template/connection.php';
+		$team = array($team1, $team2);
+		for($i = 1; $i<=2; $i++){
+			$result = mysqli_query($connection, "INSERT INTO team (GAMEID, TEAM, TEAMNAME) VALUES ('$gameid','$i','".$team[$i-1]."')");
+			if(!$result){
+				return false;
+			}else{
+				$res = mysqli_query($connection, "INSERT INTO scoreboard (GAMEID, TEAM, TEAMNAME, SCORE, PENALTY) VALUES ('$gameid','$i','".$team[$i-1]."','0','0')");
+				if(!$res){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public static function delete_scoreboard_team($gameid){
+		include '../template/connection.php';
+		$result = mysqli_query($connection, "DELETE * FROM scoreboard WHERE GAMEID='$gameid'");
+		if($result){
+			$team= mysqli_query($connection, "DELETE * FROM team WHERE GAMEID='$gameid'");
+			if($team){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	
+	public static function insert_updater($team, $gameid, $userid){
+		include '../template/connection.php';
+		$update = mysqli_query($connection, "INSERT INTO updater (TEAM, GAMEID, USERID) VALUES ('$team','$gameid','$userid')");
+		if($update){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
 
 ?>

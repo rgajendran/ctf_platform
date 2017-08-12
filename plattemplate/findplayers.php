@@ -140,6 +140,10 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 										case Constants::FP_GAME_TYPE_CLOSED:
 											session_start();
 											$avsession = array(Constants::SESSION_CREATEGAME_TEAMA, Constants::SESSION_CREATEGAME_TEAMB);
+											if(!isset($_SESSION[$avsession[0]]) && !isset($_SESSION[$avsession[1]])){
+												$_SESSION[$avsession[0]] = array();
+												$_SESSION[$avsession[1]] = array();
+											}
 											if(count($_SESSION[$avsession[0]]) >= 3 && count($_SESSION[$avsession[1]]) >= 3){
 												if(count($_SESSION[$avsession[0]]) == count($_SESSION[$avsession[1]])){
 													//STEP AA check scenario has been used by user
@@ -170,56 +174,66 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 															include '../plattemplate/connection.php';
 															if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $teama, $teamb, $gametype, $title, $desc)){																
 																if(PlatformDB::create_hint_secgen_table($gameid)){ //create hint and secgenflag table
-																		if(PlatformDB::insert_hint_and_secgenflag_data("marker", $gameid, 2)){	//import hint and flags												
-																			//STEP AS MODIFY START
-																			$errA = 0;
-																			$errB = 0;
-																			for($i = 0; $i<count($avsession); $i++){
-																				foreach($_SESSION[$avsession[$i]] as $key=>$value){
-																					if($value == $c->getUsername()){
-																						$pstat = 1;
-																					}else{
-																						$pstat = 0;
-																					}
-																					if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
-																						$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																						'$gameid','$teama','$key','$pstat','NA')");	
-																						if($sql){
-																							$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
-																							if($res){
-																								$errA++;																							
+																		if(PlatformDB::insert_hint_and_secgenflag_data("marker", $gameid, 2)){	//import hint and flags
+																			if(PlatformDB::insert_scoreboard_team($gameid, $teama, $teamb)){
+																				//STEP AS MODIFY START
+																				$errA = 0;
+																				$errB = 0;
+																				for($i = 0; $i<count($avsession); $i++){
+																					foreach($_SESSION[$avsession[$i]] as $key=>$value){
+																						if($value == $c->getUsername()){
+																							$pstat = 1;
+																						}else{
+																							$pstat = 0;
+																						}
+																						if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
+																							$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																							'$gameid','$teama','$key','$pstat','NA')");	
+																							if($sql){
+																								$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
+																								if($res){
+																									if(PlatformDB::insert_updater(1, $gameid, $key)){
+																										$errA++;																											
+																									}																						
+																								}
 																							}
+																						}else{
+																							$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																							'$gameid','$teamb','$key','$pstat','NA')");		
+																							if($sql){
+																								$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
+																								if($res){
+																									if(PlatformDB::insert_updater(2, $gameid, $key)){																									
+																										$errB++;
+																									}
+																								}
+																							}															
+																						}
+																					}
+																				}
+																				if(count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) == $errA && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) == $errB){
+																					validateOutput("success","Successfully Game Created");
+																					unset($_SESSION[$avsession[0]]);
+																					unset($_SESSION[$avsession[1]]);
+																				}else{
+																					$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
+																					if($sql){
+																						$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
+																						if($dsql){
+																							validateOutput("error","Game creation failed");
+																						}else{
+																							validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
 																						}
 																					}else{
-																						$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																						'$gameid','$teamb','$key','$pstat','NA')");		
-																						if($sql){
-																							$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
-																							if($res){
-																								$errB++;
-																							}
-																						}															
+																						validateOutput("error", "Technical Error");
 																					}
 																				}
-																			}
-																			if(count($_SESSION[Constants::SESSION_CREATEGAME_TEAMA]) == $errA && count($_SESSION[Constants::SESSION_CREATEGAME_TEAMB]) == $errB){
-																				validateOutput("success","Successfully Game Created");
-																				unset($_SESSION[$avsession[0]]);
-																				unset($_SESSION[$avsession[1]]);
+																				//STEP AS MODIFY END																					
 																			}else{
-																				$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
-																				if($sql){
-																					$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
-																					if($dsql){
-																						validateOutput("error","Game creation failed");
-																					}else{
-																						validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
-																					}
-																				}else{
-																					validateOutput("error", "Technical Error");
-																				}
-																			}
-																			//STEP AS MODIFY END	
+																				PlatformDB::delete_scoreboard_team($gameid);
+																				validateOutput("error","Technical Error, Try again or complain with the error code".Constants::ERROR_CODE_3019);
+																			}												
+																			
 																		}else{
 																			PlatformDB::delete_hint_secgen_table($gameid);
 																			validateOutput("error","Technical Error, Try again or complain with the error code".Constants::ERROR_CODE_3018);
