@@ -3,6 +3,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
+if(isset($_SESSION['USERID'])){
+	require 'class/PlatformDB.php';
+	$gameid = PlatformDB::set_gameid_insession($_SESSION['USERID']);
+	$_SESSION['GAMEID'] = $gameid[0];
+	$_SESSION['TEAM'] = $gameid[1]; 
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -339,7 +345,7 @@ session_start();
 						  	}
 						  	?>
 							</table>
-							<?php					
+							<?php				
 					break;	
 					
 				case "viewgame": 
@@ -440,11 +446,7 @@ session_start();
 						}	
 					}
 									
-					break;	
-					
-				case "lobby":
-				
-				break; 	
+					break;		
 					
 				default:
 					header('location:multiplayer.php?option=fgame');

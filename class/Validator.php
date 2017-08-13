@@ -149,7 +149,9 @@ class Creditional{
 		return $_SESSION['TYPE'];
 	}
 	
-	
+	public function getGameId(){
+		return $_SESSION['GAMEID'];
+	}	
 }
 
 class DB{

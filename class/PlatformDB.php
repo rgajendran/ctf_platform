@@ -261,6 +261,31 @@ class PlatformDB{
 			return false;
 		}
 	}
+	
+	public static function set_gameid_insession($userid){
+		include 'plattemplate/connection.php';
+		date_default_timezone_set('Europe/London');
+		$timezone = 'Europe/London'; 
+		$date = new DateTime('now', new DateTimeZone($timezone));
+		$localtime = $date->format('Y-m-d H:i:s');		
+		$getgame = mysqli_query($connection, "SELECT GAME_ID, TEAMNO FROM game_players WHERE PLAYER='$userid' AND P_STATUS='1'");
+		if(mysqli_num_rows($getgame) > 0){
+			while($grow = mysqli_fetch_assoc($getgame)){
+				$gid = $grow['GAME_ID'];
+				$team = $grow['TEAMNO'];
+				$result = mysqli_query($connection, "SELECT GAME_ID, START_TIME, END_TIME FROM game WHERE GAME_ID='$gid'");
+				if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_assoc($result)){
+						$starttime = $row['START_TIME'];
+						$endtime = $row['END_TIME'];
+						if(strtotime($endtime)>strtotime($localtime) && strtotime($starttime)<strtotime($localtime)){
+							return array($row['GAME_ID'], $row['TEAMNO']);
+						}		
+					}
+				}		
+			}		
+		}
+	}
 }
 
 ?>

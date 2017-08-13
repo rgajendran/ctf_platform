@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include 'template/connection.php';
-if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSION['TYPE'])){
+if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSION['GAMEID'])){
 	header('location:index.php');
 }
 ?>
@@ -97,7 +97,9 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 			<div class="dropdown-content">
 	<?php
 		include 'template/connection.php';
-		$center_panel_sql = "SELECT * FROM team";
+		require 'class/Validator.php';
+		$c = new Creditional();
+		$center_panel_sql = "SELECT * FROM team WHERE GAMEID='$c->getGameId()'";
 		$center_panel_result = mysqli_query($connection, $center_panel_sql);
 		while($center_row = mysqli_fetch_assoc($center_panel_result)){
 			$team = $center_row['TEAMNAME'];
@@ -122,7 +124,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 		include 'template/connection.php';
 		if(isset($_GET['team'])){
 			$getTeam= preg_replace('[^0-9]', '', urldecode(stripslashes(htmlspecialchars(htmlentities(trim($_GET['team']))))));
-			$initTeamResult = mysqli_query($connection, "SELECT DISTINCT TEAM FROM secgenflag WHERE TEAM='".$getTeam."'");
+			$initTeamResult = mysqli_query($connection, "SELECT DISTINCT TEAM FROM ".$c->getGameId()."_secgenflag WHERE TEAM='".$getTeam."'");
 			if(mysqli_num_rows($initTeamResult) != 0){
 				if(mysqli_num_rows($initTeamResult) == 1){
 					$initTeam = $getTeam;
@@ -136,7 +138,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 		}else{
 			header('location:main.php?team='.$_SESSION['TEAM']);
 		}
-		$ssql = "SELECT DISTINCT VM, IP FROM secgenflag WHERE TEAM='$initTeam'";
+		$ssql = "SELECT DISTINCT VM, IP FROM ".$c->getGameId()."_secgenflag WHERE TEAM='$initTeam'";
 		$sresult = mysqli_query($connection, $ssql);
 		$ii = 0;
 			while($srow = mysqli_fetch_assoc($sresult)){

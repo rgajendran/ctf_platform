@@ -187,8 +187,8 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 																							$pstat = 0;
 																						}
 																						if($avsession[$i] == Constants::SESSION_CREATEGAME_TEAMA){
-																							$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																							'$gameid','$teama','$key','$pstat','NA')");	
+																							$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAMNO, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																							'$gameid','1','$teama','$key','$pstat','NA')");	
 																							if($sql){
 																								$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
 																								if($res){
@@ -198,8 +198,8 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 																								}
 																							}
 																						}else{
-																							$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
-																							'$gameid','$teamb','$key','$pstat','NA')");		
+																							$sql = mysqli_query($connection, "INSERT INTO game_players (GAME_ID, TEAMNO, TEAM, PLAYER, P_STATUS, P_VM) VALUES (
+																							'$gameid','2','$teamb','$key','$pstat','NA')");		
 																							if($sql){
 																								$res = mysqli_query($connection, "INSERT INTO scenariologger (GAME_ID, SCENARIO, TEMPLATE, USERID) VALUES ('$gameid','$scenario','$temp','$key')");
 																								if($res){
@@ -254,7 +254,7 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 															foreach(array_keys($checkbackup, false) as $keys){
 																$getVals = "BACKUP".$keys;
 																if(PlatformDB::check_backend_progress($scenario, $getVals)){
-																	if(PlatformDB::insert_recreate_vm_usingbackendtable($scenario, "scenario/ctf/".$scenario, "T", $getVals)){
+																	if(PlatformDB::insert_recreate_vm_usingbackendtable($scenario, "scenarios/ctf/".$scenario.".xml", "T", $getVals)){
 																		$out = "T";
 																	}else{
 																		$out = "F";
