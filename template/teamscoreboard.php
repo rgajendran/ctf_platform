@@ -4,7 +4,8 @@
 	if(!isset($_SESSION)){
 		session_start();
 	}
-	$score_sql_1 = "SELECT * FROM scoreboard ORDER BY SCORE DESC";
+	$gameid = $_SESSION['GAMEID'];
+	$score_sql_1 = "SELECT * FROM scoreboard WHERE GAME_ID='$gameid' ORDER BY SCORE DESC";
 		$score_result_1 = mysqli_query($connection, $score_sql_1);
 		$ranks = 0;
 		while($score_row_1 = mysqli_fetch_assoc($score_result_1)){

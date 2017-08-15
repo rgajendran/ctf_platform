@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 session_start();
 if(isset($_SESSION['USERID'])){
 	require 'class/PlatformDB.php';
+	$gameid = array();
 	$gameid = PlatformDB::set_gameid_insession($_SESSION['USERID']);
 	$_SESSION['GAMEID'] = $gameid[0];
 	$_SESSION['TEAM'] = $gameid[1]; 

@@ -279,7 +279,7 @@ class PlatformDB{
 						$starttime = $row['START_TIME'];
 						$endtime = $row['END_TIME'];
 						if(strtotime($endtime)>strtotime($localtime) && strtotime($starttime)<strtotime($localtime)){
-							return array($row['GAME_ID'], $row['TEAMNO']);
+							return array($row['GAME_ID'], $team);
 						}		
 					}
 				}		

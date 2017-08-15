@@ -3,8 +3,9 @@ include 'connection.php';
 if(!isset($_SESSION)){
 	session_start();
 }
-if(isset($_SESSION['TEAM'])){
-	$score_sql = "SELECT * FROM scoreboard ORDER BY SCORE DESC";
+if(isset($_SESSION['TEAM']) && isset($_SESSION['GAMEID'])){
+	$gameid = $_SESSION['GAMEID'];
+	$score_sql = "SELECT * FROM scoreboard WHERE GAME_ID='$gameid' ORDER BY SCORE DESC";
 	$score_result = mysqli_query($connection, $score_sql);
 	$rank = 0;
 	while($score_row = mysqli_fetch_assoc($score_result))

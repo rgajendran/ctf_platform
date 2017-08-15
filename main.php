@@ -1,8 +1,12 @@
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 include 'template/connection.php';
 if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSION['GAMEID'])){
-	header('location:index.php');
+	header('location:multiplayer.php');
 }
 ?>
 <!DOCTYPE html>
@@ -18,7 +22,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 		<link href="css/map.css" rel="stylesheet" type="text/css">
 	<script>
 		sessionStorage.clear();
-		var user = '<?php echo $_SESSION['USERNAME'];?>';
+		var user = '<?php echo $_SESSION['USERID'];?>';
 		var tm1 = '<?php echo $_SESSION['TEAM'];?>';
 	</script>
 	<script src="js/dialog.js"></script>
@@ -99,8 +103,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 		include 'template/connection.php';
 		require 'class/Validator.php';
 		$c = new Creditional();
-		$center_panel_sql = "SELECT * FROM team WHERE GAMEID='$c->getGameId()'";
-		$center_panel_result = mysqli_query($connection, $center_panel_sql);
+		$center_panel_result = mysqli_query($connection, "SELECT * FROM team WHERE GAMEID='".$c->getGameId()."'");
 		while($center_row = mysqli_fetch_assoc($center_panel_result)){
 			$team = $center_row['TEAMNAME'];
 			$teamno = $center_row['TEAM'];
@@ -132,7 +135,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 					header('location:main.php?team='.$_SESSION['TEAM']);
 				}
 			}else{
-				header('location:html/initialise.php');	
+				//header('location:html/initialise.php');	
 			}	
 					
 		}else{
@@ -156,7 +159,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 				<div class="grouper_map" id="<?php echo "grouperId".$ii; ?>">
 					<?php
 						include 'template/connection.php';
-						$sChooseMapCountSql = "SELECT FLAG_POINTS FROM secgenflag WHERE VM='$vm' AND TEAM='$initTeam'";
+						$sChooseMapCountSql = "SELECT FLAG_POINTS FROM ".$c->getGameId()."_secgenflag WHERE VM='$vm' AND TEAM='$initTeam'";
 						$sChooseMapCountResult = mysqli_query($connection, $sChooseMapCountSql);
 						$sChooseMapCount = mysqli_num_rows($sChooseMapCountResult);
 						if($sChooseMapCount <= 16){
@@ -179,7 +182,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 									$sC_COUNTRY= $sChooseRow['C_COUNTRY'];
 									$sC_TITLE = $sChooseRow['C_TITLE'];
 									$sC_D = $sChooseRow['C_D'];
-									$secgenQuery = mysqli_query($connection, "SELECT STATUS FROM secgenflag WHERE C_ID='$sC_ID' AND TEAM='$initTeam' AND VM='$vm'");
+									$secgenQuery = mysqli_query($connection, "SELECT STATUS FROM ".$c->getGameId()."_secgenflag WHERE C_ID='$sC_ID' AND TEAM='$initTeam' AND VM='$vm'");
 									while($secgenStatusRow = mysqli_fetch_assoc($secgenQuery)){
 										$secgenStatus = $secgenStatusRow['STATUS'];		
 										$session_team = $_SESSION['TEAM'];								
