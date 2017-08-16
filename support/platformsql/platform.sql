@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.3
--- Generation Time: Aug 06, 2017 at 10:07 PM
+-- Generation Time: Aug 16, 2017 at 10:41 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.31
 
@@ -43,8 +43,9 @@ CREATE TABLE `backend` (
 --
 
 INSERT INTO `backend` (`ID`, `CTF`, `SCENARIONAME`, `SCENARIO`, `PROCESSING`, `COMPLETED`, `FOLDER`, `BACKUP`, `VMNO`) VALUES
-(1, 'F', 'NS', 'scenarios/ctf/flawed_fortress_1.xml', '1', 0, 'OM4vU0HzQe', 'BACKUP1', 3),
-(2, 'T', 'NS2', 'scenarios/default_scenario.xml', '1', 1, 'ilK5UQ0Pyz', 'BACKUP2', 1);
+(8, 'T', 'flawed_fortress_1', 'scenarios/ctf/flawed_fortress_1.xml', '1', 0, 'VW4aBQEeuW', 'BACKUP1', 0),
+(9, 'T', 'flawed_fortress_1', 'scenarios/ctf/flawed_fortress_1.xml', '1', 0, 'le4U1yLjFs', 'BACKUP2', 0),
+(10, 'T', 'flawed_fortress_1', 'scenarios/ctf/flawed_fortress_1.xml', '1', 0, 'oll2Zz6GnJ', 'BACKUP3', 0);
 
 -- --------------------------------------------------------
 
@@ -59,31 +60,23 @@ CREATE TABLE `game` (
   `START_TIME` datetime NOT NULL,
   `END_TIME` datetime NOT NULL,
   `SCENARIO` varchar(50) NOT NULL,
+  `TEMPLATE` varchar(50) NOT NULL,
   `TEAM_A` varchar(15) NOT NULL,
   `TEAM_B` varchar(15) NOT NULL,
   `TYPE` varchar(10) NOT NULL,
   `TITLE` varchar(20) NOT NULL,
-  `DESP` text NOT NULL
+  `DESP` text NOT NULL,
+  `ANNOUNCE` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `game`
 --
 
-INSERT INTO `game` (`ID`, `HOST`, `GAME_ID`, `START_TIME`, `END_TIME`, `SCENARIO`, `TEAM_A`, `TEAM_B`, `TYPE`, `TITLE`, `DESP`) VALUES
-(1, 'gaju', 'nOI2x6701N', '2017-06-29 01:00:00', '2017-06-22 02:00:00', 'Liverpool', 'TeamA', 'TeamB', 'openforall', '', 'asdasd'),
-(2, 'gaju', 'hCfjBhGzw5', '2017-06-22 01:00:00', '2017-06-22 02:00:00', 'Liverpool', 'TeamA', 'TeamB', 'openforall', '', 'asdasd'),
-(3, 'gaju', 'OZGsAZ6K5a', '2017-06-22 01:00:00', '2017-06-22 02:00:00', 'Liverpool', 'TeamA', 'TeamB', 'openforall', '', 'asdasd'),
-(4, 'gaju', '9w1sefZriT', '2017-06-22 02:00:00', '2017-06-22 04:00:00', 'Liverpool', 'TeamA', 'TeamB', 'closed', '', 'fghfhgfgh'),
-(5, 'gaju', 'g8bqFmNfKM', '2017-06-22 02:00:00', '2017-06-22 04:00:00', 'Liverpool', 'TeamA', 'TeamB', 'closed', '', 'fghfhgfgh'),
-(6, 'gaju', 'cVVvfPA93A', '2017-06-23 02:00:00', '2017-06-23 04:00:00', 'Liverpool', 'TEAMA', 'TEAMB', 'closed', '', 'Desc'),
-(7, 'gaju', 'NOQvpikKbn', '2017-06-25 02:00:00', '2017-06-23 04:00:00', 'Liverpool', 'TEAMA', 'TEAMB', 'closed', '', 'Desc'),
-(8, 'hiran', '75g6r9DO3A', '2017-06-27 13:00:00', '2017-06-27 19:00:00', 'Liverpool', 'TEAM A', 'TEAM B', 'openforall', 'MYCUSTOMGAME', 'This game is the best feature of the main event'),
-(9, 'gaju', 'aCUOMnAg5j', '2017-06-27 06:00:00', '2017-06-28 01:00:00', 'Liverpool', 'TeamA_NAME', 'TeamB_NAME', 'closed', 'sdfgsf', 'fdgdfg'),
-(10, 'gaju', 'c3Dr9lnEyN', '2017-06-29 00:01:00', '2017-06-29 02:00:00', 'Liverpool', 'hgfhgfh', 'ghfghgfh', 'closed', 'dghfh', 'hgfhfgh'),
-(11, 'gaju', 'a2k485kwpW', '2017-06-29 20:22:00', '2017-06-29 21:30:00', 'Liverpool', 'TeamA', 'TeamB', 'closed', 'CustomGame', 'CustomGame'),
-(12, 'gaju', 'KYinjvujAL', '2017-06-28 21:00:00', '2017-06-28 23:00:00', 'Liverpool', 'TEAMA', 'TEAMB', 'closed', 'Game', 'Desc'),
-(13, 'gaju', 'TtoKoWQVVj', '2017-08-15 15:00:00', '2017-08-15 21:00:00', 'Liverpool', 'TeamA', 'TeamB', 'openforall', 'GameTitle', 'Description');
+INSERT INTO `game` (`ID`, `HOST`, `GAME_ID`, `START_TIME`, `END_TIME`, `SCENARIO`, `TEMPLATE`, `TEAM_A`, `TEAM_B`, `TYPE`, `TITLE`, `DESP`, `ANNOUNCE`) VALUES
+(39, '1000001', 'jlM5oH4QEI', '2017-08-13 21:02:00', '2017-08-13 22:03:00', 'flawed_fortress_1', 'ilK5UQ0Pya', 'TeamA', 'TeamB', 'closed', 'Testing', 'Tesing', ''),
+(42, '1000001', 'r9QToQIeTA', '2015-03-25 23:00:00', '2015-03-25 23:50:00', 'flawed_fortress_1', 'ilK5UQ0Pyc', 'Deers', 'Rabbit', 'closed', 'SusmithaOne', 'SHHSHSHSH', ''),
+(43, '1000001', '5ppJnzrzPs', '2017-08-16 13:00:00', '2017-08-16 23:59:00', 'flawed_fortress_1', 'ilK5UQ0Pya', 'TeamA', 'TeamB', 'closed', 'TeamTitle', 'Description', '');
 
 -- --------------------------------------------------------
 
@@ -94,6 +87,7 @@ INSERT INTO `game` (`ID`, `HOST`, `GAME_ID`, `START_TIME`, `END_TIME`, `SCENARIO
 CREATE TABLE `game_players` (
   `ID` int(11) NOT NULL,
   `GAME_ID` varchar(10) NOT NULL,
+  `TEAMNO` int(2) NOT NULL,
   `TEAM` varchar(15) NOT NULL,
   `PLAYER` varchar(10) NOT NULL,
   `P_STATUS` int(1) NOT NULL,
@@ -104,50 +98,37 @@ CREATE TABLE `game_players` (
 -- Dumping data for table `game_players`
 --
 
-INSERT INTO `game_players` (`ID`, `GAME_ID`, `TEAM`, `PLAYER`, `P_STATUS`, `P_VM`) VALUES
-(1, '9w1sefZriT', 'TeamA', '1000002', 1, 'NA'),
-(2, '9w1sefZriT', 'TeamA', '1000005', 0, 'NA'),
-(3, '9w1sefZriT', 'TeamB', '1000001', 1, 'NA'),
-(4, '9w1sefZriT', 'TeamB', '1000003', 0, 'NA'),
-(5, '9w1sefZriT', 'TeamB', '1000004', 0, 'NA'),
-(6, 'g8bqFmNfKM', 'TeamA', '1000002', 1, 'NA'),
-(7, 'g8bqFmNfKM', 'TeamA', '1000005', 0, 'NA'),
-(8, 'g8bqFmNfKM', 'TeamB', '1000001', 1, 'NA'),
-(9, 'g8bqFmNfKM', 'TeamB', '1000003', 0, 'NA'),
-(10, 'g8bqFmNfKM', 'TeamB', '1000004', 0, 'NA'),
-(11, 'cVVvfPA93A', 'TEAMA', '1000003', 0, 'NA'),
-(12, 'cVVvfPA93A', 'TEAMA', '1000004', 0, 'NA'),
-(13, 'cVVvfPA93A', 'TEAMB', '1000002', 1, 'NA'),
-(14, 'cVVvfPA93A', 'TEAMB', '1000005', 0, 'NA'),
-(15, 'NOQvpikKbn', 'TEAMA', '1000003', 0, 'NA'),
-(16, 'NOQvpikKbn', 'TEAMA', '1000004', 0, 'NA'),
-(17, 'NOQvpikKbn', 'TEAMA', '1000001', 1, 'NA'),
-(18, 'NOQvpikKbn', 'TEAMB', '1000002', 1, 'NA'),
-(19, 'NOQvpikKbn', 'TEAMB', '1000005', 0, 'NA'),
-(20, 'aCUOMnAg5j', 'TeamA_NAME', '1000002', 1, 'NA'),
-(21, 'aCUOMnAg5j', 'TeamA_NAME', '1000005', 0, 'NA'),
-(22, 'aCUOMnAg5j', 'TeamA_NAME', '1000003', 0, 'NA'),
-(23, 'aCUOMnAg5j', 'TeamB_NAME', '1000001', 1, 'NA'),
-(24, 'aCUOMnAg5j', 'TeamB_NAME', '1000004', 0, 'NA'),
-(25, 'aCUOMnAg5j', 'TeamB_NAME', '1000006', 0, 'NA'),
-(26, 'c3Dr9lnEyN', 'hgfhgfh', '1000002', 0, 'NA'),
-(27, 'c3Dr9lnEyN', 'hgfhgfh', '1000005', 0, 'NA'),
-(28, 'c3Dr9lnEyN', 'hgfhgfh', '1000006', 0, 'NA'),
-(29, 'c3Dr9lnEyN', 'ghfghgfh', '1000001', 0, 'NA'),
-(30, 'c3Dr9lnEyN', 'ghfghgfh', '1000003', 0, 'NA'),
-(31, 'c3Dr9lnEyN', 'ghfghgfh', '1000004', 0, 'NA'),
-(32, 'a2k485kwpW', 'TeamA', '1000002', 0, 'NA'),
-(33, 'a2k485kwpW', 'TeamA', '1000005', 0, 'NA'),
-(34, 'a2k485kwpW', 'TeamA', '1000003', 0, 'NA'),
-(35, 'a2k485kwpW', 'TeamB', '1000004', 0, 'NA'),
-(36, 'a2k485kwpW', 'TeamB', '1000001', 0, 'NA'),
-(37, 'a2k485kwpW', 'TeamB', '1000006', 0, 'NA'),
-(38, 'KYinjvujAL', 'TEAMA', '1000002', 0, 'NA'),
-(39, 'KYinjvujAL', 'TEAMA', '1000005', 0, 'NA'),
-(40, 'KYinjvujAL', 'TEAMA', '1000003', 0, 'NA'),
-(41, 'KYinjvujAL', 'TEAMB', '1000004', 0, 'NA'),
-(42, 'KYinjvujAL', 'TEAMB', '1000001', 1, 'NA'),
-(43, 'KYinjvujAL', 'TEAMB', '1000006', 0, 'NA');
+INSERT INTO `game_players` (`ID`, `GAME_ID`, `TEAMNO`, `TEAM`, `PLAYER`, `P_STATUS`, `P_VM`) VALUES
+(152, 'jlM5oH4QEI', 0, 'TeamA', '1000005', 0, 'NA'),
+(153, 'jlM5oH4QEI', 0, 'TeamA', '1000002', 0, 'NA'),
+(154, 'jlM5oH4QEI', 0, 'TeamA', '1000001', 1, 'NA'),
+(155, 'jlM5oH4QEI', 0, 'TeamB', '1000003', 0, 'NA'),
+(156, 'jlM5oH4QEI', 0, 'TeamB', '1000004', 0, 'NA'),
+(157, 'jlM5oH4QEI', 0, 'TeamB', '1000006', 0, 'NA'),
+(158, 'VxNrY8CeZC', 0, 'TeamA', '1000005', 0, 'NA'),
+(159, 'VxNrY8CeZC', 0, 'TeamA', '1000002', 0, 'NA'),
+(160, 'VxNrY8CeZC', 0, 'TeamA', '1000001', 1, 'NA'),
+(161, 'VxNrY8CeZC', 0, 'TeamB', '1000003', 0, 'NA'),
+(162, 'VxNrY8CeZC', 0, 'TeamB', '1000004', 0, 'NA'),
+(163, 'VxNrY8CeZC', 0, 'TeamB', '1000006', 0, 'NA'),
+(164, 'RQYKCuNnMl', 0, 'Wolfs', '1000002', 0, 'NA'),
+(165, 'RQYKCuNnMl', 0, 'Wolfs', '1000005', 0, 'NA'),
+(166, 'RQYKCuNnMl', 0, 'Wolfs', '1000001', 1, 'NA'),
+(167, 'RQYKCuNnMl', 0, 'Lions', '1000003', 0, 'NA'),
+(168, 'RQYKCuNnMl', 0, 'Lions', '1000004', 0, 'NA'),
+(169, 'RQYKCuNnMl', 0, 'Lions', '1000006', 0, 'NA'),
+(170, 'r9QToQIeTA', 0, 'Deers', '1000005', 0, 'NA'),
+(171, 'r9QToQIeTA', 0, 'Deers', '1000006', 0, 'NA'),
+(172, 'r9QToQIeTA', 0, 'Deers', '1000003', 0, 'NA'),
+(173, 'r9QToQIeTA', 0, 'Rabbit', '1000004', 0, 'NA'),
+(174, 'r9QToQIeTA', 0, 'Rabbit', '1000002', 0, 'NA'),
+(175, 'r9QToQIeTA', 0, 'Rabbit', '1000001', 1, 'NA'),
+(176, '5ppJnzrzPs', 1, 'TeamA', '1000005', 0, 'NA'),
+(177, '5ppJnzrzPs', 1, 'TeamA', '1000001', 1, 'NA'),
+(178, '5ppJnzrzPs', 1, 'TeamA', '1000006', 0, 'NA'),
+(179, '5ppJnzrzPs', 2, 'TeamB', '1000003', 0, 'NA'),
+(180, '5ppJnzrzPs', 2, 'TeamB', '1000004', 0, 'NA'),
+(181, '5ppJnzrzPs', 2, 'TeamB', '1000002', 0, 'NA');
 
 -- --------------------------------------------------------
 
@@ -213,10 +194,23 @@ INSERT INTO `loginusers` (`ID`, `USERID`, `USERNAME`, `PASSWORD`, `TYPE`) VALUES
 
 CREATE TABLE `scenariologger` (
   `ID` int(11) NOT NULL,
+  `GAME_ID` varchar(50) NOT NULL,
   `SCENARIO` varchar(50) NOT NULL,
   `TEMPLATE` varchar(20) NOT NULL,
   `USERID` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `scenariologger`
+--
+
+INSERT INTO `scenariologger` (`ID`, `GAME_ID`, `SCENARIO`, `TEMPLATE`, `USERID`) VALUES
+(103, '5ppJnzrzPs', 'flawed_fortress_1', 'ilK5UQ0Pya', '1000005'),
+(104, '5ppJnzrzPs', 'flawed_fortress_1', 'ilK5UQ0Pya', '1000001'),
+(105, '5ppJnzrzPs', 'flawed_fortress_1', 'ilK5UQ0Pya', '1000006'),
+(106, '5ppJnzrzPs', 'flawed_fortress_1', 'ilK5UQ0Pya', '1000003'),
+(107, '5ppJnzrzPs', 'flawed_fortress_1', 'ilK5UQ0Pya', '1000004'),
+(108, '5ppJnzrzPs', 'flawed_fortress_1', 'ilK5UQ0Pya', '1000002');
 
 -- --------------------------------------------------------
 
@@ -241,7 +235,7 @@ CREATE TABLE `smenu` (
 --
 
 INSERT INTO `smenu` (`ID`, `DIR`, `TYPE`, `TEMP_SIZE`, `TEMP_SCENARIO`, `BACKUP1`, `BACKUP2`, `BACKUP3`, `VMNO`) VALUES
-(1, 'D', 'ctf', '1073741824', 'liverpool', '', 'ilK5UQ0Pyz', '', 0),
+(1, 'D', 'ctf', '1073741824', 'flawed_fortress_1', 'ilK5UQ0Pya', 'ilK5UQ0Pyz', 'ilK5UQ0Pyc', 0),
 (2, 'D', 'game', '1073741824', 'edge_hill', '', 'ilK5UQ0Pyz', '', 0),
 (3, 'D', 'game', '1073741824', 'kali_linux', '', 'ilK5UQ0Pyz', '', 0);
 
@@ -358,17 +352,17 @@ ALTER TABLE `vm`
 -- AUTO_INCREMENT for table `backend`
 --
 ALTER TABLE `backend`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `game`
 --
 ALTER TABLE `game`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT for table `game_players`
 --
 ALTER TABLE `game_players`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
 --
 -- AUTO_INCREMENT for table `log`
 --
@@ -383,7 +377,7 @@ ALTER TABLE `loginusers`
 -- AUTO_INCREMENT for table `scenariologger`
 --
 ALTER TABLE `scenariologger`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 --
 -- AUTO_INCREMENT for table `smenu`
 --

@@ -21,6 +21,7 @@
 				url: "template/gethint.php",
 				data: {cid: coun_id, team: tm1, vm: system,user:user},
 				success: function(status){		
+					console.log(status);
 					if(checkSessionStorage() != "undefined"){
 						sessionStorage.setItem(coun_id+"-"+system,status);	
 					}	

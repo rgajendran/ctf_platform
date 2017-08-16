@@ -286,6 +286,19 @@ class PlatformDB{
 			}		
 		}
 	}
+	
+	public static function get_game_endtime($gameid){
+		include '../plattemplate/connection.php';
+		$state = mysqli_query($connection, "SELECT END_TIME FROM game WHERE GAME_ID='$gameid'");
+		if(mysqli_num_rows($state) == 1){
+			foreach(mysqli_fetch_assoc($state) as $time){
+				return $time;
+			}			
+		}else{
+			return "NOOUTPUT";
+		}
+
+	}
 }
 
 ?>

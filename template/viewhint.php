@@ -6,10 +6,12 @@ if(isset($_POST['cids']) && isset($_POST['team']) && isset($_POST['vms'])){
 		$vm = stripslashes(htmlspecialchars(htmlentities(trim(filter_var($_POST['vms'],FILTER_SANITIZE_STRING)))));
 		
 		include 'connection.php';		
-		$sSelectStatus = "SELECT HINT_ID, HINT_STATUS, HINT_TYPE, HINT_TEXT FROM hint WHERE C_ID='$cid' AND TEAM='$team' AND SYSTEM_NAME='$vm'";
+		require '../class/Validator.php';
+		$c = new Creditional();
+		$sSelectStatus = "SELECT HINT_ID, HINT_STATUS, HINT_TYPE, HINT_TEXT FROM ".$c->getGameId()."_hint WHERE C_ID='$cid' AND TEAM='$team' AND SYSTEM_NAME='$vm'";
 		$sSelectStatusResult = mysqli_query($connection, $sSelectStatus);
-		$bigResult = mysqli_query($connection, "SELECT HINT_TYPE FROM hint WHERE C_ID='$cid' AND TEAM='$team' AND SYSTEM_NAME='$vm' AND HINT_TYPE='big_hint'");
-		$norResult = mysqli_query($connection, "SELECT HINT_TYPE FROM hint WHERE C_ID='$cid' AND TEAM='$team' AND SYSTEM_NAME='$vm' AND HINT_TYPE='normal'");
+		$bigResult = mysqli_query($connection, "SELECT HINT_TYPE FROM ".$c->getGameId()."_hint WHERE C_ID='$cid' AND TEAM='$team' AND SYSTEM_NAME='$vm' AND HINT_TYPE='big_hint'");
+		$norResult = mysqli_query($connection, "SELECT HINT_TYPE FROM ".$c->getGameId()."_hint WHERE C_ID='$cid' AND TEAM='$team' AND SYSTEM_NAME='$vm' AND HINT_TYPE='normal'");
 		$hintOpen = Array();
 		$HO = Array();
 		$HC = Array();

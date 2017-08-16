@@ -9,6 +9,9 @@ if(isset($_SESSION['USERID'])){
 	$gameid = PlatformDB::set_gameid_insession($_SESSION['USERID']);
 	$_SESSION['GAMEID'] = $gameid[0];
 	$_SESSION['TEAM'] = $gameid[1]; 
+	if(isset($_SESSION['GAMEID']) && isset($_SESSION['TEAM'])){
+		header('location:main.php');
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -92,7 +95,7 @@ if(isset($_SESSION['USERID'])){
 							$timezone = 'Europe/London'; 
 							$dates = new DateTime('now', new DateTimeZone($timezone));
 							$local = strtotime($dates->format('Y-m-d H:i:s'));
-						  	$sql = mysqli_query($connection, "SELECT * FROM game WHERE START_TIME > $local");
+						  	$sql = mysqli_query($connection, "SELECT * FROM game WHERE START_TIME > $local AND TYPE='openforall'");
 						  	if(mysqli_num_rows($sql) > 0){
 							  	$count = 0;
 								while($row = mysqli_fetch_assoc($sql)){

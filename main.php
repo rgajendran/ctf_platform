@@ -103,7 +103,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 		include 'template/connection.php';
 		require 'class/Validator.php';
 		$c = new Creditional();
-		$center_panel_result = mysqli_query($connection, "SELECT * FROM team WHERE GAMEID='".$c->getGameId()."'");
+		$center_panel_result = mysqli_query($connection, "SELECT * FROM team WHERE GAME_ID='".$c->getGameId()."'");
 		while($center_row = mysqli_fetch_assoc($center_panel_result)){
 			$team = $center_row['TEAMNAME'];
 			$teamno = $center_row['TEAM'];
@@ -228,7 +228,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
   	if(isset($_SESSION['USERNAME']) && isset($_SESSION['TEAM']))
   	{
   	?>
-    <a href="template/logout.php" id="main_logout">Logout</a>
+    <a href="dashboard.php" id="main_logout">Dashboard</a>
 	<div class="scores side_item">
 		<div class="side_heading">
 			<h1>Score Board</h1>

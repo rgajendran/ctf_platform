@@ -1,21 +1,23 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 if(isset($_POST['tm']) && isset($_POST['fg']) && isset($_POST['username'])){
      $flag = $_POST['fg'];
 	 $team = $_POST['tm'];
 	 $user = $_POST['username'];
      require '../class/Validator.php';
+	 require '../class/PlatformDB.php';
+	 $c = new Creditional();
+	 $loginname = $c->getUsername();
 	 include 'connection.php';	
 	 if(!empty($flag) && strlen($flag) <= 100){
 	 	//time check
-		 	$state = mysqli_query($connection, "SELECT value FROM options WHERE name='END_TIME'");
-			foreach(mysqli_fetch_assoc($state) as $time){
-				$gametime = $time;
-			}
+			$gametime = PlatformDB::get_game_endtime($c->getGameId());
 			$timezone = 'Europe/London'; 
+			date_default_timezone_set('Europe/London');
 			$date = new DateTime('now', new DateTimeZone($timezone));
 			$localtime = $date->format('Y-m-d H:i:s');
-			$c = new Creditional();
 			if(strtotime($gametime)>strtotime($localtime)){
 			 	$fg = htmlspecialchars(htmlentities(trim(filter_var($flag,FILTER_SANITIZE_STRING))));
 				$result = mysqli_query($connection,"SELECT * FROM ".$c->getGameId()."_secgenflag WHERE FLAG='$fg' AND TEAM='$team'");
@@ -26,7 +28,6 @@ if(isset($_POST['tm']) && isset($_POST['fg']) && isset($_POST['username'])){
 				 //-----------------------------------------------
 				  while($row = mysqli_fetch_assoc($result)){
 					  	 $ans = $row['FLAG'];
-						 //$point = $row['FLAG_POINTS'];
 						 $cid = $row['C_ID'];
 						 $stat = $row['STATUS'];
 						 $vm = $row['VM'];
@@ -56,15 +57,15 @@ if(isset($_POST['tm']) && isset($_POST['fg']) && isset($_POST['username'])){
 										}
 									}
 									$finalPoints = 250 - round($points,0,PHP_ROUND_HALF_DOWN);
-									$flag_marker_scb_sql = mysqli_query($connection,"SELECT SCORE FROM scoreboard WHERE TEAM='$team' WHERE GAME_ID='$c->getGameId()'");
+									$flag_marker_scb_sql = mysqli_query($connection,"SELECT SCORE FROM scoreboard WHERE TEAM='$team' AND GAME_ID='".$c->getGameId()."'");
 									while($flag_marker_scb_row = mysqli_fetch_assoc($flag_marker_scb_sql)){
 										$flag_scoreboard_points = $flag_marker_scb_row['SCORE'];
 										$final_grade = $flag_scoreboard_points + $finalPoints;
-										$update_points_sql = mysqli_query($connection,"UPDATE scoreboard SET SCORE='$final_grade' WHERE TEAM=$team AND GAME_ID='$c->getGameId()'");
+										$update_points_sql = mysqli_query($connection,"UPDATE scoreboard SET SCORE='$final_grade' WHERE TEAM=$team AND GAME_ID='".$c->getGameId()."'");
 										if($update_points_sql){
-											$log_sql = mysqli_query($connection, "INSERT INTO logger (GAME_ID, DATE, TEAM, LOG) VALUES ('$c->getGameId()', '$fdate','$team','[$user][$vm] Captured the Flag - [$flag] - [POINTS : $finalPoints]')");
+											$log_sql = mysqli_query($connection, "INSERT INTO logger (GAME_ID, DATE, TEAM, LOG) VALUES ('".$c->getGameId()."', '$fdate','$team','[$loginname][$vm] Captured the Flag - [$flag] - [POINTS : $finalPoints]')");
 											if($log_sql){								
-												$revealHint = mysqli_query($connection, "SELECT HINT_ID FROM hint WHERE TEAM='$team' AND SYSTEM_NAME='$vm' AND C_ID='$cid'");
+												$revealHint = mysqli_query($connection, "SELECT HINT_ID FROM ".$c->getGameId()."_hint WHERE TEAM='$team' AND SYSTEM_NAME='$vm' AND C_ID='$cid'");
 												$iN = 0;
 												if(mysqli_num_rows($revealHint) > 0){
 													while($hID = mysqli_fetch_assoc($revealHint)){
@@ -75,9 +76,9 @@ if(isset($_POST['tm']) && isset($_POST['fg']) && isset($_POST['username'])){
 														}
 													}
 												}
-												$act_update = mysqli_query($connection, "UPDATE updater SET ACTIVITY='1', FLAG='1',HINT='1',HINT_UPDATE='all' WHERE TEAM='$team' AND GAME_ID='$c->getGameId()'");
+												$act_update = mysqli_query($connection, "UPDATE updater SET ACTIVITY='1', FLAG='1',HINT='1',HINT_UPDATE='all' WHERE TEAM='$team' AND GAME_ID='".$c->getGameId()."'");
 												if($act_update){
-													$bonus_sql = mysqli_query($connection, "INSERT INTO logger (DATE, TEAM, LOG) VALUES ('$fdate','$team','[BONUS] Unlocked [$iN]Hints for other challenges')");
+													$bonus_sql = mysqli_query($connection, "INSERT INTO logger (GAME_ID, DATE, TEAM, LOG) VALUES ('".$c->getGameId()."','$fdate','$team','[BONUS] Unlocked [$iN]Hints for other challenges')");
 													if($bonus_sql){
 														echo "<p style='color:#d4ff00;'>Your key is Correct</p>"; 
 													

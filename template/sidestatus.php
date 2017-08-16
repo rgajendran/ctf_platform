@@ -16,9 +16,11 @@
 
 if(isset($_POST['status'])){
 	include 'connection.php';
+	require '../class/Validator.php';
+	$c = new Creditional();
 	$team = $_POST['team'];
 	$user = $_POST['username'];
-	$result = mysqli_query($connection, "SELECT * FROM updater WHERE USERNAME='$user'");
+	$result = mysqli_query($connection, "SELECT * FROM updater WHERE USERID='$user' AND GAME_ID='".$c->getGameId()."'");
 	while($row = mysqli_fetch_assoc($result)){
 		if($row['CHAT'] == 1){
 			echo "CHAT".";";

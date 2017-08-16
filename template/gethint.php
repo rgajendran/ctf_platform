@@ -1,5 +1,7 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 if (isset($_POST['cid']) && isset($_POST['team']) && isset($_POST['vm']) && isset($_POST['user'])) {
 	$hintOpen = Array();
 	$hintClose = Array();
@@ -8,6 +10,7 @@ if (isset($_POST['cid']) && isset($_POST['team']) && isset($_POST['vm']) && isse
 	include 'connection.php';
 	require '../class/Validator.php';
 	$c = new Creditional();
+	$loginuser = $c->getUsername();
 	$cid = stripslashes(htmlspecialchars(htmlentities(trim(filter_var($_POST['cid'], FILTER_SANITIZE_STRING)))));
 	$tem = stripslashes(htmlspecialchars(htmlentities(trim(filter_var($_POST['team'], FILTER_SANITIZE_STRING)))));
 	$vm = stripslashes(htmlspecialchars(htmlentities(trim(filter_var($_POST['vm'], FILTER_SANITIZE_STRING)))));
@@ -29,7 +32,6 @@ if (isset($_POST['cid']) && isset($_POST['team']) && isset($_POST['vm']) && isse
 			$hintid = $row['HINT_ID'];
 			$hinttext = $row['HINT_TEXT'];
 			$hinttype = $row['HINT_TYPE'];
-			$hintkey = $row['RANDOM'];
 			$bigResult = mysqli_query($connection, "SELECT HINT_TYPE FROM ".$c->getGameId()."_hint WHERE C_ID='$cid' AND TEAM='$tem' AND SYSTEM_NAME='$vm' AND HINT_TYPE='big_hint'");
 			$norResult = mysqli_query($connection, "SELECT HINT_TYPE FROM ".$c->getGameId()."_hint WHERE C_ID='$cid' AND TEAM='$tem' AND SYSTEM_NAME='$vm' AND HINT_TYPE='normal'");
 			$bighint = mysqli_num_rows($bigResult);
@@ -44,23 +46,23 @@ if (isset($_POST['cid']) && isset($_POST['team']) && isset($_POST['vm']) && isse
 
 			//hint 1
 			if ($num == 1) {//choose first element
-				$int1_sql = "SELECT SCORE,PENALTY FROM scoreboard WHERE TEAM='$tem' AND GAME_ID='$c->getGameId()'";
+				$int1_sql = "SELECT SCORE,PENALTY FROM scoreboard WHERE TEAM='$tem' AND GAME_ID='".$c->getGameId()."'";
 				$int1_result = mysqli_query($connection, $int1_sql);
 				while ($int1_row = mysqli_fetch_assoc($int1_result)) {
 					$score = $int1_row['SCORE'];
 					$penalty = $int1_row['PENALTY'];
 					$updatescore = $score - $points;
 					$updatepenalty = $penalty + $points;
-					$update_points_sql = mysqli_query($connection, "UPDATE scoreboard SET SCORE='$updatescore',PENALTY='$updatepenalty' WHERE TEAM=$tem AND GAME_ID='$c->getGameId()'");
+					$update_points_sql = mysqli_query($connection, "UPDATE scoreboard SET SCORE='$updatescore',PENALTY='$updatepenalty' WHERE TEAM=$tem AND GAME_ID='".$c->getGameId()."'");
 					if ($update_points_sql) {
-						$update_hint_status = mysqli_query($connection, "UPDATE ".$c->getGameId()."_hint SET HINT_STATUS='1' WHERE C_ID='$cid' AND TEAM='$tem' AND SYSTEM_NAME='$vm' AND HINT_ID='$hintid' AND RANDOM='$hintkey'");
+						$update_hint_status = mysqli_query($connection, "UPDATE ".$c->getGameId()."_hint SET HINT_STATUS='1' WHERE C_ID='$cid' AND TEAM='$tem' AND SYSTEM_NAME='$vm' AND HINT_ID='$hintid'");
 						if ($update_hint_status) {
-							$act_update = mysqli_query($connection, "UPDATE updater SET SCORE='1',HINT='1',ACTIVITY='1' WHERE TEAM='$tem' AND GAME_ID='$c->getGameId()'");
+							$act_update = mysqli_query($connection, "UPDATE updater SET SCORE='1', HINT='1', ACTIVITY='1' WHERE TEAM='$tem' AND GAME_ID='".$c->getGameId()."'");
 							if ($act_update) {
 								include 'time.php';
-								$log_sql = mysqli_query($connection, "INSERT INTO logger (GAME_ID, DATE, TEAM, LOG) VALUES ('$c->getGameId()', '$fdate','$tem','[$user] Unlocked Hint [$vm] - [$hinttext] - [POINTS : -$points]')");
+								$log_sql = mysqli_query($connection, "INSERT INTO logger (GAME_ID, DATE, TEAM, LOG) VALUES ('".$c->getGameId()."', '".$fdate."','$tem','[$loginuser] Unlocked Hint [$vm] - [$hinttext] - [POINTS : -$points]')");
 								if ($log_sql) {
-									$H_updater = mysqli_query($connection, "UPDATE updater SET HINT_UPDATE='$cid-$vm' WHERE TEAM='$tem' AND GAME_ID='$c->getGameId()'");
+									$H_updater = mysqli_query($connection, "UPDATE updater SET HINT_UPDATE='$cid-$vm' WHERE TEAM='$tem' AND GAME_ID='".$c->getGameId()."'");
 									if($H_updater){
 										$hintOpen[] = "$hinttext";
 									}else{
