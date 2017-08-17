@@ -29,7 +29,7 @@ foreach(array_keys($arr, true) as $keys){
 	echo "Number : "."\$back".$keys."temp"."<br>";
 }
 */
-
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -60,7 +60,22 @@ if(isset($_SESSION['USERID'])){
 	}
 }
 
+*/
 
+session_start();
+$v = array();
+$value = array();
+$value = $v;
+
+$_SESSION['NAME'] = $value[0];
+$_SESSION['TEST'] = $value[1];
+
+if(isset($_SESSION['NAME']) && isset($_SESSION['TEST'])){
+	echo "Name : ".$_SESSION['NAME']."<br>";
+	echo "Test : ".$_SESSION['TEST']."<br>";	
+}else{
+	echo "Not set";
+}
 
 
 

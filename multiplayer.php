@@ -32,7 +32,7 @@ if(isset($_SESSION['USERID'])){
 		<div id="menu">
 			<h1>Options</h1>
 			<a href="multiplayer.php?option=request"><span class="span">INVITES</span></a>
-			<a href="multiplayer.php?option=fgame"><span class="span">OPEN GAME</span></a>
+			<a href="multiplayer.php?option=fgame"><span class="span">JOIN OPEN GAME</span></a>
 			<a href="multiplayer.php?option=cgame&type=closed"><span class="span">CREATE GAME</span></a>
 			<a href="multiplayer.php?option=my-upcominggame"><span class="span">MY UPCOMING GAME</span></a>
 			<a href="multiplayer.php?option=team"><span class="span">CREATE TEAM</span></a>
@@ -44,7 +44,7 @@ if(isset($_SESSION['USERID'])){
 			switch($commands){
 				
 				case "request": ?>
-							<h1>Pending Request</h1>
+							<h1>Event Invites</h1>
 							<table id="mpftable">
 							  <tr class="table_heading">
 							    <th class='mphost'>Title</th>
@@ -67,7 +67,7 @@ if(isset($_SESSION['USERID'])){
 										<td class='mphost'>".$prow['TITLE']."</td>
 										<td class='mptitle'>".$prow['DESP']."</td>
 										<td class='mpview'><a href='multiplayer.php?option=viewgame&from=request&id=".$row['GAME_ID']."'>View</a></td>
-										<td class='mptimer'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>APPROVE</button></td>
+										<td class='mptimer'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>ACCEPT</button></td>
 										</tr>";											
 									}
 								}						  		
@@ -80,7 +80,7 @@ if(isset($_SESSION['USERID'])){
 					break;
 				
 				case "fgame": ?>
-							<h1>Find Game</h1>
+							<h1>Join Open Game</h1>
 							<table id="mpftable">
 							  <tr class="table_heading">
 							    <th class='mphost'>Host</th>
@@ -167,7 +167,7 @@ if(isset($_SESSION['USERID'])){
 							    <th class="cgame-title">Game Type</th>
 							    <th>
 							    	<select id="gtype">
-										<option value='closed' <?php if($_GET['type'] == "closed"){echo "selected";}?>>Closed</option>
+										<option value='closed' <?php if($_GET['type'] == "closed"){echo "selected";}?>>Invite Only</option>
 										<option value='openforall' <?php if($_GET['type'] == "openforall"){echo "selected";}?>>Open For All</option>										
 									</select>
 							    </th>

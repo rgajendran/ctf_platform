@@ -27,7 +27,7 @@ error_reporting(E_ALL);
 	</head>
 <body id="main" style="background:url('images/bgadmin.png');">
 	<div id="wrapper">	
-		<h1 id="head">Single Player</h1>
+		<h1 id="head">Explore VM's</h1>
 		<div id="nav">
 			<nav id="primary_nav_wrap">
 					<?php			

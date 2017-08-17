@@ -155,6 +155,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 				<div class="grouper_heading">
 					<p class="vm"><?php echo $vm; ?></p>
 					<p class="ip"><?php echo $ip; ?></p>
+					( <input value="VM Options" type="submit" onclick="Vm.menu('V');"/> )
 				</div>
 				<div class="grouper_map" id="<?php echo "grouperId".$ii; ?>">
 					<?php
@@ -296,6 +297,14 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
   </div>
 
 </div>
+<div id="Modal" class="modal">
+	
+	  <div class="modal-content">
+	  		 <div class="modal-body">
+	  		 		<h1>Hello World</h1>	
+	  		 </div>
+	  </div>
+</div>	
 <script src="js/dialog.js"></script>
 <script>
 	function alert(){
@@ -399,6 +408,26 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 	};
 }
 
+function vm(){
+	var mo = document.getElementById('Modal');	
+	var sp = document.getElementsByClassName("close")[0];		
+	
+	this.menu = function(cid) {
+	    mo.style.display = "block";
+	};
+	
+	sp.onclick = function() {
+	    mo.style.display = "none";
+	};
+	
+	window.onclick = function(event) {
+	    if (event.target == mo) {
+	        mo.style.display = "none";
+	    }
+	};
+}
+
+var Vm = new vm();
 var Alert = new alert();
 </script>
 <script src="js/main.js"></script>
