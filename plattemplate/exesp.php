@@ -14,7 +14,7 @@ if(isset($_POST['scenario']) && isset($_POST['vmn'])){
 	if(strlen($vmname) >=5 && strlen($vmname) <=30)
 	{
 		if(!empty($credit->getUsername())){
-			if(PlatformDB::checkVMNumberCount($credit->getUsername())){
+			if(PlatformDB::checkVMNumberCount($credit->getUserId())){
 			$template = PlatformDB::getTemplateWithScenarioName($scenario);
 			foreach($template as $temp => $size){
 				$genVMname = $credit->getUsername()."_".$vmname."_".Ovirt::randomToken();

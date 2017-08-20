@@ -25,9 +25,9 @@ class PlatformDB{
 		
 	}
 	
-	public static function checkVMNumberCount($username){
+	public static function checkVMNumberCount($userid){ //Allowed Users VM
 		include '../plattemplate/connection.php';	
-		$result = mysqli_query($connection, "SELECT VMNAME FROM vm WHERE USERNAME='$username'");
+		$result = mysqli_query($connection, "SELECT VMNAME FROM vm WHERE USERID='$userid'");
 		if(mysqli_num_rows($result) <= Constants::SINGLE_PLAYER_ALLOWED_VMS_TO_CREATE){
 			return true;
 		}else{
@@ -35,15 +35,25 @@ class PlatformDB{
 		}
 	}
 	
-	public static function insertVMDetails($username, $vmname, $vmid){
+	public static function insertVMDetails($ctf, $userid, $gameid, $vmna,$vmname, $vmid){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "INSERT INTO vm (USERNAME, VMNAME, VMID) VALUES ('$username', '$vmname', '$vmid')");
+		$result = mysqli_query($connection, "INSERT INTO vm (CTF, USERID, GAME_ID, VMNA, VMNAME, VMID) VALUES ('$ctf','$userid', '$gameid', '$vmna', '$vmname', '$vmid')");
 		if($result){
 			return Constants::DB_SUCCESS;
 		}else{
 			return Constants::DB_FAILURE;
 		}
 	}
+	
+	public static function insertVMDetailsMainFile($ctf, $userid, $gameid, $vmname, $vmid){
+		include 'plattemplate/connection.php';
+		$result = mysqli_query($connection, "INSERT INTO vm (CTF, USERID, GAME_ID, VMNAME, VMID) VALUES ('$ctf','$userid', '$gameid','$vmname', '$vmid')");
+		if($result){
+			return Constants::DB_SUCCESS;
+		}else{
+			return Constants::DB_FAILURE;
+		}
+	}	
 	
 	public static function checkIfVMIdExistsForUser($vmid, $user){
 		include '../plattemplate/connection.php';
@@ -71,10 +81,10 @@ class PlatformDB{
 		}
 	}
 	
-	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $template, $teama, $teamb, $type, $title,$desc){
+	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $template, $vmno, $teama, $teamb, $type, $title,$desc){
 		include '../plattemplate/connection.php';
 		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEMPLATE, TEAM_A, TEAM_B, TYPE, TITLE, DESP) VALUES (
-		'$user','$gameid','$starttime','$endtime','$scenario','$template','$teama','$teamb','$type','$title','$desc')");
+		'$user','$gameid','$starttime','$endtime','$scenario','$template','$vmno','$teama','$teamb','$type','$title','$desc')");
 		if($result){
 			return true;
 		}else{
@@ -104,6 +114,18 @@ class PlatformDB{
 			}                
 		}
 	
+	}
+	
+	public static function getVMNO_withScenario($scenario){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT VMNO FROM smenu WHERE TEMP_SCENARIO='$scenario'");
+		if(mysqli_num_rows($result) == 1){
+			while($row = mysqli_fetch_assoc($result)){
+				return $row['VMNO'];
+			}
+		}else{
+			return 1;
+		}     
 	}
 	
 	public static function smenuGetTemplateByBackupNumber($scenario, $backupno){
@@ -298,6 +320,32 @@ class PlatformDB{
 			return "NOOUTPUT";
 		}
 
+	}
+	
+	public static function getVMNo_using_gameid($gameid){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT VMNO FROM game WHERE GAME_ID='$gameid'");
+		while($row = mysqli_fetch_assoc($result)){
+			return $row['VMNO'];
+		}
+	}
+	
+	public static function get_template_withGameID($gameid){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT TEMPLATE FROM game WHERE GAME_ID='$gameid'");
+		while($row = mysqli_fetch_assoc($result)){
+			return $row['TEMPLATE'];
+		}
+	}
+
+	public static function check_vm_has_created_foruser($userid, $gameid, $vmna){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT VMID FROM vm WHERE USERID='$userid' AND GAME_ID='$gameid' AND VMNA='$vmna'");
+		if(mysqli_num_rows($result) == 1){
+			return false;
+		}else{
+			return true;
+		}
 	}
 }
 

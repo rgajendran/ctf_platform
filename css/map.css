@@ -682,3 +682,94 @@ button:hover {
     background-color: #ABD17D;
     color:#000000;
 }
+
+/*--------------------- VMINFO -------------------------*/
+.Qmodal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+/* Modal Content */
+.Qmodal-content {
+    position: fixed;
+    bottom: 0;
+    background-color: #283816;
+    margin-left:35%;
+    width: 30%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+}
+
+/* The Close Button */
+.Qclose {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.Qclose:hover,
+.Qclose:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.Qmodal-header {
+    padding: 2px 16px;
+    background-color: #354b1b;
+    color: #ABD17D;
+}
+
+.Qmodal-body {padding: 2px 16px;}
+
+.Qmodal-footer {
+    padding: 2px 16px;
+    background-color: #354b1b;
+    color: #ABD17D;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+.tbicon td{
+	width:10%;
+	cursor:pointer;
+	text-align:center;
+}
+
+.tbicon td img:hover{
+	opacity:0.5;
+}

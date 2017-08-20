@@ -172,7 +172,8 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 														if(PlatformDB::authorizeGameId($gameid)){
 															$c = new Creditional();
 															include '../plattemplate/connection.php';
-															if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $teama, $teamb, $gametype, $title, $desc)){																
+															$vmno = PlatformDB::getVMNO_withScenario($scenario);
+															if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $vmno, $teama, $teamb, $gametype, $title, $desc)){																
 																if(PlatformDB::create_hint_secgen_table($gameid)){ //create hint and secgenflag table
 																		if(PlatformDB::insert_hint_and_secgenflag_data("marker", $gameid, 2)){	//import hint and flags
 																			if(PlatformDB::insert_scoreboard_team($gameid, $teama, $teamb)){

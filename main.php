@@ -7,6 +7,9 @@ session_start();
 include 'template/connection.php';
 if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSION['GAMEID'])){
 	header('location:multiplayer.php');
+}else{
+	$_SESSION['SYSTEMS'] = array();
+	$_SESSION['STARTED'] = array();
 }
 ?>
 <!DOCTYPE html>
@@ -148,14 +151,14 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 				$vm = $srow['VM'];
 				$ip = $srow['IP'];
 				$ii+=1;
-				
+				$_SESSION['SYSTEMS'][] = $vm;
 			?>
 			
 			<div class="grouper">
 				<div class="grouper_heading">
 					<p class="vm"><?php echo $vm; ?></p>
 					<p class="ip"><?php echo $ip; ?></p>
-					( <input value="VM Options" type="submit" onclick="Vm.menu('V');"/> )
+					( <input value="VM Options" type="submit" onclick="Vm.menu('<?php echo $vm;?>');"/> )
 				</div>
 				<div class="grouper_map" id="<?php echo "grouperId".$ii; ?>">
 					<?php
@@ -297,13 +300,28 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
   </div>
 
 </div>
-<div id="Modal" class="modal">
-	
-	  <div class="modal-content">
-	  		 <div class="modal-body">
-	  		 		<h1>Hello World</h1>	
-	  		 </div>
-	  </div>
+<div id="QModal" class="Qmodal">
+
+  <!-- Modal content -->
+  <div class="Qmodal-content">
+    <div class="Qmodal-header">
+      <span class="Qclose">&times;</span>
+      <h2 id="vmheader"></h2>
+    </div>
+    <div class="Qmodal-body">
+      	<table>
+ 			<tr class="tbicon">
+				<td id="t-run"></td>
+				<td id="t-start"></td>
+				<td id="t-stop"></td>
+			</tr>     		
+      	</table>
+    </div>
+    <div class="Qmodal-footer">
+    	<h4 id="Qmodal-status">Hover over the above icon</h4>
+    </div>
+  </div>
+
 </div>	
 <script src="js/dialog.js"></script>
 <script>
@@ -409,26 +427,76 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 }
 
 function vm(){
-	var mo = document.getElementById('Modal');	
-	var sp = document.getElementsByClassName("close")[0];		
-	
-	this.menu = function(cid) {
+	var mo = document.getElementById('QModal');	
+	var btn = document.getElementById("myBtn");	
+	var sp = document.getElementsByClassName("Qclose")[0];	
+	this.menu = function(header) {
 	    mo.style.display = "block";
-	};
+	    document.getElementById("vmheader").innerHTML = header;
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/createvmforgame.php",
+			data: {chooser:header},
+			success: function(status){
+				var split = status.split("##");		
+				for(var z =0; z < split.length; z++){
+					if(z == 0){ 
+						$(document).ready(function(){
+							$('#t-run').html(split[0]);	
+						});					
+					}else if(z == 1){
+						$(document).ready(function(){
+							$('#t-start').html(split[1]);		
+						});					
+					}else if(z == 2){
+						$(document).ready(function(){
+							$('#t-stop').html(split[2]);	
+						});						
+					}	
+				}
+			}	
+		});	    
+	}	
+	this.vmoption = function(option){
+		var val =  document.getElementById("vmheader").innerHTML
+		document.getElementById("vmheader").innerHTML = "Please wait...";
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/createvmforgame.php",
+			data: {vals:val, opt:option},
+			success: function(status){
+				/*document.getElementById("Qmodal-status").innerHTML = status;	*/
+				console.log(status);
+			}	
+		});
+	}
 	
 	sp.onclick = function() {
 	    mo.style.display = "none";
-	};
-	
-	window.onclick = function(event) {
-	    if (event.target == mo) {
+	}	
+	window.onclick = function(ev) {
+	    if (ev.target == mo) {
 	        mo.style.display = "none";
 	    }
-	};
+	}
 }
 
 var Vm = new vm();
 var Alert = new alert();
+
+$(document).ready(function(){
+    $("#t-run").hover(function(){
+    	$('#Qmodal-status').text("Open VM Viewer");
+    });
+    
+    $("#t-start").hover(function(){
+    	$('#Qmodal-status').text("Start VM");
+    });
+    
+    $("#t-stop").hover(function(){
+    	$('#Qmodal-status').text("Shutdown VM");
+    });
+});
 </script>
 <script src="js/main.js"></script>
 <script src="noti/notify.js"></script>
