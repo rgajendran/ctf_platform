@@ -9,7 +9,6 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 	header('location:multiplayer.php');
 }else{
 	$_SESSION['SYSTEMS'] = array();
-	$_SESSION['STARTED'] = array();
 }
 ?>
 <!DOCTYPE html>
@@ -19,6 +18,7 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link href="https://fonts.googleapis.com/css?family=Iceland|Orbitron" rel="stylesheet"> 
 		<link href="css/secgen.css" rel="stylesheet" type="text/css">
@@ -318,186 +318,13 @@ if(!isset($_SESSION['USERNAME']) || !isset($_SESSION['TEAM']) || !isset($_SESSIO
       	</table>
     </div>
     <div class="Qmodal-footer">
-    	<h4 id="Qmodal-status">Hover over the above icon</h4>
+    	<h4 id="Qmodal-status">Status</h4>
     </div>
   </div>
 
 </div>	
 <script src="js/dialog.js"></script>
-<script>
-	function alert(){
-	var modal = document.getElementById('myModal');
-	
-	var span = document.getElementsByClassName("close")[0];
-	
-	this.menu = function(cid,vm,teams) {
-	    modal.style.display = "block";
-	    document.getElementById('dialog-title').innerHTML = vm;
-	    document.getElementById('dialog-id').innerHTML = cid;
-	    //-------------------------------------------------------------------	
-	    if(checkSessionStorage() != "undefined"){
-    		if (sessionStorage.getItem(cid+"-"+vm) == null){     	
-				$.ajax({
-					method: "POST",
-					url: "template/viewhint.php",
-					data: {cids: cid,team:teams,vms:vm},
-					success: function(status){
-						sessionStorage.setItem(cid+"-"+vm,status);	
-						insertHint(status);			
-					}	
-				});
-			}else{
-				var status = sessionStorage.getItem(cid+"-"+vm);	
-				insertHint(status);	
-			}
-	    }else{
-	    	$.ajax({
-				method: "POST",
-				url: "template/viewhint.php",
-				data: {cids: cid,team:teams,vms:vm},
-				success: function(status){
-					insertHint(status);					
-				}	
-			});
-	    }	
-	    
-	};
-	
-	function insertHint(value){
-		var status = value;	
-		$('#moBody').empty();
-		$('#moBodyLocked').empty();
-		var OCSplit = status.split("#~#");
-		for(var i=0; i<OCSplit.length;i++){
-			var split = OCSplit[i].split("~#~");
-			var cn = 0;
-			for(var e=0; e<split.length;e++){
-				if(i == OCSplit.length-1){		
-					if(e == 0){
-						var str = split[0];
-						if(str == ""){
-							document.getElementById("fsubmit").innerHTML = "No Further Hints";
-						}else if(str == "No Further Hints"){
-							document.getElementById("fsubmit").innerHTML = "No Further Hints";
-						}else{
-							var res = str.replace("Hint Locked","");
-							document.getElementById("fsubmit").innerHTML = "Unlock Hint "+res;
-						}
-
-					}
-					var addh3 = document.createElement("h3");
-					var text =  document.createTextNode(split[e]);
-					addh3.appendChild(text);				
-					addh3.setAttribute("class","hintclose");
-					document.getElementById("moBodyLocked").appendChild(addh3);		
-				}else{
-					cn++;
-					var addh3 = document.createElement("h3");
-					if(split[e] == ""){
-						var text = document.createTextNode(split[e]);	
-					}else{
-						var text = document.createTextNode(cn+") "+split[e]);	
-					}
-					addh3.appendChild(text);
-					addh3.setAttribute("class","hintok");
-					document.getElementById("moBody").appendChild(addh3);	
-				}			
-					
-			}
-		}
-	}
-	
-	function checkSessionStorage(){
-   		return window.sessionStorage;
-	}
-
-	span.onclick = function() {
-	    modal.style.display = "none";
-    	var text = document.getElementById('flag_hint').innerText;
-	    document.getElementById('flag_hint').innerHTML = " ";
-	};
-	
-	window.onclick = function(event) {
-	    if (event.target == modal) {
-	        modal.style.display = "none";
-	        var text = document.getElementById('flag_hint').innerText;
-	        document.getElementById('flag_hint').innerHTML = " ";
-	    }
-	};
-}
-
-function vm(){
-	var mo = document.getElementById('QModal');	
-	var btn = document.getElementById("myBtn");	
-	var sp = document.getElementsByClassName("Qclose")[0];	
-	this.menu = function(header) {
-	    mo.style.display = "block";
-	    document.getElementById("vmheader").innerHTML = header;
-		$.ajax({
-			method: "POST",
-			url: "plattemplate/createvmforgame.php",
-			data: {chooser:header},
-			success: function(status){
-				var split = status.split("##");		
-				for(var z =0; z < split.length; z++){
-					if(z == 0){ 
-						$(document).ready(function(){
-							$('#t-run').html(split[0]);	
-						});					
-					}else if(z == 1){
-						$(document).ready(function(){
-							$('#t-start').html(split[1]);		
-						});					
-					}else if(z == 2){
-						$(document).ready(function(){
-							$('#t-stop').html(split[2]);	
-						});						
-					}	
-				}
-			}	
-		});	    
-	}	
-	this.vmoption = function(option){
-		var val =  document.getElementById("vmheader").innerHTML
-		document.getElementById("vmheader").innerHTML = "Please wait...";
-		$.ajax({
-			method: "POST",
-			url: "plattemplate/createvmforgame.php",
-			data: {vals:val, opt:option},
-			success: function(status){
-				/*document.getElementById("Qmodal-status").innerHTML = status;	*/
-				console.log(status);
-			}	
-		});
-	}
-	
-	sp.onclick = function() {
-	    mo.style.display = "none";
-	}	
-	window.onclick = function(ev) {
-	    if (ev.target == mo) {
-	        mo.style.display = "none";
-	    }
-	}
-}
-
-var Vm = new vm();
-var Alert = new alert();
-
-$(document).ready(function(){
-    $("#t-run").hover(function(){
-    	$('#Qmodal-status').text("Open VM Viewer");
-    });
-    
-    $("#t-start").hover(function(){
-    	$('#Qmodal-status').text("Start VM");
-    });
-    
-    $("#t-stop").hover(function(){
-    	$('#Qmodal-status').text("Shutdown VM");
-    });
-});
-</script>
+<script src="js/main_js.js"></script>
 <script src="js/main.js"></script>
 <script src="noti/notify.js"></script>
 <script src="noti/notify.min.js"></script>

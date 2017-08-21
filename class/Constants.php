@@ -42,6 +42,8 @@ const MULTIPLAYER_ALLOWED_PLAYERS_NUMBER = 5;											# findplayer.php
 const SESSION_CREATEGAME_TEAMA = "teama";                                               # multiplayer, findplayers session name
 const SESSION_CREATEGAME_TEAMB = "teamb";                                               # multiplayer, findplayers session name
 const SESSION_CREATETEAM = "createteam";
+const SESSION_SYSTEMS = "SYSTEMS";
+const SESSION_STARTED = "STARTED";
 const ERROR_TIME_INVALID = "Invalid Time";                                              # 
 const ERROR_FINDPLAYER_UNABLE_TO_FINDSCENARIO = "Unable to find scenario";              # findplayer.php scenario name modified
 #### Findplayer                                                                         # findplayer.php [STARTS_HERE]

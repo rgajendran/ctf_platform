@@ -63,22 +63,7 @@ if(isset($_SESSION['USERID'])){
 */
 
 session_start();
-$v = array();
-$value = array();
-$value = $v;
-
-$_SESSION['NAME'] = $value[0];
-$_SESSION['TEST'] = $value[1];
-
-if(isset($_SESSION['NAME']) && isset($_SESSION['TEST'])){
-	echo "Name : ".$_SESSION['NAME']."<br>";
-	echo "Test : ".$_SESSION['TEST']."<br>";	
-}else{
-	echo "Not set";
-}
-
-
-
+print_r($_SESSION['STARTED']);
 
 
 

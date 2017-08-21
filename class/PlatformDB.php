@@ -341,12 +341,34 @@ class PlatformDB{
 	public static function check_vm_has_created_foruser($userid, $gameid, $vmna){
 		include '../plattemplate/connection.php';
 		$result = mysqli_query($connection, "SELECT VMID FROM vm WHERE USERID='$userid' AND GAME_ID='$gameid' AND VMNA='$vmna'");
-		if(mysqli_num_rows($result) == 1){
+		if(mysqli_num_rows($result) >= 1){
 			return false;
 		}else{
 			return true;
 		}
 	}
+	
+	public static function check_vm_has_created($userid, $gameid, $vmna){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT VMID FROM vm WHERE USERID='$userid' AND GAME_ID='$gameid' AND VMNA='$vmna'");
+		if(mysqli_num_rows($result) == 1){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+	
+	public static function get_vmid_by_userid_gameId_vmname($userid, $gameid, $vmna){
+		include '../plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT VMID FROM vm WHERE USERID='$userid' AND GAME_ID='$gameid' AND VMNA='$vmna'");
+		if(mysqli_num_rows($result) == 1){
+			while($row = mysqli_fetch_assoc($result)){
+				return $row['VMID'];
+			}
+		}else{
+			return "NULL";
+		}
+	}	
 }
 
 ?>
