@@ -62,8 +62,11 @@ if(isset($_SESSION['USERID'])){
 
 */
 
-session_start();
-print_r($_SESSION['STARTED']);
+include '/var/www/html/platform/plattemplate/connection.php';
+
+$flds = mysqli_query($connection, "SELECT FOLDER FROM backend WHERE PROCESSING='1' AND COMPLETED='0' LIMIT 1");
+
+echo mysqli_num_rows($flds);
 
 
 

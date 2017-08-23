@@ -9,7 +9,7 @@ $x = Curl::curl_get_and_getresponse(Constants::OVIRT_API_URL."/vms");
 $xml = simplexml_load_string($x);
 include '/var/www/html/platform/plattemplate/connection.php';
 foreach($xml->vm as $vm){
-	$sql = mysqli_query($connection, "SELECT FOLDER,VMNO FROM backend WHERE COMPLETED='1'");
+	$sql = mysqli_query($connection, "SELECT FOLDER,VMNO FROM backend WHERE COMPLETED='1' LIMIT 1");
 	while($row = mysqli_fetch_assoc($sql)){
 		$vmno = $row['VMNO'];
 		for($i = 0; $i<=$vmno; $i++){

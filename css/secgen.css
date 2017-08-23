@@ -65,3 +65,25 @@
 	color:orange;
 	margin-left:10px;
 }
+
+/*-------------- Maps ------------------*/
+
+.grouper_heading input{
+	width:30%;
+	margin-bottom:1%;
+	background:inherit;
+	color:#ABD17D;
+	border:#C3E29C solid 1px;
+	border-radius:1em;
+	cursor:pointer;
+	padding:1%;
+	line-height:normal;
+	outline: none;
+}
+
+.grouper_heading input:hover{
+	background:#ABD17D;
+	color:#000000;
+}
+
+

@@ -9,7 +9,7 @@ require '/var/www/html/platform/class/Constants.php';
 
 include '/var/www/html/platform/plattemplate/connection.php';
 
-$flds = mysqli_query($connection, "SELECT FOLDER FROM backend WHERE PROCESSING='1'");
+$flds = mysqli_query($connection, "SELECT FOLDER FROM backend WHERE PROCESSING='1' AND COMPLETED='0' LIMIT 1");
 $vm = 0;
 if(mysqli_num_rows($flds) == 1){
 	while($frow = mysqli_fetch_assoc($flds)){
@@ -21,7 +21,7 @@ if(mysqli_num_rows($flds) == 1){
 			$x = Curl::curl_get_and_getresponse(Constants::OVIRT_API_URL."/vms");
 			$xml = simplexml_load_string($x);
 
-			$sql = mysqli_query($connection, "SELECT FOLDER,VMNO FROM backend WHERE PROCESSING='1'");
+			$sql = mysqli_query($connection, "SELECT FOLDER,VMNO FROM backend WHERE FOLDER='$folder'");
 			while($row = mysqli_fetch_assoc($sql)){
 				$folder = $row['FOLDER'];
 				for($i = 0; $i<=$row['VMNO']; $i++){
@@ -42,5 +42,7 @@ if(mysqli_num_rows($flds) == 1){
 			}			
 		}
 	}	
+}else{
+	echo "Not One Data Found";
 }
 ?>
