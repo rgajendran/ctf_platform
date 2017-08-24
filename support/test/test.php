@@ -1,10 +1,10 @@
 
 <?php
-/*
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-include '/var/www/html/platform/plattemplate/connection.php';
+/*include '/var/www/html/platform/plattemplate/connection.php';
 date_default_timezone_set('Europe/London');
 $timezone = 'Europe/London'; 
 $dates = new DateTime('now', new DateTimeZone($timezone));
@@ -62,14 +62,18 @@ if(isset($_SESSION['USERID'])){
 
 */
 
-include '/var/www/html/platform/plattemplate/connection.php';
-
-$flds = mysqli_query($connection, "SELECT FOLDER FROM backend WHERE PROCESSING='1' AND COMPLETED='0' LIMIT 1");
-
-echo mysqli_num_rows($flds);
-
-
-
+require '../../class/Validator.php';
+require '../../class/PlatformDB.php';
+require '../../class/Ovirt.php';
+require '../../class/Constants.php';	
+$c = new Creditional();
+$vmid= PlatformDB::get_vmid_by_userid_gameId_vmname($c->getUserId(), $c->getGameId(), "decode_me");
+$output = Ovirt::ovirt_vm_status(OLink::get_vmstatus_link("9a30adec-b6f3-49f2-813f-66b2184e227"));
+if(!empty($output)){
+	echo $output->status;
+}else{
+	echo "Empty";
+}
 
 
 

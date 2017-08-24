@@ -49,7 +49,7 @@ if(isset($_POST['vals']) && isset($_POST['opt'])){
 									execOutput("start","error",Constants::ERROR_VMSTART.Constants::ERROR_CODE_3005);
 								}
 							}else{
-								execOutput("start","error",Constants::ERROR_VM_UNABLE_TO_DELETE.Constants::ERROR_CODE_3010);
+								execOutput("start","error","Unable to connect to oVirt".Constants::ERROR_CODE_3010);
 							}	
 						}else{
 							execOutput("start","success","Please wait, Opening Viewer");
@@ -105,16 +105,24 @@ if(isset($_POST['vals']) && isset($_POST['opt'])){
 	$c = new Creditional();
 	$vmid = PlatformDB::get_vmid_by_userid_gameId_vmname($c->getUserId(), $c->getGameId(), $_POST['chooser']);
 	if($vmid != "NULL"){
-		if(in_array(Ovirt::ovirt_vm_status(OLink::get_vmstatus_link($vmid)), Ovirt::GraphicsAllowedVMOptions())){
-			output(
-			'<img src="images/icon/run.png" width="50" height="50" onclick="Vm.vmoption(\'start\');"/>', 
-			'<img src="images/icon/start.png" width="50" height="50" style="opacity:0.1;"/>',
-			'<img src="images/icon/stop.png" width="50" height="50" onclick="Vm.vmoption(\'stop\');"/>');				
+		$status = Ovirt::ovirt_vm_status(OLink::get_vmstatus_link($vmid));
+		if($status != Constants::OVIRT_VM_STATUS_FAILURE){
+			if(in_array($status, Ovirt::GraphicsAllowedVMOptions())){
+				output(
+				'<img src="images/icon/run.png" width="50" height="50" onclick="Vm.vmoption(\'start\');"/>', 
+				'<img src="images/icon/start.png" width="50" height="50" style="opacity:0.1;"/>',
+				'<img src="images/icon/stop.png" width="50" height="50" onclick="Vm.vmoption(\'stop\');"/>');				
+			}else{
+				output(
+				'<img src="images/icon/run.png" width="50" height="50" onclick="Vm.vmoption(\'start\');"/>', 
+				'<img src="images/icon/start.png" width="50" height="50" style="opacity:0.1;"/>',
+				'<img src="images/icon/stop.png" width="50" height="50" style="opacity:0.1;"/>');				
+			}			
 		}else{
 			output(
-			'<img src="images/icon/run.png" width="50" height="50" onclick="Vm.vmoption(\'start\');"/>', 
-			'<img src="images/icon/start.png" width="50" height="50" style="opacity:0.1;"/>',
-			'<img src="images/icon/stop.png" width="50" height="50" style="opacity:0.1;"/>');				
+			'<img src="images/icon/run.png" width="50" height="50" style="opacity:0.1;"/>', 
+			'<img src="images/icon/start.png" width="50" height="50" onclick="Vm.vmoption(\'create\');"/>',
+			'<img src="images/icon/stop.png" width="50" height="50" style="opacity:0.1;"/>');			
 		}		
 	}else{
 		output(

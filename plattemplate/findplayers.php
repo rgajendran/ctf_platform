@@ -287,7 +287,7 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 										case Constants::FP_GAME_TYPE_OPENFORALL:
 											if(PlatformDB::authorizeGameId($gameid)){
 												$c = new Creditional();
-												if(PlatformDB::insertgamedata($c->getUsername(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
+												if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
 													validateOutput("success","Successfully Game Created");
 												}else{
 													validateOutput("error","Unable to insert data, Try again or complain with error code");

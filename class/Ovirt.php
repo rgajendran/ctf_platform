@@ -96,7 +96,11 @@ class Ovirt{
 	
 	public static function ovirt_vm_status($link){
 		$xml = simplexml_load_string(Curl::curl_get_and_getresponse($link));
-		return $xml->status;
+		if(!empty($xml->status)){
+			return $xml->status;
+		}else{
+			return Constants::OVIRT_VM_STATUS_FAILURE;
+		}
 	}
 	
 	public static function ovirt_getgraphicsconsoleId_vm($link){
