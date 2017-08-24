@@ -83,12 +83,12 @@ class PlatformDB{
 	
 	public static function insertgamedata($user, $gameid, $starttime, $endtime, $scenario, $template, $vmno, $teama, $teamb, $type, $title,$desc){
 		include '../plattemplate/connection.php';
-		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEMPLATE, TEAM_A, TEAM_B, TYPE, TITLE, DESP) VALUES (
+		$result = mysqli_query($connection, "INSERT INTO game (HOST, GAME_ID, START_TIME, END_TIME, SCENARIO, TEMPLATE, VMNO, TEAM_A, TEAM_B, TYPE, TITLE, DESP) VALUES (
 		'$user','$gameid','$starttime','$endtime','$scenario','$template','$vmno','$teama','$teamb','$type','$title','$desc')");
 		if($result){
 			return true;
 		}else{
-			return false;
+			return mysqli_error($connection);
 		}
 	}
 	
@@ -246,11 +246,11 @@ class PlatformDB{
 		include '../template/connection.php';
 		$team = array($team1, $team2);
 		for($i = 1; $i<=2; $i++){
-			$result = mysqli_query($connection, "INSERT INTO team (GAMEID, TEAM, TEAMNAME) VALUES ('$gameid','$i','".$team[$i-1]."')");
+			$result = mysqli_query($connection, "INSERT INTO team (GAME_ID, TEAM, TEAMNAME) VALUES ('$gameid','$i','".$team[$i-1]."')");
 			if(!$result){
 				return false;
 			}else{
-				$res = mysqli_query($connection, "INSERT INTO scoreboard (GAMEID, TEAM, TEAMNAME, SCORE, PENALTY) VALUES ('$gameid','$i','".$team[$i-1]."','0','0')");
+				$res = mysqli_query($connection, "INSERT INTO scoreboard (GAME_ID, TEAM, TEAMNAME, SCORE, PENALTY) VALUES ('$gameid','$i','".$team[$i-1]."','0','0')");
 				if(!$res){
 					return false;
 				}
@@ -276,7 +276,7 @@ class PlatformDB{
 	
 	public static function insert_updater($team, $gameid, $userid){
 		include '../template/connection.php';
-		$update = mysqli_query($connection, "INSERT INTO updater (TEAM, GAMEID, USERID) VALUES ('$team','$gameid','$userid')");
+		$update = mysqli_query($connection, "INSERT INTO updater (TEAM, GAME_ID, USERID) VALUES ('$team','$gameid','$userid')");
 		if($update){
 			return true;
 		}else{

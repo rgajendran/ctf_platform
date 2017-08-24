@@ -217,16 +217,21 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 																					unset($_SESSION[$avsession[0]]);
 																					unset($_SESSION[$avsession[1]]);
 																				}else{
-																					$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
-																					if($sql){
-																						$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
-																						if($dsql){
-																							validateOutput("error","Game creation failed");
+																					$sresu = mysqli_query($connection, "SELECT * FROM game_players WHERE GAME_ID='$gameid'");
+																					if(mysqli_num_rows($sresu) > 0){
+																						$sql = mysqli_query($connection, "DELETE * FROM game_players WHERE GAME_ID='$gameid'");
+																						if($sql){
+																							$dsql = mysqli_query($connection, "DELETE * FROM scenariologger WHERE GAME_ID='$gameid'");
+																							if($dsql){
+																								validateOutput("error","Game creation failed");
+																							}else{
+																								validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
+																							}
 																						}else{
-																							validateOutput("error", "Technical Error, Report with error code : ".Constants::ERROR_CODE_3016);
-																						}
+																							validateOutput("error", "Technical Error - 102");
+																						}																						
 																					}else{
-																						validateOutput("error", "Technical Error");
+																						validateOutput("error", "Technical Error - 101");
 																					}
 																				}
 																				//STEP AS MODIFY END																					
@@ -286,11 +291,15 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 										
 										case Constants::FP_GAME_TYPE_OPENFORALL:
 											if(PlatformDB::authorizeGameId($gameid)){
+												$vmno = PlatformDB::getVMNO_withScenario($scenario);
+												$backs = array(DBV::smenu_template1,DBV::smenu_template2,DBV::smenu_template3);
+												$o = rand(1, 3) - 1;
+												$temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, $backs[$o]);
 												$c = new Creditional();
-												if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $teama, $teamb, $gametype, $title, $desc)){
+												if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $vmno, $teama, $teamb, $gametype, $title, $desc)){
 													validateOutput("success","Successfully Game Created");
 												}else{
-													validateOutput("error","Unable to insert data, Try again or complain with error code");
+													validateOutput("error","Unable to insert data, Try again");
 												}
 											}else{
 												validateOutput("error","Technical Error, Try again");

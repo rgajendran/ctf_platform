@@ -62,17 +62,8 @@ if(isset($_SESSION['USERID'])){
 
 */
 
-require '../../class/Validator.php';
-require '../../class/PlatformDB.php';
-require '../../class/Ovirt.php';
-require '../../class/Constants.php';	
-$c = new Creditional();
-$vmid= PlatformDB::get_vmid_by_userid_gameId_vmname($c->getUserId(), $c->getGameId(), "decode_me");
-$output = Ovirt::ovirt_vm_status(OLink::get_vmstatus_link("9a30adec-b6f3-49f2-813f-66b2184e227"));
-if(!empty($output)){
-	echo $output->status;
-}else{
-	echo "Empty";
+for($i = 0; $i<20; $i++){
+	echo (rand(1, 3))."<br>";
 }
 
 
