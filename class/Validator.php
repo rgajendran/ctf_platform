@@ -123,6 +123,14 @@ class Validator{
 		}
 	}
 	
+	public static function getHourDiff($startime, $endtime){
+		$date1 = new DateTime($startime);
+		$date2 = new DateTime($endtime);
+		$interval = new DateInterval('PT1H');
+		$periods = new DatePeriod($date1, $interval, $date2);
+		return iterator_count($periods);
+	}
+	
 }
 
 class Creditional{
@@ -152,6 +160,7 @@ class Creditional{
 	public function getGameId(){
 		return $_SESSION['GAMEID'];
 	}	
+
 }
 
 class DB{

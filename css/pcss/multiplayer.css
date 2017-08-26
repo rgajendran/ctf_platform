@@ -263,6 +263,24 @@ select > option {
 	font-style:normal;
 }
 
+.mpsdate, .mpapprove, .mpdeny{
+	width:20%;
+}
+
+.mphours{
+	width:10%;
+	text-align:center;
+}
+
+.mpapprove button:hover{
+	background:#41A428;
+	color:#000000;
+}
+
+.mpdeny button:hover{
+	background:#F7B9B9;
+	color:#000000;
+}
 /*------------------secgen local dropdown------------------------*/
 #primary_nav_wrap
 {

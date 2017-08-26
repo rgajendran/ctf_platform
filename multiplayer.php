@@ -51,6 +51,7 @@ if(isset($_SESSION['USERID'])){
 							    <th class='mptitle'>Description</th> 
 							    <th class='mpview'>View</th> 
 							    <th class='mptimer'>Approve</th> 
+							    <th class='mptimer'>Decline</th> 
 							  </tr>
 						  	<?php
 						  	require 'class/Validator.php';
@@ -67,12 +68,13 @@ if(isset($_SESSION['USERID'])){
 										<td class='mphost'>".$prow['TITLE']."</td>
 										<td class='mptitle'>".$prow['DESP']."</td>
 										<td class='mpview'><a href='multiplayer.php?option=viewgame&from=request&id=".$row['GAME_ID']."'>View</a></td>
-										<td class='mptimer'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>ACCEPT</button></td>
+										<td class='mpapprove'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>ACCEPT</button></td>
+										<td class='mpdeny'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>DENY</button></td>
 										</tr>";											
 									}
 								}						  		
 						  	}else{
-						  		echo "<tr><td colspan='4'>No Events Available</td></tr>";
+						  		echo "<tr><td colspan='5'>No Events Available</td></tr>";
 						  	}
 						  	?>
 							</table>						
@@ -105,7 +107,7 @@ if(isset($_SESSION['USERID'])){
 										$localtime = $date->format('Y-m-d H:i:s');
 										if(strtotime($row['START_TIME']) > strtotime($localtime)){
 											echo "<tr class='mpftr'>
-												<td class='mphost'>".$row['HOST']."</td>
+												<td class='mphost'>".PlatformDB::getUsernameByUserId($row['HOST'])."</td>
 												<td class='mptitle'>".$row['TITLE']."</td>
 												<td class='mpscenario'>".$row['SCENARIO']."</td>
 												<td class='mptimer'><p id='"."timer$count"."'></p></td>
@@ -321,6 +323,8 @@ if(isset($_SESSION['USERID'])){
 							<table id="mpftable">
 							  <tr class="table_heading">
 							    <th class='mphost'>Host</th>
+							    <th class='mpsdate'>Start Time</th> 
+							    <th class='mphours'>Game Length (Hours)</th>
 							    <th class='mptitle'>Title</th> 
 							    <th class='mpscenario'>Description</th> 
 							    <th class='mpview'>View</th> 
@@ -337,7 +341,9 @@ if(isset($_SESSION['USERID'])){
 									$pensql = mysqli_query($connection, "SELECT * FROM game WHERE GAME_ID='$gameId'");
 									while($prow = mysqli_fetch_assoc($pensql)){
 										echo "<tr class='mpftr'>
-										<td class='mphost'>".$prow['HOST']."</td>
+										<td class='mphost'>".PlatformDB::getUsernameByUserId($prow['HOST'])."</td>
+										<td class='mpsdate'>".$prow['START_TIME']."</td>
+										<td class='mphours'>".Validator::getHourDiff($prow['START_TIME'], $prow['END_TIME'])."</td>
 										<td class='mptitle'>".$prow['TITLE']."</td>
 										<td class='mpscenario'>".$prow['DESP']."</td>
 										<td class='mpview'><button onclick='submit.redirect(\"multiplayer.php?option=viewgame&from=my-upcominggame&id=$gameId\");'>View</button></td>
@@ -345,7 +351,7 @@ if(isset($_SESSION['USERID'])){
 									}
 								}						  		
 						  	}else{
-						  		echo "<tr><td colspan='4'>No Events Available</td></tr>";
+						  		echo "<tr><td colspan='6'>No Events Available</td></tr>";
 						  	}
 						  	?>
 							</table>
@@ -414,6 +420,8 @@ if(isset($_SESSION['USERID'])){
 												$query11Assoc = mysqli_fetch_assoc($query11);
 								    			echo "<p class='vplayer'>".$query11Assoc['USERNAME']."</p>";
 								    		}											
+										}else{
+											echo "<p class='vplayer'>No players joined</p>";
 										}
 							    		?>
 							    	</div>
@@ -429,13 +437,30 @@ if(isset($_SESSION['USERID'])){
 												$query11Assoc = mysqli_fetch_assoc($query11);
 								    			echo "<p class='vplayer'>".$query11Assoc['USERNAME']."</p>";
 								    		}
+										}else{
+											echo "<p class='vplayer'>No players joined</p>";
 										}
 							    		?>								    		
 							    	</div>
 							    	<div id="viewteambadd"></div>							    								    	
 							    </th>
 							  </tr>								  						  							  
-							</table></br></br>			
+							</table></br></br>	
+							<?php if(isset($_GET['from']) && isset($_GET['id']) && ($_GET['from'] == "fgame")){ ?>
+							<h1>Join Game</h1>	
+							<table>
+							  <tr class="table_heading">
+							    <th class="cgame-title">Choose Team</th>
+							    <th>
+							    	<select id="jointeam">
+										<option value='<?php echo $assoc['TEAM_A']; ?>'><?php echo $assoc['TEAM_A']; ?></option>
+										<option value='<?php echo $assoc['TEAM_B']; ?>'><?php echo $assoc['TEAM_B']; ?></option>										
+									</select>
+							    </th>
+							    <th><button onclick="createteam.joinTeamGame('<?php echo $_GET['id']?>')">Join</button></th>
+							  </tr>						  							  						  								  						  							  						  
+							</table>
+							<?php } ?>	
 							<h1><button class="createbtn" onclick="submit.redirect('<?php echo $url; ?>')">Back</button></h1>
 						<?php
 						}else{

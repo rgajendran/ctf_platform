@@ -418,6 +418,26 @@ function CreateTeam(){
 			}
 		});
 	};
+	
+	this.joinTeamGame = function(gameid){
+		var team = $("#jointeam").val();
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/multiplayerhandle.php",
+			data: {jteam:team, gid:gameid},
+			success: function(status){
+				console.log(status);
+				var split = status.split("##");
+				if(split[0] == "success"){
+					$.notify(split[1],{position:"bottom center", className:"success"});
+				}else if(split[0] == "warn"){
+					$.notify(split[1],{position:"bottom center", className:"warn"});
+				}else{
+					$.notify(split[1],{position:"bottom center", className:"error"});
+				}
+			}
+		});
+	};
 }
 
 var submit = new Commands();
