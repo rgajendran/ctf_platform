@@ -6,7 +6,7 @@ $(document).ready(function(){
 		$(location).attr("href", "./multiplayer.php");
 	});
 	$('#options').click(function(){
-		$(location).attr("href", "./template/logout.php");
+		$(location).attr("href", "./options.php");
 	});	
 	$('#back').click(function(){
 		$(location).attr("href", "./dashboard.php");
