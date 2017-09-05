@@ -383,6 +383,19 @@ class PlatformDB{
 
 	}
 
+	public static function getUsernameByUserIdMultiplayer($userid){
+		include 'plattemplate/connection.php';
+		$result = mysqli_query($connection, "SELECT USERNAME FROM loginusers WHERE USERID='".$userid."'");
+		if(mysqli_num_rows($result) == 1){
+			while($row = mysqli_fetch_assoc($result)){
+				return $row['USERNAME'];
+			}			
+		}else{
+			return "Anon User";
+		}
+
+	}
+
 	public static function getTeamRowCount($team, $gameid){
 		include '../plattemplate/connection.php';
 		$result = mysqli_query($connection, "SELECT TEAM_A, TEAM_B FROM game WHERE GAME_ID='$gameid'");

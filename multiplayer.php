@@ -69,7 +69,7 @@ if(isset($_SESSION['USERID'])){
 										<td class='mptitle'>".$prow['DESP']."</td>
 										<td class='mpview'><a href='multiplayer.php?option=viewgame&from=request&id=".$row['GAME_ID']."'>View</a></td>
 										<td class='mpapprove'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>ACCEPT</button></td>
-										<td class='mpdeny'><button onclick='submit.reqAccept(\"".$row['GAME_ID']."\")'>DENY</button></td>
+										<td class='mpdeny'><button onclick='submit.reqDeny(\"".$row['GAME_ID']."\")'>DENY</button></td>
 										</tr>";											
 									}
 								}						  		
@@ -97,7 +97,7 @@ if(isset($_SESSION['USERID'])){
 							$timezone = 'Europe/London'; 
 							$dates = new DateTime('now', new DateTimeZone($timezone));
 							$local = strtotime($dates->format('Y-m-d H:i:s'));
-						  	$sql = mysqli_query($connection, "SELECT * FROM game WHERE START_TIME > $local AND TYPE='openforall'");
+						  	$sql = mysqli_query($connection, "SELECT * FROM game WHERE START_TIME > $local AND TYPE='openforall' OR TYPE='teamgame'");
 						  	if(mysqli_num_rows($sql) > 0){
 							  	$count = 0;
 								while($row = mysqli_fetch_assoc($sql)){
@@ -170,7 +170,16 @@ if(isset($_SESSION['USERID'])){
 							    <th>
 							    	<select id="gtype">
 										<option value='closed' <?php if($_GET['type'] == "closed"){echo "selected";}?>>Invite Only</option>
-										<option value='openforall' <?php if($_GET['type'] == "openforall"){echo "selected";}?>>Open For All</option>										
+										<option value='openforall' <?php if($_GET['type'] == "openforall"){echo "selected";}?>>Open For All</option>	
+										<?php
+										include 'class/Validator.php';
+										$c = new Creditional();
+										if($c->getType() == "A"){
+											?>
+											<option value='teamgame' <?php if($_GET['type'] == "teamgame"){echo "selected";}?>>Team Game</option>	
+											<?php
+										}
+										?>									
 									</select>
 							    </th>
 							  </tr>						  							  						  								  						  							  						  
@@ -257,19 +266,21 @@ if(isset($_SESSION['USERID'])){
 									require 'class/Validator.php';
 									include 'plattemplate/connection.php';
 									$c = new Creditional();
-									$sql = mysqli_query($connection, "SELECT * FROM teams WHERE HOST='".$c->getUsername()."'");
+									$sql = mysqli_query($connection, "SELECT * FROM teams WHERE HOST='".$c->getUserId()."'");
 									if(mysqli_num_rows($sql) == 0){
 										echo "<tr><th colspan='2'>No Teams Found</th></tr>";
 									}else{
 										while($row = mysqli_fetch_assoc($sql)){
 											echo "<tr class='table_heading'><th>".$row['TEAM']."</th>";
 											echo "<th class='viewplayers'>".
-												$row['P_1']."</br>".
-												$row['P_2']."</br>".
-												$row['P_3']."</br>".
-												$row['P_4']."</br>".
-												$row['P_5']."</br>".
-											"</th></tr>";
+												PlatformDB::getUsernameByUserIdMultiplayer($row['P_1'])."</br>".
+												PlatformDB::getUsernameByUserIdMultiplayer($row['P_2'])."</br>".
+												PlatformDB::getUsernameByUserIdMultiplayer($row['P_3'])."</br>".
+												PlatformDB::getUsernameByUserIdMultiplayer($row['P_4'])."</br>".
+												PlatformDB::getUsernameByUserIdMultiplayer($row['P_5'])."</br>".
+											"</th>
+											<th><button onclick='submit.reqDeleteTeam(\"".$row['ID']."\")'>Delete</button></th>
+											</tr>";
 										}	
 									}									
 									?>
@@ -493,7 +504,7 @@ if(isset($_SESSION['USERID'])){
 				$timezone = 'Europe/London'; 
 				$dates = new DateTime('now', new DateTimeZone($timezone));
 				$locals = strtotime($dates->format('Y-m-d H:i:s'));
-			  	$sql = mysqli_query($connection, "SELECT START_TIME FROM game WHERE START_TIME > $locals");
+			  	$sql = mysqli_query($connection, "SELECT START_TIME FROM game WHERE START_TIME > $locals AND TYPE='openforall' OR TYPE='teamgame'");
 			  	$count = 0;
 				if(mysqli_num_rows($sql) > 0){
 					while($row = mysqli_fetch_assoc($sql)){

@@ -81,6 +81,22 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 	}else{
 		echo "Technical Error";
 	}
+}else if(isset($_POST['denyGameid'])){
+	include '../plattemplate/connection.php';
+	$gameId = Validator::PregAlphaNumeric($_POST['denyGameid']);
+	$c = new Creditional();
+	$uid = $c->getUserId();
+	$sql = mysqli_query($connection, "SELECT GAME_ID FROM game_players WHERE GAME_ID='$gameId' AND PLAYER='$uid'");
+	if(mysqli_num_rows($sql) == 1){
+		$sqlc = mysqli_query($connection, "DELETE FROM game_players WHERE GAME_ID='$gameId' AND PLAYER='$uid'");
+		if($sqlc){
+			echo "Request Declined";
+		}else{
+			echo "Technical Error";
+		}
+	}else{
+		echo "Technical Error";
+	}
 }else if(isset($_POST['teamname'])){
 	session_start();
 	if(!isset($_SESSION[Constants::SESSION_CREATETEAM])){
@@ -94,14 +110,14 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 		if(strlen($teamname) >= 4 && strlen($teamname) <= 15){
 			include '../plattemplate/connection.php';
 			$c = new Creditional();
-			$un = $c->getUsername();
+			$un = $c->getUserId();
 			$s = 0;
 			$sqlcheck = mysqli_query($connection, "SELECT * FROM teams WHERE HOST='$un'");
 			
 			if(mysqli_num_rows($sqlcheck) < 2){
-				foreach($_SESSION[Constants::SESSION_CREATETEAM] as $value){
+				foreach($_SESSION[Constants::SESSION_CREATETEAM] as $key=>$value){
 					$s++;
-					${"p$s"} = $value;
+					${"p$s"} = $key;
 				}
 				$sql = mysqli_query($connection, "INSERT INTO teams (HOST, TEAM, P_1, P_2, P_3, P_4, P_5) VALUES ('$un', '$teamname', '$p1','$p2','$p3','$p4','$p5')");
 				if($sql){
@@ -135,7 +151,7 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 					if(Validator::validateDate($starttime)){
 						if(Validator::validateDate($endtime)){
 							if(PlatformDB::checkIfScenarioExists($scenario)){
-								if(in_array($gametype, $allow = array(Constants::FP_GAME_TYPE_CLOSED,Constants::FP_GAME_TYPE_OPENFORALL))){
+								if(in_array($gametype, $allow = array(Constants::FP_GAME_TYPE_CLOSED,Constants::FP_GAME_TYPE_OPENFORALL, Constants::FP_GAME_TYPE_TEAMGAME))){
 									switch($gametype){
 										case Constants::FP_GAME_TYPE_CLOSED:
 											session_start();
@@ -305,6 +321,23 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 												validateOutput("error","Technical Error, Try again");
 											}
 											break;	
+											
+										case Constants::FP_GAME_TYPE_TEAMGAME:
+											if(PlatformDB::authorizeGameId($gameid)){
+												$vmno = PlatformDB::getVMNO_withScenario($scenario);
+												$backs = array(DBV::smenu_template1,DBV::smenu_template2,DBV::smenu_template3);
+												$o = rand(1, 3) - 1;
+												$temp = PlatformDB::smenuGetTemplateByBackupNumber($scenario, $backs[$o]);
+												$c = new Creditional();
+												if(PlatformDB::insertgamedata($c->getUserId(), $gameid, $starttime, $endtime, $scenario, $temp, $vmno, $teama, $teamb, $gametype, $title, $desc)){
+													validateOutput("success","Successfully Game Created");
+												}else{
+													validateOutput("error","Unable to insert data, Try again");
+												}
+											}else{
+												validateOutput("error","Technical Error, Try again");
+											}
+											break;											
 									}									
 								}else{
 									validateOutput("error", Constants::ERROR_EXESP_INVALID_REQUEST);
@@ -329,6 +362,16 @@ if(isset($_POST['team']) && isset($_POST['val'])){
 	   }
 	}else{
 		validateOutput("error", PlatformValidator::lengthLimitError(2, 20, "Title", Constants::ERROR_CODE_3013));
+	}
+}else if(isset($_POST['delteam'])){
+	include 'connection.php';
+	$teamid = Validator::PregOnlyNumeric($_POST['delteam']);
+	$c = new Creditional();
+	$result = mysqli_query($connection, "DELETE FROM teams WHERE HOST='".$c->getUserId()."' AND ID='$teamid'");
+	if($result){
+		validateOutput("success", "Deleted Team Successfully");
+	}else{
+		validateOutput("error", "Unable to delete team");		
 	}
 }
 

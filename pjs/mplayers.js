@@ -80,6 +80,8 @@ $(document).ready(function(){
 			$(location).attr('href', "multiplayer.php?option=cgame&type=openforall");
 		}else if(input == "closed"){
 			$(location).attr('href', "multiplayer.php?option=cgame&type=closed");
+		}else if(input == "teamgame"){
+			$(location).attr('href', "multiplayer.php?option=cgame&type=teamgame");
 		}
 		
 	});
@@ -394,6 +396,38 @@ function Commands(){
 			success: function(status){
 				$(location).attr('href', 'multiplayer.php?option=request');
 				$.notify(status,{position:"bottom center", className:"warn"});
+			}
+		});
+	};
+	
+	this.reqDeny = function(id){
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {denyGameid:id},
+			success: function(status){
+				$(location).attr('href', 'multiplayer.php?option=request');
+				$.notify(status,{position:"bottom center", className:"success"});
+			}
+		});
+	};
+	
+	this.reqDeleteTeam = function(id){
+		$.ajax({
+			method: "POST",
+			url: "plattemplate/findplayers.php",
+			data: {delteam:id},
+			success: function(status){
+				var split = status.split("#*#");
+				switch(split[0]){
+					case "success":
+						$(location).attr('href', 'multiplayer.php?option=team');					
+					break;
+					
+					case "error":
+						$.notify(split[1],{position:"bottom center", className:"warn"});
+					break;
+				}
 			}
 		});
 	};

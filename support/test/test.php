@@ -61,14 +61,8 @@ if(isset($_SESSION['USERID'])){
 }
 
 */
-
-for($i = 0; $i<20; $i++){
-	echo (rand(1, 3))."<br>";
-}
-
-
-
-
+session_start();
+print_r($_SESSION['createteam']);
 
 
 
