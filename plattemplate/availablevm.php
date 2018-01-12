@@ -6,7 +6,7 @@
 	require 'class/Constants.php';
 	require 'class/Ovirt.php';
 	$c = new Creditional();
-	$resultvm = mysqli_query($connection, "SELECT VMNAME,VMID FROM vm WHERE USERNAME='".$c->getUsername()."'");
+	$resultvm = mysqli_query($connection, "SELECT VMNA,VMID FROM vm WHERE USERID='".$c->getUserId()."'");
 	$pv = new PlatformValidator();
 	if($resultvm){
 		if(mysqli_num_rows($resultvm) == 0){
@@ -15,7 +15,7 @@
 				  	</tr>';
 		}else{
 			while($vmrow = mysqli_fetch_assoc($resultvm)){
-				$vmname = $pv->RemoveVMNameextraInfo($vmrow['VMNAME']);
+				$vmname = $vmrow['VMNA'];//$pv->RemoveVMNameextraInfo($vmrow['VMNAME']);
 				$vmid = $vmrow['VMID'];
 				if(in_array(Ovirt::ovirt_vm_status(OLink::get_vmstatus_link($vmid)), Ovirt::GraphicsAllowedVMOptions())){
 					echo "<tr class=\"tg\">

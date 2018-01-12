@@ -84,11 +84,11 @@ error_reporting(E_ALL);
 					?>
 					</span></h3></td>
 				</tr>	
-				<tr class="c-name">
+				<!--<tr class="c-name">
 					<td class="c-head"><h3>Choose VM Name</h3></td>
 					<td class="c-mid">:</td>
 					<td class="c-end"><input type="text" id="vmname" placeholder="Enter your VM name" maxlength="30"/></td>
-				</tr>				
+				</tr>	-->			
 				<tr class="c-name">
 					<td  colspan="3">
 						<div id="loading">
